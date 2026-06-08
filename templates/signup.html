@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+
+{% block title %}Sign Up{% endblock %}
+
+{% block content %}
+    <h1>Sign Up</h1>
+
+    <form action="create-account">
+        <label for="user-email-input">Email: </label>
+        <input type="email" id="user-email-input" name="user-email-input" minlength="2" maxlength="20" />
+        <br /><br />
+        
+        <label for="username-input">Username: </label>
+        <input type="text" id="username-input" name="username-input" minlength="2" maxlength="20" />
+        <br /><br />
+
+        <label for="password-input-1">Password: </label>
+        <input type="password" id="password-input-1" name="password-input-1" minlength="8" maxlength="20" />
+        <br />
+        <label for="password-input-2">Confirm Password: </label>
+        <input type="password" id="password-input-2" name="password-input-2" />
+        <br /><br />
+
+        <button type="submit">Submit</button>
+    </form>
+{% endblock %}
