@@ -3,7 +3,8 @@ name: Sync
 on:
   push:
     branches:
-      - main  # or your default branch
+      - main
+  workflow_dispatch:
 
 jobs:
   sync:
@@ -16,12 +17,12 @@ jobs:
           fetch-depth: 0
 
       - name: Push to personal repo
+        env:
+          PERSONAL_REPO_TOKEN: ${{ secrets.PERSONAL_REPO_TOKEN }}
         run: |
-          git config --global user.name "aaravs-s"
-          git config --global user.email "aarav.singhania50@gmail.com"
+          git config user.name "repo-sync-bot"
+          git config user.email "repo-sync-bot@users.noreply.github.com"
 
-          # Add your personal repo as a remote
-          git remote add personal_repo "https://x-access-token:${{ secrets.safe }}@github.com/aaravs-s/safewalker.git"
+          git remote add personal https://x-access-token:${PERSONAL_REPO_TOKEN}@github.com/aaravs-s/safewalker.git
 
-          # Push all commits (force if needed)
-          git push personal_repo main --force
+          git push personal main --force
