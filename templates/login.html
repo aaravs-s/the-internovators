@@ -1,21 +1,29 @@
 {% extends "base.html" %}
 
-{% block title %}Login{% endblock %}
+{% block title %}Login | SafeWalkers{% endblock %}
 
 {% block content %}
-    <h1>Login</h1>
+  <section class="auth-layout">
+    <div>
+      <p class="eyebrow">Welcome back</p>
+      <h1>Login</h1>
+      <p class="lede">Save favorite walking routes and contribute safety notes for other walkers.</p>
+    </div>
 
-    <form action="user-login">
-        <label for="username-input">Username: </label>
-        <input type="text" id="username-input" name="username-input" minlength="2" maxlength="20" />
-        <br />
+    <form class="form-card" action="/login" method="post">
+      {% if error %}
+        <p class="error">{{ error }}</p>
+      {% endif %}
 
-        <label for="password-input">Password: </label>
-        <input type="password" id="password-input" name="password-input" />
-        <br />
+      <label for="username">Username</label>
+      <input id="username" name="username" type="text" minlength="2" maxlength="30" required />
 
-        <button type="submit">Submit</button>
+      <label for="password">Password</label>
+      <input id="password" name="password" type="password" required />
+
+      <button class="button" type="submit">Login</button>
+      <p class="form-note">Need an account? <a href="/signup">Sign up</a></p>
     </form>
-
-
+  </section>
 {% endblock %}
+

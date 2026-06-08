@@ -1,11 +1,48 @@
 {% extends "base.html" %}
 
-{% block title %}SafeWalkers{% endblock %}
+{% block title %}SafeWalkers | Find safer Austin walks{% endblock %}
 
 {% block content %}
-    <h1>SafeWalkers</h1>
-    
-    <p>Welcome to SafeWalkers!</p>
+  <section class="hero">
+    <div>
+      <p class="eyebrow">Austin walking routes</p>
+      <h1>Find a safer, more enjoyable way to walk there.</h1>
+      <p class="lede">
+        Compare route options by distance, estimated time, sidewalks, lighting, and
+        safety notes built for Austin pedestrians.
+      </p>
+    </div>
 
-    <p><a href="login">Login</a> or <a href="signup">sign up</a></p>
+    <form class="search-panel" action="/routes/search" method="post">
+      <label for="start">Start</label>
+      <input id="start" name="start" type="text" placeholder="UT Austin" required />
+
+      <label for="destination">Destination</label>
+      <input
+        id="destination"
+        name="destination"
+        type="text"
+        placeholder="Austin Central Library"
+        required
+      />
+
+      <button class="button" type="submit">Search routes</button>
+    </form>
+  </section>
+
+  <section class="feature-grid" aria-label="SafeWalkers priorities">
+    <article>
+      <h2>Safety first</h2>
+      <p>Routes are scored with walking comfort, lighting, sidewalk coverage, and busy crossings in mind.</p>
+    </article>
+    <article>
+      <h2>No account needed</h2>
+      <p>Visitors can search routes immediately. Accounts are only for saving walks and sharing reports.</p>
+    </article>
+    <article>
+      <h2>Austin focused</h2>
+      <p>The product is built around local destinations, commuters, visitors, and everyday city life.</p>
+    </article>
+  </section>
 {% endblock %}
+

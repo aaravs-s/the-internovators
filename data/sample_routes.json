@@ -1,0 +1,48 @@
+[
+  {
+    "id": "balanced-downtown",
+    "name": "Balanced Downtown Walk",
+    "distance_miles": 1.4,
+    "estimated_minutes": 29,
+    "base_safety_score": 78,
+    "well_lit": true,
+    "sidewalk_heavy": true,
+    "busy_crossings": 2,
+    "highlights": [
+      "Prioritizes streets with stronger sidewalk coverage",
+      "Uses better-lit downtown corridors",
+      "Avoids the busiest crossing cluster when possible"
+    ]
+  },
+  {
+    "id": "quiet-neighborhood",
+    "name": "Quiet Neighborhood Walk",
+    "distance_miles": 1.7,
+    "estimated_minutes": 35,
+    "base_safety_score": 82,
+    "well_lit": false,
+    "sidewalk_heavy": true,
+    "busy_crossings": 1,
+    "highlights": [
+      "Favors calmer neighborhood streets",
+      "Slightly longer route with fewer high-stress crossings",
+      "Best for daytime walking"
+    ]
+  },
+  {
+    "id": "direct-commute",
+    "name": "Direct Commute Walk",
+    "distance_miles": 1.1,
+    "estimated_minutes": 22,
+    "base_safety_score": 68,
+    "well_lit": true,
+    "sidewalk_heavy": false,
+    "busy_crossings": 3,
+    "highlights": [
+      "Shortest available sample route",
+      "Good lighting on major blocks",
+      "Includes several busier intersections"
+    ]
+  }
+]
+

@@ -1,27 +1,30 @@
-When you want to test our site on your own computer, follow these instructions.
+When you want to test SafeWalkers on your own computer, follow these instructions.
 
-First time things:
-  - Install git at https://git-scm.com/install/ and make sure it's installed by running
-    "git -v" in your terminal/command line. It should return something like "git version 2.50.1"
-  - Clone our repository onto your local system. Open terminal and navigate to the directory
-    that you'd like the project folder to be in. (You can see the contents of your current
-    folder with "ls", move to a folder with "cd [folder-name]", and move into the parent 
-    folder with "cd .."). Then, paste "git clone https://github.com/liamb09/the-internovators.git"
-    into the terminal and run it. Afterwards, check that it worked by running "ls" (you should
-    see a folder called "the-internovators") then go into it with "cd the-internovators".
-    Then you can open and edit it in VSCode.
-  - With our project open n VSCode, go to the search bar at the top, type the character 
-    ">", the type "terminal" and select "Terminal: Create New Terminal", which will create
-    a terminal at the bottom of your screen. Enter "python3" into that terminal to ensure 
-    it's installed--it should give you the version.
-  - Setup the python environment: enter "python3 -m venv .venv" to create a ".venv" directory
-    and activate it with "source .venv/bin/activate" on Mac or ".venv\Scripts\Activate.ps1"
-    on Windows. Then install fastapi with "pip install "fastapi[standard]" ".
+First time setup:
+  - Install git at https://git-scm.com/install/ and make sure it is installed by
+    running "git -v" in your terminal or command line.
+  - Clone the repository:
+    "git clone https://github.com/liamb09/the-internovators.git"
+  - Go into the project folder:
+    "cd the-internovators"
+  - Create a Python virtual environment:
+    "python -m venv .venv"
+  - Activate it on Windows:
+    ".venv\Scripts\Activate.ps1"
+  - Activate it on Mac/Linux:
+    "source .venv/bin/activate"
+  - Install the project dependencies:
+    "pip install -e ."
 
-To test (do this every time):
-  - If you have not already done so, activate the python environment with 
-    "source .venv/bin/activate" on Mac or ".venv\Scripts\Activate.ps1" on Windows.
-  - Run "fastapi run main.py --host 127.0.0.1 --reload" to host the site on your local
-    network and click on the link it provides you (it will probably be http://127.0.0.1:8000).
-    You can also run it in your web browser if you type in "127.0.0.1:8000" or "localhost:8000".
-  - When you're done, go back to the VSCode terminal and press CTRL+C to stop the process.
+To run the site:
+  - Activate the virtual environment if it is not already active.
+  - Run:
+    "fastapi dev main.py"
+  - Open the local URL it prints, usually http://127.0.0.1:8000.
+  - Press CTRL+C in the terminal when you want to stop the site.
+
+Project notes:
+  - The root main.py creates and launches the app.
+  - Templates live in templates.
+  - Static CSS and JavaScript live in static.
+  - Prototype JSON data lives in data.

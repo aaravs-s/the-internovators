@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+
+{% block title %}Profile | SafeWalkers{% endblock %}
+
+{% block content %}
+  <section class="profile-header">
+    <p class="eyebrow">Profile</p>
+    <h1>{{ user.username }}</h1>
+    <p class="lede">{{ user.email }}</p>
+  </section>
+
+  <section class="two-column">
+    <div>
+      <h2>Saved routes</h2>
+      {% if saved_routes %}
+        <div class="stack">
+          {% for route in saved_routes %}
+            <article class="route-card">
+              <div>
+                <h3>{{ route.name }}</h3>
+                <p>{{ route.start }} to {{ route.destination }}</p>
+              </div>
+              <p class="score">{{ route.safety_score }}</p>
+            </article>
+          {% endfor %}
+        </div>
+      {% else %}
+        <p class="empty">No saved routes yet.</p>
+      {% endif %}
+    </div>
+
+    <div>
+      <h2>Safety reports</h2>
+      <form class="form-card compact" action="/reports" method="post">
+        <label for="location">Location</label>
+        <input id="location" name="location" type="text" placeholder="Congress Ave" required />
+
+        <label for="note">Note</label>
+        <textarea id="note" name="note" minlength="5" maxlength="500" required></textarea>
+
+        <button class="button" type="submit">Submit report</button>
+      </form>
+
+      {% if reports %}
+        <div class="stack">
+          {% for report in reports %}
+            <article class="note-card">
+              <h3>{{ report.location }}</h3>
+              <p>{{ report.note }}</p>
+            </article>
+          {% endfor %}
+        </div>
+      {% endif %}
+    </div>
+  </section>
+{% endblock %}
+

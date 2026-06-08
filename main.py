@@ -1,35 +1,19 @@
-from fastapi import FastAPI, Request
-from fastapi.responses import HTMLResponse
-from fastapi.templating import Jinja2Templates
+from fastapi import FastAPI
+from fastapi.staticfiles import StaticFiles
 
-app = FastAPI()
+from api.router import api_router
+from core.config import settings
+from web.pages import router as pages_router
 
-templates = Jinja2Templates(directory="templates")
 
-@app.get("/", response_class=HTMLResponse)
-async def read_item(request: Request):
-    # "request" must be passed to the template context
-    return templates.TemplateResponse(
-        request=request, 
-        name="index.html"
-       
-    )
+def create_app() -> FastAPI:
+    settings.ensure_storage()
 
-@app.get("/login", response_class=HTMLResponse)
-async def read_item(request: Request):
-    # "request" must be passed to the template context
-    return templates.TemplateResponse(
-        request=request, 
-        name="login.html"
-       
-    )
+    app = FastAPI(title=settings.app_name)
+    app.mount("/static", StaticFiles(directory=settings.static_dir), name="static")
+    app.include_router(pages_router)
+    app.include_router(api_router, prefix="/api")
+    return app
 
-@app.get("/signup", response_class=HTMLResponse)
-async def read_item(request: Request):
-    # "request" must be passed to the template context
-    return templates.TemplateResponse(
-        request=request, 
-        name="signup.html"
-       
-    )
 
+app = create_app()

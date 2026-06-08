@@ -1,26 +1,35 @@
 {% extends "base.html" %}
 
-{% block title %}Sign Up{% endblock %}
+{% block title %}Sign up | SafeWalkers{% endblock %}
 
 {% block content %}
-    <h1>Sign Up</h1>
+  <section class="auth-layout">
+    <div>
+      <p class="eyebrow">Join SafeWalkers</p>
+      <h1>Create an account</h1>
+      <p class="lede">Accounts are optional, but they let you save routes and add safety reports.</p>
+    </div>
 
-    <form action="create-account">
-        <label for="user-email-input">Email: </label>
-        <input type="email" id="user-email-input" name="user-email-input" minlength="2" maxlength="20" />
-        <br /><br />
-        
-        <label for="username-input">Username: </label>
-        <input type="text" id="username-input" name="username-input" minlength="2" maxlength="20" />
-        <br /><br />
+    <form class="form-card" action="/signup" method="post">
+      {% if error %}
+        <p class="error">{{ error }}</p>
+      {% endif %}
 
-        <label for="password-input-1">Password: </label>
-        <input type="password" id="password-input-1" name="password-input-1" minlength="8" maxlength="20" />
-        <br />
-        <label for="password-input-2">Confirm Password: </label>
-        <input type="password" id="password-input-2" name="password-input-2" />
-        <br /><br />
+      <label for="email">Email</label>
+      <input id="email" name="email" type="email" minlength="3" maxlength="80" required />
 
-        <button type="submit">Submit</button>
+      <label for="username">Username</label>
+      <input id="username" name="username" type="text" minlength="2" maxlength="30" required />
+
+      <label for="password">Password</label>
+      <input id="password" name="password" type="password" minlength="8" maxlength="100" required />
+
+      <label for="confirm_password">Confirm password</label>
+      <input id="confirm_password" name="confirm_password" type="password" minlength="8" maxlength="100" required />
+
+      <button class="button" type="submit">Create account</button>
+      <p class="form-note">Already have an account? <a href="/login">Login</a></p>
     </form>
+  </section>
 {% endblock %}
+
