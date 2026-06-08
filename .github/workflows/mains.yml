@@ -1,4 +1,4 @@
-- name: Push to personal repo
+ name: Push to personal repo
   env:
     PERSONAL_REPO_TOKEN: ${{ secrets.PERSONAL_REPO_TOKEN }}
   run: |
