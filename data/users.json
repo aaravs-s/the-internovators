@@ -1,1 +1,9 @@
-[]
+[
+  {
+    "created_at": "2026-06-08T18:53:21.724745+00:00",
+    "email": "skibidi@gmail.com",
+    "id": "9f60a454-6b69-403f-821e-ead0aa5ed3f1",
+    "password_hash": "pbkdf2_sha256$210000$8a34b92db6c940ab480a1378283db97b$fde6dc04785e1bc1147ff0fdfb1bfcad67c90d3b44ecceafdfb1f2bbe68cb929",
+    "username": "ohio"
+  }
+]
