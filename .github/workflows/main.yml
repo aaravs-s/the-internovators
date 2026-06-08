@@ -21,7 +21,7 @@ jobs:
           git config --global user.email "aarav.singhania50@gmail.com"
 
           # Add your personal repo as a remote
-          git remote add personal_repo "https://x-access-token:${{ secrets.safe }}@github.com/aaravs-s/YOUR_PERSONAL_REPO.git"
+          git remote add personal_repo "https://x-access-token:${{ secrets.safe }}@github.com/aaravs-s/safewalker.git"
 
           # Push all commits (force if needed)
           git push personal_repo main --force
