@@ -1,0 +1,27 @@
+name: Sync
+
+on:
+  push:
+    branches:
+      - main  # or your default branch
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout enterprise repo
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Push to personal repo
+        run: |
+          git config --global user.name "aaravs-s"
+          git config --global user.email "aarav.singhania50@gmail.com"
+
+          # Add your personal repo as a remote
+          git remote add personal_repo "https://x-access-token:${{ secrets.safe }}@github.com/aaravs-s/YOUR_PERSONAL_REPO.git"
+
+          # Push all commits (force if needed)
+          git push personal_repo main --force
