@@ -1,0 +1,11 @@
+ name: Push to personal repo
+  env:
+    PERSONAL_REPO_TOKEN: ${{ secrets.PERSONAL_REPO_TOKEN }}
+  run: |
+    git config user.name "repo-sync-bot"
+    git config user.email "repo-sync-bot@users.noreply.github.com"
+
+    git remote remove personal 2>/dev/null || true
+    git remote add personal https://x-access-token:${PERSONAL_REPO_TOKEN}@github.com/aaravs-s/safewalker.git
+
+    git push personal main --force
