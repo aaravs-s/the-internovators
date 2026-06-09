@@ -3,3 +3,4 @@ __pycache__/
 setup-instructions.txt
 .env
 *.pyc
+.DS_Store
