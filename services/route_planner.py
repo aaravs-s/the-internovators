@@ -7,8 +7,14 @@ import requests
 import os
 import json
 import sys
+import shapely
+from shapely.geometry import shape, mapping
+from shapely.ops import unary_union
+
+# fastapi dev main.py --host 127.0.0.1 --reload
 
 ORS_API_KEY = os.getenv("ORS_API_KEY")
+TT_API_KEY = os.getenv("TT_API_KEY")
 
 url = "https://api.openrouteservice.org/v2/directions/foot-walking/geojson"
 
@@ -47,8 +53,43 @@ def get_crime_polygons ():
                     ring = ring + [ring[0]]
                 closed_rings.append(ring)
             polygons.append(closed_rings)
-            # polygons.append(feature["coordinates"])
     return polygons
+
+def get_incident_polygons (start, end): # parameters are lon, lat coordinate pairs
+    # minLon,minLat,maxLon,maxLat
+    offset_miles = 0.4 # how much bigger to make the bbox in miles
+    bbox = [
+        min(start[0], end[0]) - 0.0168*offset_miles,
+        min(start[1], end[1]) - 0.0145*offset_miles,
+        max(start[0], end[0]) + 0.0168*offset_miles,
+        max(start[1], end[1]) + 0.0145*offset_miles
+    ]
+    bbox = [str(i) for i in bbox]
+
+    url = "https://api.tomtom.com/traffic/services/5/incidentDetails"
+    params = {
+        "bbox": ",".join(bbox),
+        "key": TT_API_KEY,
+        "fields": "{incidents{type,geometry{type,coordinates},properties{iconCategory}}}"
+    }
+
+    response = requests.get(url, params=params)
+    data = response.json() # linestrings
+
+    # convert to polygons to avoid
+    polygons = []
+    for incident in data["incidents"]:
+        geom = shape(incident["geometry"])
+
+        poly = geom.buffer(0.0003) # ~30m near Austin
+
+        polygons.append(poly)
+
+    avoid_area = unary_union(polygons)
+
+    geojson_polygons = shapely.to_geojson(avoid_area)
+
+    return json.loads(geojson_polygons)["coordinates"]
 
 def search_routes(search: RouteSearchRequest) -> list[RouteOption]:
     """Assumes searches are properly formatted addresses, which can be achieved with ORS autocomplete. Right now, this names routes
@@ -64,7 +105,7 @@ def search_routes(search: RouteSearchRequest) -> list[RouteOption]:
     start_coordinates = get_coordinates(start)
     dest_coordinates = get_coordinates(destination)
 
-    activity_type = "foot-walking" # or cycling-regular or cycling-road (?)    
+    activity_type = "foot-walking" # or cycling-regular or cycling-road (?)  
 
     body = {
         "coordinates": [
@@ -79,10 +120,11 @@ def search_routes(search: RouteSearchRequest) -> list[RouteOption]:
         "options": {
             "avoid_polygons": {
                 "type": "MultiPolygon",
-                "coordinates": get_crime_polygons()
-            }       
+                "coordinates": get_crime_polygons() + get_incident_polygons(start_coordinates, dest_coordinates)
+            }
         }
     }
+
 
     response = requests.post(
         f"https://api.openrouteservice.org/v2/directions/{activity_type}/geojson",
@@ -120,6 +162,7 @@ def search_routes(search: RouteSearchRequest) -> list[RouteOption]:
             route_superlatives["shortest"]["duration"] = route["estimated_minutes"]
     generated_routes[route_superlatives["shortest"]["index"]]["id"] = "quickest"
     generated_routes[route_superlatives["shortest"]["index"]]["name"] = "Quickest"
+    print(generated_routes)
 
     route_options: list[RouteOption] = []
     for route in generated_routes:
