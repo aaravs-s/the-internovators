@@ -12,6 +12,6 @@ def describe_score(score: int) -> str:
     if score >= 85:
         return "Strong sidewalk coverage and comfortable walking conditions."
     if score >= 70:
-        return "Generally walkable with a few intersections to watch."
+        return "Generally walkable with a few areas to watch."
     return "Usable route, but review the safety notes before walking."
 

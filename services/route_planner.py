@@ -5,6 +5,8 @@ from services.geocoding import normalize_place_name
 from services.safety_scoring import calculate_safety_score, describe_score
 import requests
 import os
+import json
+import sys
 
 ORS_API_KEY = os.getenv("ORS_API_KEY")
 
@@ -27,9 +29,26 @@ def get_coordinates (address):
         }
     )
 
+    data = response.json()
+
     # ORS does longitude, latitude for some reason
-    lon, lat = response.json()["features"][0]["geometry"]["coordinates"]
+    lon, lat = data["features"][0]["geometry"]["coordinates"]
     return [lon, lat]
+
+def get_crime_polygons ():
+    polygons = []
+    with open("data/crime_polygons.geojson", "r") as file:
+        data = json.load(file)
+        for feature in data["features"]:
+            rings = feature["coordinates"]
+            closed_rings = []
+            for ring in rings:
+                if ring[0] != ring[-1]:
+                    ring = ring + [ring[0]]
+                closed_rings.append(ring)
+            polygons.append(closed_rings)
+            # polygons.append(feature["coordinates"])
+    return polygons
 
 def search_routes(search: RouteSearchRequest) -> list[RouteOption]:
     """Assumes searches are properly formatted addresses, which can be achieved with ORS autocomplete. Right now, this names routes
@@ -37,6 +56,7 @@ def search_routes(search: RouteSearchRequest) -> list[RouteOption]:
 
     # Texas Capitol address: 1100 Congress Ave., Austin, TX 78701
     # UT Tower address: 110 Inner Campus Drive, Austin, TX 78705
+    # Convention center: 500 E Cesar Chavez St, Austin, TX 78701
 
     start = normalize_place_name(search.start)
     destination = normalize_place_name(search.destination)
@@ -44,7 +64,7 @@ def search_routes(search: RouteSearchRequest) -> list[RouteOption]:
     start_coordinates = get_coordinates(start)
     dest_coordinates = get_coordinates(destination)
 
-    activity_type = "foot-walking" # or cycling-regular or cycling-road (?)
+    activity_type = "foot-walking" # or cycling-regular or cycling-road (?)    
 
     body = {
         "coordinates": [
@@ -55,6 +75,12 @@ def search_routes(search: RouteSearchRequest) -> list[RouteOption]:
             "target_count": 3,
             "share_factor": 0.8,
             "weight_factor": 2
+        },
+        "options": {
+            "avoid_polygons": {
+                "type": "MultiPolygon",
+                "coordinates": get_crime_polygons()
+            }       
         }
     }
 
@@ -66,6 +92,8 @@ def search_routes(search: RouteSearchRequest) -> list[RouteOption]:
     data = response.json()
 
     generated_routes = []
+    # rectangular container of routes, so that we only request the traffic data we need
+    # bbox = data["bbox"]
     for feature in data["features"]:
         coords = feature["geometry"]["coordinates"]
         miles = round(feature["properties"]["summary"]["distance"]/1609, 2) # dist given in meters
@@ -77,6 +105,7 @@ def search_routes(search: RouteSearchRequest) -> list[RouteOption]:
             "estimated_minutes": minutes,
             "id": "route",
             "name": "Route Option"
+            # "bbox": bbox
         })
     route_superlatives = {
         "shortest": {
@@ -91,9 +120,6 @@ def search_routes(search: RouteSearchRequest) -> list[RouteOption]:
             route_superlatives["shortest"]["duration"] = route["estimated_minutes"]
     generated_routes[route_superlatives["shortest"]["index"]]["id"] = "quickest"
     generated_routes[route_superlatives["shortest"]["index"]]["name"] = "Quickest"
-
-    print(generated_routes)
-    
 
     route_options: list[RouteOption] = []
     for route in generated_routes:
@@ -111,6 +137,5 @@ def search_routes(search: RouteSearchRequest) -> list[RouteOption]:
                 highlights=[],#route["highlights"],
             )
         )
-    print(route_options)
 
     return sorted(route_options, key=lambda route: route.safety_score, reverse=True)
