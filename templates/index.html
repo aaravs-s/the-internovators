@@ -2,6 +2,53 @@
 
 {% block title %}SafeWalkers | Find safer Austin walks{% endblock %}
 
+{% block scripts %}
+<script>
+
+  function debounce(func, delay) {
+    let timeoutId;
+
+    return function (...args) {
+      clearTimeout(timeoutId);
+
+      timeoutId = setTimeout(() => {
+        func.apply(this, args);
+      }, delay);
+    };
+  }
+
+  async function fetchSuggestions(input) {
+    const query = input.value;
+
+    if (query.length < 3) return;
+
+    const response = await fetch(
+      `/autocomplete?q=${encodeURIComponent(query)}`
+    );
+
+    const results = await response.json();
+
+    console.log(results)
+    var innerText = "";
+    results["features"].forEach((item, index) => {
+      innerText += `<option>${item["properties"]["label"]}</option>\n`;
+    });
+    console.log(innerText);
+    console.log(`${input.id}-suggestions`);
+    document.getElementById(`${input.id}-suggestions`).innerHTML = innerText;
+  }
+
+  const debouncedFetch = debounce(fetchSuggestions, 300);
+
+  document.getElementById("start").addEventListener("input", function () {
+    debouncedFetch(this)
+  });
+  document.getElementById("destination").addEventListener("input", function () {
+    debouncedFetch(this)
+  });
+</script>
+{% endblock %}
+
 {% block content %}
   <section class="hero">
     <div>
@@ -15,7 +62,15 @@
 
     <form class="search-panel" action="/routes/search" method="post">
       <label for="start">Start</label>
-      <input id="start" name="start" type="text" placeholder="UT Austin" required />
+      <input 
+        id="start"
+        name="start"
+        type="text"
+        placeholder="UT Austin"
+        list="start-suggestions"
+        required 
+      />
+      <datalist id="start-suggestions"></datalist>
 
       <label for="destination">Destination</label>
       <input
@@ -23,8 +78,10 @@
         name="destination"
         type="text"
         placeholder="Austin Central Library"
+        list="destination-suggestions"
         required
       />
+      <datalist id="destination-suggestions"></datalist>
 
       <button class="button" type="submit">Search routes</button>
     </form>

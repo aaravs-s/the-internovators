@@ -10,6 +10,7 @@ import sys
 import shapely
 from shapely.geometry import shape, mapping
 from shapely.ops import unary_union
+from urllib.parse import quote
 
 # fastapi dev main.py --host 127.0.0.1 --reload
 
@@ -25,20 +26,33 @@ routing_headers = {
 
 def get_coordinates (address):
     response = requests.get(
-        "https://api.openrouteservice.org/geocode/search",
-        headers={
-            "Authorization": ORS_API_KEY
-        },
+        f"https://api.tomtom.com/search/2/search/{quote(address)}.json",
         params={
-            "text": address,
-            "size": 1  # return only the best match
+            "key": TT_API_KEY
         }
     )
 
     data = response.json()
 
+    # tomtom api doesn't always return the best result first, so look if exact address/place name shows up in results
+    best_option_idx = -1
+    i = 0
+    for option in data["results"]:
+        if option["type"] == "POI":
+            if address.split(",")[0].lower() == option["poi"]["name"].lower() or address.split(",")[0].lower() == option["address"]["freeformAddress"].lower():
+                best_option_idx = i
+                break
+            elif best_option_idx == -1 and (address.split(",")[0].lower() in option["poi"]["name"].lower() or address.split(",")[0].lower() in option["address"]["freeformAddress"].lower()):
+                best_option_idx = i
+        i += 1
+    if best_option_idx == -1:
+        best_option_idx = 0
+
+    data = response.json()
+
+    lat = data["results"][best_option_idx]["position"]["lat"]
+    lon = data["results"][best_option_idx]["position"]["lon"]
     # ORS does longitude, latitude for some reason
-    lon, lat = data["features"][0]["geometry"]["coordinates"]
     return [lon, lat]
 
 def get_crime_polygons ():
@@ -99,11 +113,15 @@ def search_routes(search: RouteSearchRequest) -> list[RouteOption]:
     # UT Tower address: 110 Inner Campus Drive, Austin, TX 78705
     # Convention center: 500 E Cesar Chavez St, Austin, TX 78701
 
+    # UT Tower, Austin, TX, USA
+    # Texas State Capitol, Austin, TX, USA
+
     start = normalize_place_name(search.start)
     destination = normalize_place_name(search.destination)
 
     start_coordinates = get_coordinates(start)
     dest_coordinates = get_coordinates(destination)
+    # print(start_coordinates, dest_coordinates)
 
     activity_type = "foot-walking" # or cycling-regular or cycling-road (?)  
 
@@ -132,6 +150,7 @@ def search_routes(search: RouteSearchRequest) -> list[RouteOption]:
         headers=routing_headers
     )
     data = response.json()
+    # print(data)
 
     generated_routes = []
     # rectangular container of routes, so that we only request the traffic data we need
@@ -162,7 +181,7 @@ def search_routes(search: RouteSearchRequest) -> list[RouteOption]:
             route_superlatives["shortest"]["duration"] = route["estimated_minutes"]
     generated_routes[route_superlatives["shortest"]["index"]]["id"] = "quickest"
     generated_routes[route_superlatives["shortest"]["index"]]["name"] = "Quickest"
-    print(generated_routes)
+    # print(generated_routes[-1])
 
     route_options: list[RouteOption] = []
     for route in generated_routes:

@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Form, Request
+from fastapi import APIRouter, Form, Request, Query
 from fastapi.responses import HTMLResponse, RedirectResponse
 from fastapi.templating import Jinja2Templates
 from pydantic import ValidationError
@@ -11,6 +11,9 @@ from schemas.report import SafetyReportCreate
 from schemas.route import RouteSearchRequest, SavedRouteCreate
 from schemas.user import UserCreate
 from services.route_planner import search_routes
+
+import requests
+import os
 
 router = APIRouter()
 templates = Jinja2Templates(directory=str(settings.templates_dir))
@@ -219,3 +222,18 @@ async def logout():
     response = RedirectResponse("/", status_code=303)
     response.delete_cookie(settings.session_cookie_name)
     return response
+
+@router.get("/autocomplete")
+async def autocomplete(q: str = Query(...)):
+    response = requests.get(
+        f"https://api.openrouteservice.org/geocode/autocomplete",
+        params={
+            "api_key": os.getenv("ORS_API_KEY"),
+            "layers": "venue,address,locality",
+            "text": q
+        }
+    )
+
+    data = response.json()
+
+    return data

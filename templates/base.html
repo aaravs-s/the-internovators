@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>{% block title %}SafeWalkers{% endblock %}</title>
     <link rel="stylesheet" href="{{ url_for('static', path='/css/main.css') }}" />
-    {% block scripts %}{% endblock %}
   </head>
   <body>
     <header class="site-header">
@@ -28,5 +27,6 @@
       {% block content %}{% endblock %}
     </main>
   </body>
+  {% block scripts %}{% endblock %}
 </html>
 
