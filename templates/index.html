@@ -1,105 +1,50 @@
 {% extends "base.html" %}
 
-{% block title %}SafeWalkers | Find safer Austin walks{% endblock %}
-
-{% block scripts %}
-<script>
-
-  function debounce(func, delay) {
-    let timeoutId;
-
-    return function (...args) {
-      clearTimeout(timeoutId);
-
-      timeoutId = setTimeout(() => {
-        func.apply(this, args);
-      }, delay);
-    };
-  }
-
-  async function fetchSuggestions(input) {
-    const query = input.value;
-
-    if (query.length < 3) return;
-
-    const response = await fetch(
-      `/autocomplete?q=${encodeURIComponent(query)}`
-    );
-
-    const results = await response.json();
-
-    console.log(results)
-    var innerText = "";
-    results["features"].forEach((item, index) => {
-      innerText += `<option>${item["properties"]["label"]}</option>\n`;
-    });
-    console.log(innerText);
-    console.log(`${input.id}-suggestions`);
-    document.getElementById(`${input.id}-suggestions`).innerHTML = innerText;
-  }
-
-  const debouncedFetch = debounce(fetchSuggestions, 300);
-
-  document.getElementById("start").addEventListener("input", function () {
-    debouncedFetch(this)
-  });
-  document.getElementById("destination").addEventListener("input", function () {
-    debouncedFetch(this)
-  });
-</script>
-{% endblock %}
+{% block title %}SafeWalkers | Safer routes together{% endblock %}
 
 {% block content %}
-  <section class="hero">
-    <div>
-      <p class="eyebrow">Austin walking routes</p>
-      <h1>Find a safer, more enjoyable way to walk there.</h1>
-      <p class="lede">
-        Compare route options by distance, estimated time, sidewalks, lighting, and
-        safety notes built for Austin pedestrians.
-      </p>
-    </div>
+  {% if not user %}
+    <section class="hero welcome-hero">
+      <div>
+        <p class="eyebrow">Welcome to SafeWalkers</p>
+        <h1>Plan walks that feel better before you step outside.</h1>
+        <p class="lede">
+          Generate walking and biking route options, compare distance and safety notes,
+          and save your favorite routes once you create an account.
+        </p>
+        <div class="actions">
+          <a class="button" href="/login?mode=signup">Login or sign up</a>
+          <a class="button secondary" href="/generate">Try route search</a>
+        </div>
+      </div>
+      <div class="hero-art" aria-label="Illustration of a safe walking route">
+        <span class="sun"></span>
+        <span class="route-line"></span>
+        <span class="pin pin-a"></span>
+        <span class="pin pin-b"></span>
+      </div>
+    </section>
+  {% else %}
+    <section class="results-header">
+      <div>
+        <p class="eyebrow">Community routes</p>
+        <h1>Recently saved by other walkers</h1>
+        <p class="lede">See routes other SafeWalkers have saved, with their notes and tags.</p>
+      </div>
+      <a class="button" href="/generate">Generate a Route</a>
+    </section>
 
-    <form class="search-panel" action="/routes/search" method="post">
-      <label for="start">Start</label>
-      <input 
-        id="start"
-        name="start"
-        type="text"
-        placeholder="UT Austin"
-        list="start-suggestions"
-        required 
-      />
-      <datalist id="start-suggestions"></datalist>
-
-      <label for="destination">Destination</label>
-      <input
-        id="destination"
-        name="destination"
-        type="text"
-        placeholder="Austin Central Library"
-        list="destination-suggestions"
-        required
-      />
-      <datalist id="destination-suggestions"></datalist>
-
-      <button class="button" type="submit">Search routes</button>
-    </form>
-  </section>
-
-  <section class="feature-grid" aria-label="SafeWalkers priorities">
-    <article>
-      <h2>Safety first</h2>
-      <p>Routes are scored with walking comfort, lighting, sidewalk coverage, and busy crossings in mind.</p>
-    </article>
-    <article>
-      <h2>No account needed</h2>
-      <p>Visitors can search routes immediately. Accounts are only for saving walks and sharing reports.</p>
-    </article>
-    <article>
-      <h2>Austin focused</h2>
-      <p>The product is built around local destinations, commuters, visitors, and everyday city life.</p>
-    </article>
-  </section>
+    {% if recent_routes %}
+      <section class="stack">
+        {% for route in recent_routes %}
+          {% include "partials/route_card.html" %}
+        {% endfor %}
+      </section>
+    {% else %}
+      <section class="empty-state">
+        <h2>No community routes yet.</h2>
+        <p>Once other users save routes, they will appear here. Tiny prototype town, population: us.</p>
+      </section>
+    {% endif %}
+  {% endif %}
 {% endblock %}
-

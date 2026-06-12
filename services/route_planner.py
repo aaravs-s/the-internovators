@@ -16,6 +16,10 @@ from urllib.parse import quote
 
 ORS_API_KEY = os.getenv("ORS_API_KEY")
 TT_API_KEY = os.getenv("TT_API_KEY")
+ROUTE_ACTIVITY_TYPES = {
+    "walking": "foot-walking",
+    "biking": "cycling-regular",
+}
 
 url = "https://api.openrouteservice.org/v2/directions/foot-walking/geojson"
 
@@ -105,6 +109,34 @@ def get_incident_polygons (start, end): # parameters are lon, lat coordinate pai
 
     return json.loads(geojson_polygons)["coordinates"]
 
+def build_sample_routes(search: RouteSearchRequest) -> list[RouteOption]:
+    start = normalize_place_name(search.start)
+    destination = normalize_place_name(search.destination)
+    samples = read_list(settings.sample_routes_file)
+    route_options: list[RouteOption] = []
+
+    for index, route in enumerate(samples):
+        score = calculate_safety_score(route)
+        multiplier = 0.6 if search.route_type == "biking" else 1
+        route_options.append(
+            RouteOption(
+                id=route["id"],
+                name=route["name"],
+                start=start,
+                destination=destination,
+                distance_miles=route["distance_miles"],
+                estimated_minutes=max(5, int(route["estimated_minutes"] * multiplier)),
+                safety_score=score,
+                summary=describe_score(score),
+                highlights=route.get("highlights", []),
+                route_type=search.route_type,
+                map_style=["balanced", "quiet", "direct"][index % 3],
+            )
+        )
+
+    return sorted(route_options, key=lambda route: route.safety_score, reverse=True)
+
+
 def search_routes(search: RouteSearchRequest) -> list[RouteOption]:
     """Assumes searches are properly formatted addresses, which can be achieved with ORS autocomplete. Right now, this names routes
     'Route Option' unless it's the fastest route, which it calls 'Quickest'."""
@@ -116,46 +148,52 @@ def search_routes(search: RouteSearchRequest) -> list[RouteOption]:
     # UT Tower, Austin, TX, USA
     # Texas State Capitol, Austin, TX, USA
 
+    if not ORS_API_KEY or not TT_API_KEY:
+        return build_sample_routes(search)
+
     start = normalize_place_name(search.start)
     destination = normalize_place_name(search.destination)
 
-    start_coordinates = get_coordinates(start)
-    dest_coordinates = get_coordinates(destination)
-    # print(start_coordinates, dest_coordinates)
+    try:
+        start_coordinates = get_coordinates(start)
+        dest_coordinates = get_coordinates(destination)
+        # print(start_coordinates, dest_coordinates)
 
-    activity_type = "foot-walking" # or cycling-regular or cycling-road (?)  
+        activity_type = ROUTE_ACTIVITY_TYPES.get(search.route_type, "foot-walking")
 
-    body = {
-        "coordinates": [
-            start_coordinates,
-            dest_coordinates
-        ],
-        "alternative_routes": {
-            "target_count": 3,
-            "share_factor": 0.8,
-            "weight_factor": 2
-        },
-        "options": {
-            "avoid_polygons": {
-                "type": "MultiPolygon",
-                "coordinates": get_crime_polygons() + get_incident_polygons(start_coordinates, dest_coordinates)
+        body = {
+            "coordinates": [
+                start_coordinates,
+                dest_coordinates
+            ],
+            "alternative_routes": {
+                "target_count": 3,
+                "share_factor": 0.8,
+                "weight_factor": 2
+            },
+            "options": {
+                "avoid_polygons": {
+                    "type": "MultiPolygon",
+                    "coordinates": get_crime_polygons() + get_incident_polygons(start_coordinates, dest_coordinates)
+                }
             }
         }
-    }
 
-
-    response = requests.post(
-        f"https://api.openrouteservice.org/v2/directions/{activity_type}/geojson",
-        json=body,
-        headers=routing_headers
-    )
-    data = response.json()
+        response = requests.post(
+            f"https://api.openrouteservice.org/v2/directions/{activity_type}/geojson",
+            json=body,
+            headers=routing_headers
+        )
+        response.raise_for_status()
+        data = response.json()
+    except (KeyError, requests.RequestException, ValueError):
+        return build_sample_routes(search)
     # print(data)
 
     generated_routes = []
     # rectangular container of routes, so that we only request the traffic data we need
     # bbox = data["bbox"]
-    for feature in data["features"]:
+    for index, feature in enumerate(data["features"]):
         coords = feature["geometry"]["coordinates"]
         miles = round(feature["properties"]["summary"]["distance"]/1609, 2) # dist given in meters
         minutes = int(feature["properties"]["summary"]["duration"]/60) # time given in seconds
@@ -165,7 +203,8 @@ def search_routes(search: RouteSearchRequest) -> list[RouteOption]:
             "distance_miles": miles,
             "estimated_minutes": minutes,
             "id": "route",
-            "name": "Route Option"
+            "name": "Route Option",
+            "map_style": ["balanced", "quiet", "direct"][index % 3],
             # "bbox": bbox
         })
     route_superlatives = {
@@ -197,6 +236,8 @@ def search_routes(search: RouteSearchRequest) -> list[RouteOption]:
                 safety_score=score,
                 summary=describe_score(score),
                 highlights=[],#route["highlights"],
+                route_type=search.route_type,
+                map_style=route["map_style"],
             )
         )
 

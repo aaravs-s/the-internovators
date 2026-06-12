@@ -1,0 +1,64 @@
+<article class="route-card large">
+  <a class="route-card-link" href="/routes/{{ route.id }}">
+    <div class="route-main">
+      <div>
+        <h2>{{ route.name }}</h2>
+        <p>{{ route.summary or route.start ~ " to " ~ route.destination }}</p>
+      </div>
+      <div class="score-block">
+        <span>{{ route.safety_score }}</span>
+        <small>Safety score</small>
+      </div>
+    </div>
+
+    <div class="route-map {{ route.map_style or 'balanced' }}">
+      <span class="map-path"></span>
+      <span class="map-dot start"></span>
+      <span class="map-dot end"></span>
+    </div>
+
+    <div class="metrics">
+      <span>{{ route.distance_miles }} miles</span>
+      <span>{{ route.estimated_minutes }} min</span>
+      <span>{{ route.route_type | title }}</span>
+    </div>
+  </a>
+
+  {% if route.owner %}
+    <p class="owner-line">
+      Saved by
+      <a href="/users/{{ route.owner.username }}">{{ route.owner.username }}</a>
+    </p>
+  {% endif %}
+
+  {% if route.comments %}
+    <p class="note-preview">{{ route.comments }}</p>
+  {% endif %}
+  {% if route.tags %}
+    <div class="tags">
+      {% for tag in route.tags %}
+        <span>{{ tag }}</span>
+      {% endfor %}
+    </div>
+  {% endif %}
+
+  {% if show_save %}
+    {% if user %}
+      <form action="/routes/save" method="post">
+        <input type="hidden" name="route_id" value="{{ route.id }}" />
+        <input type="hidden" name="name" value="{{ route.name }}" />
+        <input type="hidden" name="start" value="{{ route.start }}" />
+        <input type="hidden" name="destination" value="{{ route.destination }}" />
+        <input type="hidden" name="distance_miles" value="{{ route.distance_miles }}" />
+        <input type="hidden" name="estimated_minutes" value="{{ route.estimated_minutes }}" />
+        <input type="hidden" name="safety_score" value="{{ route.safety_score }}" />
+        <input type="hidden" name="summary" value="{{ route.summary }}" />
+        <input type="hidden" name="route_type" value="{{ route.route_type }}" />
+        <input type="hidden" name="map_style" value="{{ route.map_style }}" />
+        <button class="button button-small" type="submit">Save</button>
+      </form>
+    {% else %}
+      <p class="form-note"><a href="/login">Log in to save</a></p>
+    {% endif %}
+  {% endif %}
+</article>

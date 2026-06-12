@@ -1,0 +1,56 @@
+[
+  {
+    "destination": "Austin Central Library",
+    "distance_miles": 1.7,
+    "estimated_minutes": 35,
+    "generated_at": "2026-06-12T15:51:02.495643+00:00",
+    "highlights": [
+      "Favors calmer neighborhood streets",
+      "Slightly longer route with fewer high-stress crossings",
+      "Best for daytime walking"
+    ],
+    "id": "quiet-neighborhood-7ede0ead",
+    "map_style": "quiet",
+    "name": "Quiet Neighborhood Walk",
+    "route_type": "walking",
+    "safety_score": 86,
+    "start": "UT Austin",
+    "summary": "Strong sidewalk coverage and comfortable walking conditions."
+  },
+  {
+    "destination": "Austin Central Library",
+    "distance_miles": 1.4,
+    "estimated_minutes": 29,
+    "generated_at": "2026-06-12T15:51:02.495643+00:00",
+    "highlights": [
+      "Prioritizes streets with stronger sidewalk coverage",
+      "Uses better-lit downtown corridors",
+      "Avoids the busiest crossing cluster when possible"
+    ],
+    "id": "balanced-downtown-53c9f678",
+    "map_style": "balanced",
+    "name": "Balanced Downtown Walk",
+    "route_type": "walking",
+    "safety_score": 85,
+    "start": "UT Austin",
+    "summary": "Strong sidewalk coverage and comfortable walking conditions."
+  },
+  {
+    "destination": "Austin Central Library",
+    "distance_miles": 1.1,
+    "estimated_minutes": 22,
+    "generated_at": "2026-06-12T15:51:02.495643+00:00",
+    "highlights": [
+      "Shortest available sample route",
+      "Good lighting on major blocks",
+      "Includes several busier intersections"
+    ],
+    "id": "direct-commute-a0ad1551",
+    "map_style": "direct",
+    "name": "Direct Commute Walk",
+    "route_type": "walking",
+    "safety_score": 65,
+    "start": "UT Austin",
+    "summary": "Usable route, but review the safety notes before walking."
+  }
+]

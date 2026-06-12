@@ -15,6 +15,7 @@ class Settings:
     users_file = data_dir / "users.json"
     reports_file = data_dir / "reports.json"
     saved_routes_file = data_dir / "saved_routes.json"
+    generated_routes_file = data_dir / "generated_routes.json"
     sample_routes_file = data_dir / "sample_routes.json"
 
     def ensure_storage(self) -> None:
@@ -23,6 +24,7 @@ class Settings:
             self.users_file,
             self.reports_file,
             self.saved_routes_file,
+            self.generated_routes_file,
             self.sample_routes_file,
         ]:
             if not path.exists():

@@ -1,29 +1,60 @@
 {% extends "base.html" %}
 
-{% block title %}Login | SafeWalkers{% endblock %}
+{% block title %}Login or Sign up | SafeWalkers{% endblock %}
 
 {% block content %}
   <section class="auth-layout">
     <div>
-      <p class="eyebrow">Welcome back</p>
-      <h1>Login</h1>
-      <p class="lede">Save favorite walking routes and contribute safety notes for other walkers.</p>
+      <p class="eyebrow">Account</p>
+      <h1>Login or sign up</h1>
+      <p class="lede">Save routes, add tags, and personalize your SafeWalkers profile.</p>
+      <div class="auth-tabs">
+        <a class="{{ 'active' if mode == 'login' else '' }}" href="/login">Login</a>
+        <a class="{{ 'active' if mode == 'signup' else '' }}" href="/login?mode=signup">Sign up</a>
+      </div>
     </div>
 
-    <form class="form-card" action="/login" method="post">
-      {% if error %}
-        <p class="error">{{ error }}</p>
-      {% endif %}
+    {% if mode == "signup" %}
+      <form class="form-card" action="/signup" method="post">
+        {% if error %}
+          <p class="error">{{ error }}</p>
+        {% endif %}
+        {% if message %}
+          <p class="success">{{ message }}</p>
+        {% endif %}
 
-      <label for="username">Username</label>
-      <input id="username" name="username" type="text" minlength="2" maxlength="30" required />
+        <label for="email">Email</label>
+        <input id="email" name="email" type="email" minlength="3" maxlength="80" required />
 
-      <label for="password">Password</label>
-      <input id="password" name="password" type="password" required />
+        <label for="username">Username</label>
+        <input id="username" name="username" type="text" minlength="2" maxlength="30" required />
 
-      <button class="button" type="submit">Login</button>
-      <p class="form-note">Need an account? <a href="/signup">Sign up</a></p>
-    </form>
+        <label for="password">Password</label>
+        <input id="password" name="password" type="password" minlength="8" maxlength="100" required />
+
+        <label for="confirm_password">Confirm password</label>
+        <input id="confirm_password" name="confirm_password" type="password" minlength="8" maxlength="100" required />
+
+        <button class="button" type="submit">Submit</button>
+      </form>
+    {% else %}
+      <form class="form-card" action="/login" method="post">
+        {% if error %}
+          <p class="error">{{ error }}</p>
+        {% endif %}
+        {% if message %}
+          <p class="success">{{ message }}</p>
+        {% endif %}
+
+        <label for="username">Username</label>
+        <input id="username" name="username" type="text" minlength="2" maxlength="30" required />
+
+        <label for="password">Password</label>
+        <input id="password" name="password" type="password" required />
+
+        <p class="form-note">Forgot password is coming soon.</p>
+        <button class="button" type="submit">Login</button>
+      </form>
+    {% endif %}
   </section>
 {% endblock %}
-

@@ -16,4 +16,11 @@ class UserPublic(BaseModel):
     id: str
     username: str
     email: str
+    bio: str = ""
+    picture_url: str = ""
+    is_verified: bool = False
 
+
+class UserProfileUpdate(BaseModel):
+    bio: str = Field(default="", max_length=500)
+    picture_url: str = Field(default="", max_length=300)

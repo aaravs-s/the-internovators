@@ -1,0 +1,74 @@
+{% extends "base.html" %}
+
+{% block title %}Route Detail | SafeWalkers{% endblock %}
+
+{% block content %}
+  {% if not route %}
+    <section class="empty-state">
+      <h1>Route not found</h1>
+      <p>This route may have expired or been removed.</p>
+      <a class="button" href="/generate">Generate a Route</a>
+    </section>
+  {% else %}
+    <section class="route-detail">
+      <div>
+        <p class="eyebrow">{{ route.route_type | title }} route</p>
+        <h1>{{ route.name }}</h1>
+        <p class="lede">{{ route.start }} to {{ route.destination }}</p>
+      </div>
+
+      <div class="route-map detail {{ route.map_style or 'balanced' }}">
+        <span class="map-path"></span>
+        <span class="map-dot start"></span>
+        <span class="map-dot end"></span>
+      </div>
+
+      <div class="metrics big">
+        <span>{{ route.distance_miles }} miles</span>
+        <span>{{ route.estimated_minutes }} minutes</span>
+        <span>{{ route.safety_score }} safety score</span>
+      </div>
+
+      <p>{{ route.summary }}</p>
+
+      {% if route.highlights %}
+        <ul class="highlights">
+          {% for highlight in route.highlights %}
+            <li>{{ highlight }}</li>
+          {% endfor %}
+        </ul>
+      {% endif %}
+
+      {% if user_saved_route %}
+        <section class="form-card">
+          <h2>Your comments and tags</h2>
+          <form action="/routes/{{ user_saved_route.id }}/notes" method="post">
+            <label for="comments">Comments</label>
+            <textarea id="comments" name="comments" maxlength="500">{{ user_saved_route.comments }}</textarea>
+
+            <label for="tags">Tags</label>
+            <input id="tags" name="tags" type="text" value="{{ user_saved_route.tags | join(', ') }}" placeholder="well lit, calm, campus" />
+
+            <button class="button" type="submit">Save comments and tags</button>
+          </form>
+        </section>
+      {% elif user %}
+        <form action="/routes/save" method="post">
+          <input type="hidden" name="route_id" value="{{ route.id }}" />
+          <input type="hidden" name="name" value="{{ route.name }}" />
+          <input type="hidden" name="start" value="{{ route.start }}" />
+          <input type="hidden" name="destination" value="{{ route.destination }}" />
+          <input type="hidden" name="distance_miles" value="{{ route.distance_miles }}" />
+          <input type="hidden" name="estimated_minutes" value="{{ route.estimated_minutes }}" />
+          <input type="hidden" name="safety_score" value="{{ route.safety_score }}" />
+          <input type="hidden" name="summary" value="{{ route.summary }}" />
+          <input type="hidden" name="route_type" value="{{ route.route_type }}" />
+          <input type="hidden" name="map_style" value="{{ route.map_style }}" />
+          <button class="button" type="submit">Save route</button>
+        </form>
+      {% else %}
+        <p class="form-note"><a href="/login">Log in to save</a> this route.</p>
+      {% endif %}
+    </section>
+  {% endif %}
+{% endblock %}

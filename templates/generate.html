@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+
+{% block title %}Generate a Route | SafeWalkers{% endblock %}
+
+{% block content %}
+  <section class="hero">
+    <div>
+      <p class="eyebrow">Generate a route</p>
+      <h1>Where are we heading?</h1>
+      <p class="lede">Enter a start, destination, and travel type to compare 2-3 route options.</p>
+    </div>
+
+    <form class="search-panel" action="/routes/results" method="post">
+      {% if error %}
+        <p class="error">{{ error }}</p>
+      {% endif %}
+
+      <label for="start">Start location</label>
+      <input id="start" name="start" type="text" placeholder="UT Austin" required />
+
+      <label for="destination">End location</label>
+      <input id="destination" name="destination" type="text" placeholder="Austin Central Library" required />
+
+      <label for="route_type">Type</label>
+      <select id="route_type" name="route_type">
+        <option value="walking">Walking</option>
+        <option value="biking">Biking</option>
+      </select>
+
+      <button class="button" type="submit">Search</button>
+    </form>
+  </section>
+{% endblock %}

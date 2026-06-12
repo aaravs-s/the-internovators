@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+
+{% block title %}About | SafeWalkers{% endblock %}
+
+{% block content %}
+  <section class="about-layout">
+    <div>
+      <p class="eyebrow">About SafeWalkers</p>
+      <h1>Safer route planning for everyday movement.</h1>
+      <p class="lede">
+        SafeWalkers is a student-built prototype for comparing walking and biking
+        routes with safety, comfort, and local context in mind.
+      </p>
+      <p>
+        The goal is simple: help people make more confident travel choices by
+        combining route options, safety scoring, saved-route notes, and community
+        knowledge in one lightweight app.
+      </p>
+    </div>
+    <div class="about-card">
+      <div class="mini-map">
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+      <h2>Built for Austin first</h2>
+      <p>Designed around city walking, campus trips, errands, commutes, and short rides.</p>
+    </div>
+  </section>
+{% endblock %}

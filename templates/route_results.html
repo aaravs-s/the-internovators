@@ -1,14 +1,15 @@
 {% extends "base.html" %}
 
-{% block title %}Route results | SafeWalkers{% endblock %}
+{% block title %}Generated Routes | SafeWalkers{% endblock %}
 
 {% block content %}
   <section class="results-header">
     <div>
-      <p class="eyebrow">Route options</p>
+      <p class="eyebrow">Generated routes</p>
       <h1>{{ start }} to {{ destination }}</h1>
+      <p class="lede">{{ route_type | title }} options ranked with distance, time, and safety context.</p>
     </div>
-    <a class="button secondary" href="/">New search</a>
+    <a class="button secondary" href="/generate">New search</a>
   </section>
 
   {% if error %}
@@ -17,44 +18,8 @@
 
   <section class="stack">
     {% for route in routes %}
-      <article class="route-card large">
-        <div class="route-main">
-          <div>
-            <h2>{{ route.name }}</h2>
-            <p>{{ route.summary }}</p>
-          </div>
-          <div class="score-block">
-            <span>{{ route.safety_score }}</span>
-            <small>Safety score</small>
-          </div>
-        </div>
-
-        <div class="metrics">
-          <span>{{ route.distance_miles }} miles</span>
-          <span>{{ route.estimated_minutes }} min</span>
-        </div>
-
-        <ul class="highlights">
-          {% for highlight in route.highlights %}
-            <li>{{ highlight }}</li>
-          {% endfor %}
-        </ul>
-
-        {% if user %}
-          <form action="/routes/save" method="post">
-            <input type="hidden" name="route_id" value="{{ route.id }}" />
-            <input type="hidden" name="name" value="{{ route.name }}" />
-            <input type="hidden" name="start" value="{{ route.start }}" />
-            <input type="hidden" name="destination" value="{{ route.destination }}" />
-            <input type="hidden" name="distance_miles" value="{{ route.distance_miles }}" />
-            <input type="hidden" name="safety_score" value="{{ route.safety_score }}" />
-            <button class="button button-small" type="submit">Save route</button>
-          </form>
-        {% else %}
-          <p class="form-note"><a href="/login">Login</a> to save this route.</p>
-        {% endif %}
-      </article>
+      {% set show_save = True %}
+      {% include "partials/route_card.html" %}
     {% endfor %}
   </section>
 {% endblock %}
-
