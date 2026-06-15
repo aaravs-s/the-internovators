@@ -129,49 +129,7 @@ def calculate_safety_score(route: dict) -> int:
         if traffic_level is not None:
             total_score += traffic_level
         count += 1
-
-    # # convert to line string for intersection calculations
-    # route_buffer = LineString(route_regular_partition).buffer(0.0001)
-    # weighted_score = 0
-    # for tile in tiles:
-    #     tile_data = fetch_tile(*tile)
-    #     # sys.exit()
-    #     # if no traffic data assume no traffic
-    #     if "empty" in tile_data:
-    #         continue
-    #     features = tile_data["Traffic flow"]["features"]
-    #     extent = tile_data["Traffic flow"]["extent"]
-    #     for feature in features:
-    #         # traffic flow can be LineString or MultiLineString
-    #         if feature["geometry"]["type"] == "MultiLineString":
-    #             line_lists = feature["geometry"]["coordinates"]
-    #         else:
-    #             line_lists = [feature["geometry"]["coordinates"]]
-    #         for linestring in line_lists:
-    #             traffic_line = LineString([
-    #                 tilecoord_to_lonlat(
-    #                     point[0], point[1],
-    #                     tile[1], tile[2],
-    #                     zoom,
-    #                     extent
-    #                 )
-    #                 for point in linestring
-    #             ])
-
-    #             if distance(traffic_line, route_buffer) < 0.000001:
-                
-    #                 overlap = traffic_line.intersection(route_buffer)
-
-    #                 if not overlap.is_empty:
-    #                     weighted_score += min(overlap.length, traffic_line.length) * feature["properties"]["traffic_level"]
-    #                     print(min(overlap.length, traffic_line.length) * feature["properties"]["traffic_level"])
-    #                     break
-    #         break
-
-    # print("score", weighted_score)
-    # print("partition len", LineString(route_regular_partition).length)
-    # weighted_score = 100*(1 - weighted_score/LineString(route_regular_partition).length)
-    # print("score", weighted_score, "\n\n")
+    
     avg_traffic = total_score/count
     safety_score = 100 * (1 - avg_traffic)
     return int(safety_score)
