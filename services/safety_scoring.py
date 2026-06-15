@@ -91,7 +91,6 @@ def calculate_safety_score(route: dict) -> int:
     # fetch traffic data and compute score
     total_score = 0
     count = 0
-    print(len(route_regular_partition))
     for i, p in enumerate(route_regular_partition):
         tile = tiles[i]
         tile_data = fetch_tile(*tile)

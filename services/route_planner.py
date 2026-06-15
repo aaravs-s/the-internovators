@@ -11,6 +11,8 @@ import shapely
 from shapely.geometry import shape, mapping
 from shapely.ops import unary_union
 from urllib.parse import quote
+from staticmap import StaticMap, Line
+import time
 
 # fastapi dev main.py --host 127.0.0.1 --reload
 
@@ -157,6 +159,7 @@ def search_routes(search: RouteSearchRequest) -> list[RouteOption]:
     try:
         start_coordinates = get_coordinates(start)
         dest_coordinates = get_coordinates(destination)
+        print(start_coordinates, dest_coordinates)
 
         activity_type = ROUTE_ACTIVITY_TYPES.get(search.route_type, "foot-walking")
 
@@ -237,5 +240,13 @@ def search_routes(search: RouteSearchRequest) -> list[RouteOption]:
                 map_style=route["map_style"],
             )
         )
+    
+        m = StaticMap(400, 400, url_template='https://basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png')
+        line = Line(route["coordinates"], 'blue', 3)
+        m.add_line(line)
+
+        image = m.render()
+        image.save(f"maps/{time.time_ns()}.png")
+
 
     return sorted(route_options, key=lambda route: route.safety_score, reverse=True)
