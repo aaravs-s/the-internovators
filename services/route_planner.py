@@ -157,7 +157,6 @@ def search_routes(search: RouteSearchRequest) -> list[RouteOption]:
     try:
         start_coordinates = get_coordinates(start)
         dest_coordinates = get_coordinates(destination)
-        # print(start_coordinates, dest_coordinates)
 
         activity_type = ROUTE_ACTIVITY_TYPES.get(search.route_type, "foot-walking")
 
@@ -188,7 +187,6 @@ def search_routes(search: RouteSearchRequest) -> list[RouteOption]:
         data = response.json()
     except (KeyError, requests.RequestException, ValueError):
         return build_sample_routes(search)
-    # print(data)
 
     generated_routes = []
     # rectangular container of routes, so that we only request the traffic data we need
@@ -220,11 +218,10 @@ def search_routes(search: RouteSearchRequest) -> list[RouteOption]:
             route_superlatives["shortest"]["duration"] = route["estimated_minutes"]
     generated_routes[route_superlatives["shortest"]["index"]]["id"] = "quickest"
     generated_routes[route_superlatives["shortest"]["index"]]["name"] = "Quickest"
-    # print(generated_routes[-1])
 
     route_options: list[RouteOption] = []
     for route in generated_routes:
-        score = 80 #calculate_safety_score(route)
+        score = calculate_safety_score(route)
         route_options.append(
             RouteOption(
                 id=route["id"],
