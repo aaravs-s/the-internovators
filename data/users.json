@@ -15,5 +15,15 @@
     "password_hash": "pbkdf2_sha256$210000$4dd4c02d57fce7efbae8757a46511975$15cfe47128bd869aa608ceeb5ac9f8483a299b61784fb280627f31731aa71509",
     "picture_url": "",
     "username": "hello"
+  },
+  {
+    "bio": "hello im a test",
+    "created_at": "2026-06-16T22:17:34.045789+00:00",
+    "email": "password@gmail.com",
+    "id": "a3b21833-64b5-47d3-839b-d2f5a380141c",
+    "is_verified": true,
+    "password_hash": "pbkdf2_sha256$210000$2cf5f66dd3e8032c550e868e0f2ccad2$1965e88280cbd09d468db8b72f82868c88dca06100b6b81c84d54aa23a41bedc",
+    "picture_url": "",
+    "username": "password"
   }
 ]
