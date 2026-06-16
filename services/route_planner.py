@@ -14,6 +14,7 @@ from urllib.parse import quote
 from staticmap import StaticMap, Line
 import time
 import sqlite3
+from services.points_of_interest import find_pois
 
 # fastapi dev main.py --host 127.0.0.1 --reload
 
@@ -235,7 +236,7 @@ def search_routes(search: RouteSearchRequest) -> list[RouteOption]:
             "estimated_minutes": minutes,
             "id": "route",
             "name": "Route Option",
-            "map_style": ["balanced", "quiet", "direct"][index % 3],
+            "map_style": ["balanced", "quiet", "direct"][index % 3]
             # "bbox": bbox
         })
     route_superlatives = {
@@ -256,6 +257,8 @@ def search_routes(search: RouteSearchRequest) -> list[RouteOption]:
     for route in generated_routes:
         score = calculate_safety_score(route)
         map_image_filename = generate_map_image(route["coordinates"])
+        route_highlights = find_pois(route)
+        print(route_highlights)
         route_options.append(
             RouteOption(
                 id=route["id"],
@@ -266,7 +269,7 @@ def search_routes(search: RouteSearchRequest) -> list[RouteOption]:
                 estimated_minutes=route["estimated_minutes"],
                 safety_score=score,
                 summary=describe_score(score),
-                highlights=[],#route["highlights"],
+                highlights=route_highlights,
                 route_type=search.route_type,
                 map_style=route["map_style"],
                 filename=map_image_filename

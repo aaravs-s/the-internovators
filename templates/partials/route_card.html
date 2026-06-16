@@ -4,6 +4,7 @@
       <div>
         <h2>{{ route.name }}</h2>
         <p>{{ route.summary or route.start ~ " to " ~ route.destination }}</p>
+        <p>Highlights: {{ route.highlights | join(', ') }}</p>
       </div>
       <div class="score-block">
         <span>{{ route.safety_score }}</span>
