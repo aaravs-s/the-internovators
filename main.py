@@ -11,7 +11,7 @@ def create_app() -> FastAPI:
 
     app = FastAPI(title=settings.app_name)
     app.mount("/static", StaticFiles(directory=settings.static_dir), name="static")
-    app.mount("/maps", StaticFiles(directory="maps"), name="maps")
+    app.mount("/maps", StaticFiles(directory=settings.maps_dir), name="maps")
     app.include_router(pages_router)
     app.include_router(api_router, prefix="/api")
     return app

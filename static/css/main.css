@@ -57,7 +57,11 @@ a {
 .profile-link,
 .actions,
 .auth-tabs,
-.tags {
+.tags,
+.route-social,
+.social-actions,
+.filter-bar,
+.inline-form {
   align-items: center;
   display: flex;
   gap: 14px;
@@ -197,6 +201,7 @@ h3 {
 .search-panel,
 .form-card form,
 .form-card,
+.filter-bar,
 .stack,
 .route-detail {
   display: grid;
@@ -257,6 +262,10 @@ textarea {
 .button.secondary {
   align-self: start;
   background: var(--text);
+}
+
+.button.secondary:hover {
+  background: #31454b;
 }
 
 .link-button {
@@ -342,6 +351,21 @@ textarea {
 .route-card.large {
   display: grid;
   gap: 16px;
+}
+
+.filter-bar {
+  background: rgba(255, 253, 248, 0.94);
+  border: 1px solid var(--border);
+  border-radius: 18px;
+  box-shadow: var(--shadow);
+  grid-template-columns: auto minmax(130px, 1fr) auto minmax(130px, 1fr) auto minmax(150px, 1fr) auto;
+  margin-bottom: 24px;
+  padding: 16px;
+}
+
+.filter-bar label,
+.rating-form label {
+  white-space: nowrap;
 }
 
 .route-main {
@@ -440,6 +464,35 @@ textarea {
   font-size: 1.1rem;
 }
 
+.route-social {
+  color: var(--muted);
+  flex-wrap: wrap;
+  font-family: Verdana, Geneva, sans-serif;
+  font-size: 0.82rem;
+  font-weight: 800;
+}
+
+.route-social span {
+  background: #eef3ea;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  padding: 6px 10px;
+}
+
+.social-actions,
+.inline-form {
+  flex-wrap: wrap;
+}
+
+.inline-form {
+  margin: 0;
+}
+
+.rating-form select {
+  min-width: 72px;
+  width: auto;
+}
+
 .highlights {
   margin: 0;
   padding-left: 20px;
@@ -531,7 +584,8 @@ textarea {
   .auth-layout,
   .results-header,
   .about-layout,
-  .two-column {
+  .two-column,
+  .filter-bar {
     grid-template-columns: 1fr;
   }
 

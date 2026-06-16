@@ -27,6 +27,10 @@
         <span>{{ route.distance_miles }} miles</span>
         <span>{{ route.estimated_minutes }} minutes</span>
         <span>{{ route.safety_score }} safety score</span>
+        {% if route.average_rating is defined %}
+          <span>{{ route.average_rating or "No" }} / 5 community rating</span>
+          <span>{{ route.like_count }} likes</span>
+        {% endif %}
       </div>
 
       <p>{{ route.summary }}</p>
@@ -37,6 +41,55 @@
             <li>{{ highlight }}</li>
           {% endfor %}
         </ul>
+      {% endif %}
+
+      {% if is_saved_route %}
+        <section class="form-card compact">
+          {% if route.owner %}
+            <p class="owner-line">
+              Shared by
+              <a href="/users/{{ route.owner.username }}">{{ route.owner.username }}</a>
+            </p>
+          {% endif %}
+
+          {% if user and route.user_id == user.id %}
+            <h2>Gallery sharing</h2>
+            <p class="form-note">
+              This route is currently {% if route.is_shared %}shared in the gallery{% else %}hidden from the gallery{% endif %}.
+            </p>
+            <form action="/routes/{{ route.id }}/sharing" method="post">
+              {% if route.is_shared %}
+                <input type="hidden" name="is_shared" value="false" />
+                <button class="button secondary" type="submit">Hide from gallery</button>
+              {% else %}
+                <input type="hidden" name="is_shared" value="true" />
+                <button class="button" type="submit">Share to gallery</button>
+              {% endif %}
+            </form>
+          {% elif route.is_shared %}
+            <h2>Community feedback</h2>
+            {% if user %}
+              <div class="social-actions">
+                <form class="inline-form" action="/routes/{{ route.id }}/like" method="post">
+                  <button class="button secondary" type="submit">
+                    {% if route.user_has_liked %}Unlike route{% else %}Like route{% endif %}
+                  </button>
+                </form>
+                <form class="inline-form rating-form" action="/routes/{{ route.id }}/rating" method="post">
+                  <label for="detail-rating">Rate this route</label>
+                  <select id="detail-rating" name="rating">
+                    {% for value in [5, 4, 3, 2, 1] %}
+                      <option value="{{ value }}" {% if route.user_rating == value %}selected{% endif %}>{{ value }}</option>
+                    {% endfor %}
+                  </select>
+                  <button class="button" type="submit">Submit rating</button>
+                </form>
+              </div>
+            {% else %}
+              <p class="form-note"><a href="/login">Log in</a> to like or rate this route.</p>
+            {% endif %}
+          {% endif %}
+        </section>
       {% endif %}
 
       {% if user_saved_route %}
@@ -64,6 +117,7 @@
           <input type="hidden" name="summary" value="{{ route.summary }}" />
           <input type="hidden" name="route_type" value="{{ route.route_type }}" />
           <input type="hidden" name="map_style" value="{{ route.map_style }}" />
+          <input type="hidden" name="filename" value="{{ route.filename }}" />
           <button class="button" type="submit">Save route</button>
         </form>
       {% else %}
