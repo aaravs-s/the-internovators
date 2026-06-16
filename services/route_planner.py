@@ -13,6 +13,7 @@ from shapely.ops import unary_union
 from urllib.parse import quote
 from staticmap import StaticMap, Line
 import time
+import sqlite3
 
 # fastapi dev main.py --host 127.0.0.1 --reload
 
@@ -138,6 +139,35 @@ def build_sample_routes(search: RouteSearchRequest) -> list[RouteOption]:
 
     return sorted(route_options, key=lambda route: route.safety_score, reverse=True)
 
+def generate_map_image (coords):
+    """Returns filename of map image in maps/"""
+    with sqlite3.connect("maps/filenames.db") as conn:
+
+        cursor = conn.cursor()
+        cursor.execute("""
+            CREATE TABLE IF NOT EXISTS filenames (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                name TEXT NOT NULL
+            )
+        """)
+
+        cursor.execute(
+            "INSERT INTO filenames (name) VALUES (?)",
+            ("map",)
+        )
+        inserted_id = cursor.lastrowid
+
+        conn.commit()
+
+    m = StaticMap(400, 400, url_template='https://basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png')
+    line = Line(coords, 'blue', 3)
+    m.add_line(line)
+
+    image = m.render()
+    image.save(f"maps/map_{inserted_id}.png")
+
+    return f"map_{inserted_id}.png"
+
 
 def search_routes(search: RouteSearchRequest) -> list[RouteOption]:
     """Assumes searches are properly formatted addresses, which can be achieved with ORS autocomplete. Right now, this names routes
@@ -159,7 +189,7 @@ def search_routes(search: RouteSearchRequest) -> list[RouteOption]:
     try:
         start_coordinates = get_coordinates(start)
         dest_coordinates = get_coordinates(destination)
-        print(start_coordinates, dest_coordinates)
+        # print(start_coordinates, dest_coordinates)
 
         activity_type = ROUTE_ACTIVITY_TYPES.get(search.route_type, "foot-walking")
 
@@ -225,6 +255,7 @@ def search_routes(search: RouteSearchRequest) -> list[RouteOption]:
     route_options: list[RouteOption] = []
     for route in generated_routes:
         score = calculate_safety_score(route)
+        map_image_filename = generate_map_image(route["coordinates"])
         route_options.append(
             RouteOption(
                 id=route["id"],
@@ -238,15 +269,9 @@ def search_routes(search: RouteSearchRequest) -> list[RouteOption]:
                 highlights=[],#route["highlights"],
                 route_type=search.route_type,
                 map_style=route["map_style"],
+                filename=map_image_filename
             )
         )
-    
-        m = StaticMap(400, 400, url_template='https://basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png')
-        line = Line(route["coordinates"], 'blue', 3)
-        m.add_line(line)
-
-        image = m.render()
-        image.save(f"maps/{time.time_ns()}.png")
 
 
     return sorted(route_options, key=lambda route: route.safety_score, reverse=True)

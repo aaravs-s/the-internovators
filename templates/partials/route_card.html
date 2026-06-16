@@ -12,9 +12,10 @@
     </div>
 
     <div class="route-map {{ route.map_style or 'balanced' }}">
-      <span class="map-path"></span>
+      <img src="{{ url_for('maps', path=route.filename) }}" alt="map" />
+      <!-- <span class="map-path"></span>
       <span class="map-dot start"></span>
-      <span class="map-dot end"></span>
+      <span class="map-dot end"></span> -->
     </div>
 
     <div class="metrics">

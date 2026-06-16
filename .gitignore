@@ -4,3 +4,4 @@ setup-instructions.txt
 .env
 *.pyc
 .DS_Store
+maps/

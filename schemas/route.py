@@ -19,6 +19,7 @@ class RouteOption(BaseModel):
     highlights: list[str] = Field(default_factory=list)
     route_type: str = "walking"
     map_style: str = "balanced"
+    filename: str
 
 
 class SavedRouteCreate(BaseModel):
@@ -33,6 +34,7 @@ class SavedRouteCreate(BaseModel):
     highlights: list[str] = Field(default_factory=list)
     route_type: str = "walking"
     map_style: str = "balanced"
+    filename: str
 
 
 class SavedRouteNotesUpdate(BaseModel):
