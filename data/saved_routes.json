@@ -1,2 +1,28 @@
-[]
-
+[
+  {
+    "comments": "",
+    "created_at": "2026-06-17T01:09:48.721803+00:00",
+    "destination": "test2, Austin, TX",
+    "distance_miles": 1.4,
+    "estimated_minutes": 29,
+    "filename": "",
+    "highlights": [
+      "Prioritizes streets with stronger sidewalk coverage",
+      "Uses better-lit downtown corridors",
+      "Avoids the busiest crossing cluster when possible"
+    ],
+    "id": "bb15d07f-3109-43ea-a4d5-8649ed241574",
+    "is_shared": true,
+    "liked_by": [],
+    "map_style": "balanced",
+    "name": "Balanced Downtown Walk",
+    "ratings": [],
+    "route_id": "balanced-downtown-b8dc80b1",
+    "route_type": "walking",
+    "safety_score": 78,
+    "start": "test, Austin, TX",
+    "summary": "Generally walkable with a few areas to watch.",
+    "tags": [],
+    "user_id": "a3b21833-64b5-47d3-839b-d2f5a380141c"
+  }
+]
