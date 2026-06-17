@@ -263,7 +263,7 @@ def search_routes(search: RouteSearchRequest) -> list[RouteOption]:
         score = calculate_safety_score(route)
         map_image_filename = generate_map_image(route["coordinates"])
         route_highlights = find_pois(route)
-        print(route_highlights)
+        
         route_options.append(
             RouteOption(
                 id=route["id"],

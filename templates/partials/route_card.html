@@ -54,7 +54,7 @@
   {% if route.is_shared is defined %}
     <div class="route-social">
       <span>{{ route.safety_score }} safety</span>
-      <span>{{ route.average_rating or "No" }} / 5 community</span>
+      <span>{{ route.average_rating or "-" }} / 5 community</span>
       <span>{{ route.like_count }} likes</span>
       {% if route.is_shared %}
         <span>Shared</span>

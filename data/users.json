@@ -17,7 +17,7 @@
     "username": "hello"
   },
   {
-    "bio": "hello im a test",
+    "bio": "oh yeah?",
     "created_at": "2026-06-16T22:17:34.045789+00:00",
     "email": "password@gmail.com",
     "id": "a3b21833-64b5-47d3-839b-d2f5a380141c",
@@ -25,5 +25,25 @@
     "password_hash": "pbkdf2_sha256$210000$2cf5f66dd3e8032c550e868e0f2ccad2$1965e88280cbd09d468db8b72f82868c88dca06100b6b81c84d54aa23a41bedc",
     "picture_url": "",
     "username": "password"
+  },
+  {
+    "bio": "",
+    "created_at": "2026-06-17T19:38:56.009891+00:00",
+    "email": "test@test.com",
+    "id": "5ac2de14-8ea1-4bf5-bd21-1ff6ec3551ed",
+    "is_verified": true,
+    "password_hash": "pbkdf2_sha256$210000$d12cff6a5385b89fb0bd4511f257abd6$25ab0d0d699aa17d817b96f12fa2d267957d9c018d78fae4c3dbdbbcbddeecc5",
+    "picture_url": "",
+    "username": "test"
+  },
+  {
+    "bio": "",
+    "created_at": "2026-06-17T19:41:04.823029+00:00",
+    "email": "example@example.com",
+    "id": "47e78831-62da-4f5a-86ca-c0635e56cdbc",
+    "is_verified": true,
+    "password_hash": "pbkdf2_sha256$210000$b9145944af5814c7515bb6af525dff30$83ce353c1afd4fd7c5608d0e95cc5ca97c937b901d7680f989419670a71f920a",
+    "picture_url": "",
+    "username": "example"
   }
 ]

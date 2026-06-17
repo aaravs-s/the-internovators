@@ -34,14 +34,13 @@ def find_pois (route):
     )
 
     data = response.json()
-    print(data)
 
     if "features" not in data:
         return []
     
     pois = []
     for feature in data["features"]:
-        if "name" in feature["properties"]["osm_tags"]:
+        if "osm_tags" in feature["properties"] and "name" in feature["properties"]["osm_tags"]:
             pois.append(feature["properties"]["osm_tags"]["name"])
 
     return pois

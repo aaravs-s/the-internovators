@@ -382,19 +382,7 @@ textarea {
 }
 
 .route-map {
-  background:
-    linear-gradient(90deg, rgba(24, 115, 90, 0.12) 1px, transparent 1px),
-    linear-gradient(rgba(24, 115, 90, 0.12) 1px, transparent 1px),
-    #eff5eb;
-  background-size: 34px 34px;
-  border-radius: 18px;
-  height: 150px;
-  overflow: hidden;
-  position: relative;
-}
-
-.route-map.detail {
-  height: 320px;
+  position: block;
 }
 
 .route-map.quiet {
@@ -496,6 +484,14 @@ textarea {
 .highlights {
   margin: 0;
   padding-left: 20px;
+}
+
+.highlights-header {
+  color: var(--muted);
+  font-family: Verdana, Geneva, sans-serif;
+  font-size: 0.88rem;
+  font-weight: 800;
+  margin: 0;
 }
 
 .owner-line,

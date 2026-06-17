@@ -18,9 +18,13 @@
       </div>
 
       <div class="route-map detail {{ route.map_style or 'balanced' }}">
-        <span class="map-path"></span>
-        <span class="map-dot start"></span>
-        <span class="map-dot end"></span>
+        {% if route.filename %}
+          <img src="{{ url_for('maps', path=route.filename) }}" alt="map" />
+        {% else %}
+          <span class="map-path"></span>
+          <span class="map-dot start"></span>
+          <span class="map-dot end"></span>
+        {% endif %}
       </div>
 
       <div class="metrics big">
@@ -28,7 +32,7 @@
         <span>{{ route.estimated_minutes }} minutes</span>
         <span>{{ route.safety_score }} safety score</span>
         {% if route.average_rating is defined %}
-          <span>{{ route.average_rating or "No" }} / 5 community rating</span>
+          <span>{{ route.average_rating or "-" }} / 5 community rating</span>
           <span>{{ route.like_count }} likes</span>
         {% endif %}
       </div>
@@ -36,6 +40,7 @@
       <p>{{ route.summary }}</p>
 
       {% if route.highlights %}
+        <p class="highlights-header">Highlights</p>
         <ul class="highlights">
           {% for highlight in route.highlights %}
             <li>{{ highlight }}</li>
