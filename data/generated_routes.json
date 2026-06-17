@@ -3,48 +3,6 @@
     "destination": "UT Tower, Austin, TX, USA",
     "distance_miles": 8.31,
     "estimated_minutes": 160,
-    "generated_at": "2026-06-16T15:20:38.056420+00:00",
-    "highlights": [],
-    "id": "route-b83a17d5",
-    "map_style": "quiet",
-    "name": "Route Option",
-    "route_type": "walking",
-    "safety_score": 89,
-    "start": "Q2 Stadium, Austin, TX, USA",
-    "summary": "Strong sidewalk coverage and comfortable walking conditions."
-  },
-  {
-    "destination": "UT Tower, Austin, TX, USA",
-    "distance_miles": 8.5,
-    "estimated_minutes": 164,
-    "generated_at": "2026-06-16T15:20:38.056420+00:00",
-    "highlights": [],
-    "id": "route-e4b7264f",
-    "map_style": "direct",
-    "name": "Route Option",
-    "route_type": "walking",
-    "safety_score": 89,
-    "start": "Q2 Stadium, Austin, TX, USA",
-    "summary": "Strong sidewalk coverage and comfortable walking conditions."
-  },
-  {
-    "destination": "UT Tower, Austin, TX, USA",
-    "distance_miles": 8.26,
-    "estimated_minutes": 159,
-    "generated_at": "2026-06-16T15:25:08.673868+00:00",
-    "highlights": [],
-    "id": "quickest-a7524f6b",
-    "map_style": "balanced",
-    "name": "Quickest",
-    "route_type": "walking",
-    "safety_score": 89,
-    "start": "Q2 Stadium, Austin, TX, USA",
-    "summary": "Strong sidewalk coverage and comfortable walking conditions."
-  },
-  {
-    "destination": "UT Tower, Austin, TX, USA",
-    "distance_miles": 8.31,
-    "estimated_minutes": 160,
     "generated_at": "2026-06-16T15:25:08.673868+00:00",
     "highlights": [],
     "id": "route-bb057ab4",
@@ -857,6 +815,64 @@
     "route_type": "walking",
     "safety_score": 89,
     "start": "Q2 Stadium, Austin, TX, USA",
+    "summary": "Strong sidewalk coverage and comfortable walking conditions."
+  },
+  {
+    "destination": "Austin Central Library, Austin, TX, USA",
+    "distance_miles": 1.26,
+    "estimated_minutes": 24,
+    "filename": "map_1.png",
+    "generated_at": "2026-06-17T17:24:04.580273+00:00",
+    "highlights": [
+      "Wooldridge Square Park",
+      "Austin Public Library - Austin History Center",
+      "1914 Noodles & More",
+      "Ph\u1edf Th\u00e1is\u01a1n",
+      "Clay Pit",
+      "Oma's Kitchen"
+    ],
+    "id": "quickest-bbfe9487",
+    "map_style": "balanced",
+    "name": "Quickest",
+    "route_type": "walking",
+    "safety_score": 96,
+    "start": "UT Tower, Austin, TX, USA",
+    "summary": "Strong sidewalk coverage and comfortable walking conditions."
+  },
+  {
+    "destination": "Austin Central Library, Austin, TX, USA",
+    "distance_miles": 1.26,
+    "estimated_minutes": 24,
+    "filename": "map_2.png",
+    "generated_at": "2026-06-17T17:24:04.580273+00:00",
+    "highlights": [
+      "Texas Chili Parlor",
+      "Austin Public Library - Austin History Center"
+    ],
+    "id": "route-24e3dd50",
+    "map_style": "quiet",
+    "name": "Route Option",
+    "route_type": "walking",
+    "safety_score": 93,
+    "start": "UT Tower, Austin, TX, USA",
+    "summary": "Strong sidewalk coverage and comfortable walking conditions."
+  },
+  {
+    "destination": "Austin Central Library, Austin, TX, USA",
+    "distance_miles": 1.27,
+    "estimated_minutes": 24,
+    "filename": "map_3.png",
+    "generated_at": "2026-06-17T17:24:04.580273+00:00",
+    "highlights": [
+      "Texas Chili Parlor",
+      "Austin Public Library - Austin History Center"
+    ],
+    "id": "route-e7a30c98",
+    "map_style": "direct",
+    "name": "Route Option",
+    "route_type": "walking",
+    "safety_score": 87,
+    "start": "UT Tower, Austin, TX, USA",
     "summary": "Strong sidewalk coverage and comfortable walking conditions."
   }
 ]

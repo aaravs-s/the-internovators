@@ -25,26 +25,118 @@
       </div>
     </section>
   {% else %}
-    <section class="results-header">
-      <div>
-        <p class="eyebrow">Community routes</p>
-        <h1>Recently saved by other walkers</h1>
-        <p class="lede">See routes other SafeWalkers have saved, with their notes and tags.</p>
+
+<div class="dashboard">
+
+  <aside class="dashboard-sidebar">
+
+    <div class="dashboard-logo">
+      <span class="logo-mark">SW</span>
+      <span>SafeWalkers</span>
+    </div>
+
+    <nav class="dashboard-nav">
+      <a href="/about">About</a>
+      <a href="/routes/saved" class="active">Saved</a>
+      <a href="/routes/gallery">Social</a>
+    </nav>
+
+    <a class="dashboard-signout" href="/logout">
+      Sign Out
+    </a>
+
+  </aside>
+
+  <main class="dashboard-main">
+
+    <div class="dashboard-header">
+      <h1>Welcome!</h1>
+      <p>Stay safe on every route.</p>
+    </div>
+
+    <section class="dashboard-section">
+
+      <div class="section-title">
+        <h2>Recent Routes</h2>
+        <a href="/routes/saved">See all</a>
       </div>
-      <a class="button" href="/generate">Generate a Route</a>
+
+      <div class="route-preview-grid">
+
+        {% if recent_routes %}
+
+          {% for route in recent_routes[:2] %}
+
+          <div class="route-preview-card">
+
+            <div class="route-preview-map">
+              Austin
+            </div>
+
+            <div class="route-preview-info">
+
+              <div class="route-meta">
+                {{ route.distance_miles }} mi ·
+                {{ route.estimated_minutes }} min
+              </div>
+
+              <a href="/routes/{{ route.id }}">
+                View →
+              </a>
+
+            </div>
+
+          </div>
+
+          {% endfor %}
+
+        {% else %}
+
+          <div class="route-preview-card">
+            <div class="route-preview-map">Austin</div>
+            <div class="route-preview-info">
+              <div class="route-meta">8.7 mi · 25 min</div>
+              <a href="#">View →</a>
+            </div>
+          </div>
+
+          <div class="route-preview-card">
+            <div class="route-preview-map">Austin</div>
+            <div class="route-preview-info">
+              <div class="route-meta">3.2 mi · 42 min</div>
+              <a href="#">View →</a>
+            </div>
+          </div>
+
+        {% endif %}
+
+      </div>
+
     </section>
 
-    {% if recent_routes %}
-      <section class="stack">
-        {% for route in recent_routes %}
-          {% include "partials/route_card.html" %}
-        {% endfor %}
-      </section>
-    {% else %}
-      <section class="empty-state">
-        <h2>No community routes yet.</h2>
-        <p>Once other users save routes, they will appear here. Tiny prototype town, population: us.</p>
-      </section>
-    {% endif %}
+    <section class="dashboard-section">
+
+      <h2>Your Profile</h2>
+
+      <a href="/profile" class="profile-dashboard-card">
+
+        <div class="profile-circle">
+          {{ user.username[0]|upper }}
+        </div>
+
+        <div>
+          <strong>{{ user.username }}</strong>
+          <p>View & edit profile</p>
+        </div>
+
+      </a>
+
+    </section>
+
+  </main>
+
+</div>
+
+{% endif %}
   {% endif %}
 {% endblock %}
