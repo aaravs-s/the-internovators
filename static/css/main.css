@@ -486,12 +486,11 @@ textarea {
   padding-left: 20px;
 }
 
-.highlights-header {
+.highlights {
   color: var(--muted);
   font-family: Verdana, Geneva, sans-serif;
   font-size: 0.88rem;
   font-weight: 800;
-  margin: 0;
 }
 
 .owner-line,

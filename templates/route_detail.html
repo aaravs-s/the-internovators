@@ -48,6 +48,8 @@
         </ul>
       {% endif %}
 
+      <button id="share-btn" onclick="shareLink()">Share</button>
+
       {% if is_saved_route %}
         <section class="form-card compact">
           {% if route.owner %}
@@ -130,4 +132,27 @@
       {% endif %}
     </section>
   {% endif %}
+{% endblock %}
+
+{% block scripts %}
+    <script>
+      async function shareLink() {
+        const currentUrl = window.location.href;
+        const button = document.getElementById("share-btn");
+        try {
+          // Write the link directly to the system clipboard
+          await navigator.clipboard.writeText(currentUrl);
+          
+          // Provide immediate visual feedback to the user
+          button.textContent = 'Copied!';
+          setTimeout(() => {
+            button.textContent = 'Copy Link';
+          }, 2000);
+          
+        } catch (err) {
+          console.error('Failed to copy link: ', err);
+          alert(`Could not copy link automatically. You can manually copy the link: ${currentUrl}`);
+        }
+      }
+    </script>
 {% endblock %}
