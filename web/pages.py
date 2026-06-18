@@ -158,7 +158,55 @@ async def route_gallery(
             "sort": normalized_sort,
         },
     )
+# vite equivalent
+@router.get("/api/routes")
+async def get_routes(
+    request: Request,
+    route_type: str = Query("all"),
+    focus: str = Query("all"),
+    sort: str = Query("recent"),
+):
+    user = get_current_user(request)
+    viewer_id = user.id if user else None
 
+    normalized_route_type = route_type if route_type in saved_routes_json.VALID_ROUTE_TYPES else "all"
+    normalized_focus = focus if focus in saved_routes_json.VALID_FOCUS_FILTERS else "all"
+    normalized_sort = sort if sort in saved_routes_json.VALID_SORTS else "recent"
+
+    routes = [
+        route_with_owner(route, viewer_id)
+        for route in saved_routes_json.list_gallery_routes(
+            normalized_route_type,
+            normalized_focus,
+            normalized_sort,
+            viewer_id,
+        )
+    ]
+    print([
+        {
+            "id": r["id"],
+            "name": r["name"],
+            "distance": f'{r["distance_miles"]} mi',
+            "duration": f'{r["estimated_minutes"]} min',
+            "safety": r["safety_score"],
+            "tags": r["tags"],
+            "image": f"maps/{r['filename']}",
+        }
+        for r in routes
+    ])
+
+    return [
+        {
+            "id": r["id"],
+            "name": r["name"],
+            "distance": f'{r["distance_miles"]} mi',
+            "duration": f'{r["estimated_minutes"]} min',
+            "safety": r["safety_score"],
+            "tags": r["tags"],
+            "image": f"/maps/{r['filename']}",
+        }
+        for r in routes
+    ]
 
 @router.get("/routes/{route_id}", response_class=HTMLResponse)
 async def route_detail(request: Request, route_id: str):

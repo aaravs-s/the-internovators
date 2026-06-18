@@ -12,15 +12,9 @@
       </div>
     </div>
 
-    <div class="route-map {{ route.map_style or 'balanced' }}">
-      {% if route.filename %}
-        <img src="{{ url_for('maps', path=route.filename) }}" alt="map" />
-      {% else %}
-        <span class="map-path"></span>
-        <span class="map-dot start"></span>
-        <span class="map-dot end"></span>
-      {% endif %}
-    </div>
+    {% if route.filename %}
+      <img src="{{ url_for('maps', path=route.filename) }}" alt="map" />
+    {% endif %}
 
     <div class="metrics">
       <span>{{ route.distance_miles }} miles</span>
