@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router";
 import { RadarChart, Radar, PolarGrid, PolarAngleAxis, ResponsiveContainer } from "recharts";
 import { cardBase, SafetyBadge, Tabs, StarRating, PrimaryButton, IconBookmark } from "@/app/components/ui";
@@ -22,9 +22,25 @@ const waypoints = [
 
 export default function RouteDetailPage() {
   const navigate   = useNavigate();
-  const { id }     = useParams();
+  const { id }     = useParams<{ id: string }>();
   const [saved, setSaved]       = useState(false);
   const [activeTab, setActiveTab] = useState("Overview");
+
+  const [routeInfo, setRouteInfo] = useState<any>(null);
+  useEffect(() => {
+
+    fetch(`/api/routes/${id}`)
+      .then(res => res.json())
+      .then(setRouteInfo);
+  }, [id]);
+
+  console.log(routeInfo)
+
+  const API = "http://127.0.0.1:8000";
+
+  if (!routeInfo) {
+    return <div>Loading...</div>;
+  }
 
   return (
     <>
@@ -49,7 +65,7 @@ export default function RouteDetailPage() {
       <div className="px-[32px] py-[24px] flex flex-col gap-[20px] max-w-[900px]">
         {/* Map */}
         <div className="rounded-[20px] overflow-hidden h-[220px] relative border border-[rgba(255,255,255,0.08)]">
-          <img alt="Route map" className="w-full h-full object-cover" src={imgRouteMap} />
+          <img alt="Route map" className="w-full h-full object-cover" src={`${API}${routeInfo.route.image}` || imgRouteMap} />
           <div className="absolute inset-0 bg-gradient-to-t from-[rgba(10,6,8,0.4)] to-transparent" />
           <div className="absolute bottom-[16px] left-[16px] flex gap-[8px]">
             <SafetyBadge score={9.2} />
@@ -82,10 +98,10 @@ export default function RouteDetailPage() {
         {activeTab === "Overview" && (
           <div className="flex gap-[14px]">
             {[
-              { label: "Distance",   value: "8.7 mi" },
-              { label: "Duration",   value: "25 min"  },
-              { label: "Elevation",  value: "+124 ft"  },
-              { label: "Difficulty", value: "Easy"     },
+              { label: "Distance",   value: `${routeInfo.route.distance} mi` },
+              { label: "Duration",   value: routeInfo.route.duration  },
+              // { label: "Elevation",  value: "+124 ft"  },
+              { label: "Difficulty", value: routeInfo.route.distance < 3 ? "Easy" : (routeInfo.route.distance > 8 ? "Hard" : "Medium")     },
             ].map((s) => (
               <div key={s.label} className={`${cardBase} px-[20px] py-[16px] flex-1`}>
                 <p className="font-['Inter',sans-serif] font-normal text-[11px] text-[rgba(255,255,255,0.4)] uppercase tracking-[0.6px] mb-[4px]">{s.label}</p>

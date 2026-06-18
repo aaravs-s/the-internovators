@@ -158,7 +158,7 @@ async def route_gallery(
             "sort": normalized_sort,
         },
     )
-# vite equivalent
+# definition for vite
 @router.get("/api/routes")
 async def get_routes(
     request: Request,
@@ -182,18 +182,6 @@ async def get_routes(
             viewer_id,
         )
     ]
-    print([
-        {
-            "id": r["id"],
-            "name": r["name"],
-            "distance": f'{r["distance_miles"]} mi',
-            "duration": f'{r["estimated_minutes"]} min',
-            "safety": r["safety_score"],
-            "tags": r["tags"],
-            "image": f"maps/{r['filename']}",
-        }
-        for r in routes
-    ])
 
     return [
         {
@@ -237,6 +225,54 @@ async def route_detail(request: Request, route_id: str):
             "user_saved_route": user_saved_route,
         },
     )
+# definition for vite
+@router.get("/api/routes/{route_id}")
+async def route_detail(request: Request, route_id: str):
+    route, is_saved_route = get_route_record(route_id)
+    user = get_current_user(request)
+    if not route:
+        return render(request, "route_detail.html", {"route": None}, status_code=404)
+    if (
+        is_saved_route
+        and not route.get("is_shared", True)
+        and not (user and user.id == route["user_id"])
+    ):
+        return render(request, "route_detail.html", {"route": None}, status_code=404)
+
+    if is_saved_route:
+        route = route_with_owner(route, user.id if user else None)
+
+    user_saved_route = None
+    if user:
+        user_saved_route = saved_routes_json.get_saved_route_for_user_by_source(route, user.id)
+
+    print({
+        "route": {
+            "id": route["id"],
+            "name": route["name"],
+            "distance": f'{route["distance_miles"]} mi',
+            "duration": f'{route["estimated_minutes"]} min',
+            "safety": route["safety_score"],
+            "tags": route["tags"],
+            "image": f"/maps/{route['filename']}",
+        },
+        "is_saved_route": is_saved_route,
+        "user_saved_route": user_saved_route,
+    })
+
+    return {
+        "route": {
+            "id": route["id"],
+            "name": route["name"],
+            "distance": route["distance_miles"],
+            "duration": f'{route["estimated_minutes"]} min',
+            "safety": route["safety_score"],
+            "tags": route["tags"],
+            "image": f"/maps/{route['filename']}",
+        },
+        "is_saved_route": is_saved_route,
+        "user_saved_route": user_saved_route,
+    }
 
 
 @router.post("/routes/save")
