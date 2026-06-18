@@ -1,5 +1,7 @@
 from pathlib import Path
 import os
+import shutil
+import tempfile
 
 
 class Settings:
@@ -8,9 +10,19 @@ class Settings:
     secret_key = os.getenv("SAFEWALKERS_SECRET_KEY", "dev-only-change-me")
 
     root_dir = Path(__file__).resolve().parents[1]
-    data_dir = root_dir / "data"
+    source_data_dir = root_dir / "data"
+    data_dir = (
+        Path(tempfile.gettempdir()) / "safewalkers-data"
+        if os.getenv("VERCEL")
+        else source_data_dir
+    )
     templates_dir = root_dir / "templates"
     static_dir = root_dir / "static"
+    maps_dir = (
+        Path(tempfile.gettempdir()) / "safewalkers-maps"
+        if os.getenv("VERCEL")
+        else root_dir / "maps"
+    )
 
     users_file = data_dir / "users.json"
     reports_file = data_dir / "reports.json"
@@ -20,6 +32,7 @@ class Settings:
 
     def ensure_storage(self) -> None:
         self.data_dir.mkdir(parents=True, exist_ok=True)
+        self.maps_dir.mkdir(parents=True, exist_ok=True)
         for path in [
             self.users_file,
             self.reports_file,
@@ -28,7 +41,11 @@ class Settings:
             self.sample_routes_file,
         ]:
             if not path.exists():
-                path.write_text("[]\n", encoding="utf-8")
+                source_path = self.source_data_dir / path.name
+                if source_path.exists():
+                    shutil.copyfile(source_path, path)
+                else:
+                    path.write_text("[]\n", encoding="utf-8")
 
 
 settings = Settings()

@@ -120,7 +120,11 @@ def build_sample_routes(search: RouteSearchRequest) -> list[RouteOption]:
     route_options: list[RouteOption] = []
 
     for index, route in enumerate(samples):
-        score = calculate_safety_score(route)
+        score = (
+            calculate_safety_score(route)
+            if route.get("coordinates")
+            else int(route.get("base_safety_score", 70))
+        )
         multiplier = 0.6 if search.route_type == "biking" else 1
         route_options.append(
             RouteOption(
@@ -142,7 +146,8 @@ def build_sample_routes(search: RouteSearchRequest) -> list[RouteOption]:
 
 def generate_map_image (coords):
     """Returns filename of map image in maps/"""
-    with sqlite3.connect("maps/filenames.db") as conn:
+    settings.maps_dir.mkdir(parents=True, exist_ok=True)
+    with sqlite3.connect(settings.maps_dir / "filenames.db") as conn:
 
         cursor = conn.cursor()
         cursor.execute("""
@@ -165,7 +170,7 @@ def generate_map_image (coords):
     m.add_line(line)
 
     image = m.render()
-    image.save(f"maps/map_{inserted_id}.png")
+    image.save(settings.maps_dir / f"map_{inserted_id}.png")
 
     return f"map_{inserted_id}.png"
 
@@ -258,7 +263,7 @@ def search_routes(search: RouteSearchRequest) -> list[RouteOption]:
         score = calculate_safety_score(route)
         map_image_filename = generate_map_image(route["coordinates"])
         route_highlights = find_pois(route)
-        print(route_highlights)
+        
         route_options.append(
             RouteOption(
                 id=route["id"],

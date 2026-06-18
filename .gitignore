@@ -1,7 +1,9 @@
 .venv/
+.vercel/
 __pycache__/
 setup-instructions.txt
 .env
 *.pyc
 .DS_Store
 maps/
+.vercel

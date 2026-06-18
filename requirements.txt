@@ -1,0 +1,6 @@
+fastapi[standard]>=0.115.0
+mapbox-vector-tile>=2.1.0
+pyproj>=3.6.0
+requests>=2.32.0
+shapely>=2.0.0
+staticmap>=0.5.7
