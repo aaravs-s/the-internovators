@@ -45,5 +45,15 @@
     "password_hash": "pbkdf2_sha256$210000$b9145944af5814c7515bb6af525dff30$83ce353c1afd4fd7c5608d0e95cc5ca97c937b901d7680f989419670a71f920a",
     "picture_url": "",
     "username": "example"
+  },
+  {
+    "bio": "",
+    "created_at": "2026-06-18T17:01:00.687983+00:00",
+    "email": "muhammad.zahirs6578@gmail.com",
+    "id": "0051ed83-13ff-478c-af40-3b9f5644aec9",
+    "is_verified": false,
+    "password_hash": "pbkdf2_sha256$210000$c12ab41f2d5a61171ffae15808e94d75$7b5e5edb39f6bfa990f8b13c7c88093f35e0f83d2f5f98791b283b0552de4942",
+    "picture_url": "",
+    "username": "muhammad"
   }
 ]

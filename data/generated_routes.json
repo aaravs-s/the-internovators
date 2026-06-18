@@ -1,207 +1,5 @@
 [
   {
-    "destination": "UT Tower, Austin, TX, USA",
-    "distance_miles": 8.31,
-    "estimated_minutes": 160,
-    "generated_at": "2026-06-16T15:20:38.056420+00:00",
-    "highlights": [],
-    "id": "route-b83a17d5",
-    "map_style": "quiet",
-    "name": "Route Option",
-    "route_type": "walking",
-    "safety_score": 89,
-    "start": "Q2 Stadium, Austin, TX, USA",
-    "summary": "Strong sidewalk coverage and comfortable walking conditions."
-  },
-  {
-    "destination": "UT Tower, Austin, TX, USA",
-    "distance_miles": 8.5,
-    "estimated_minutes": 164,
-    "generated_at": "2026-06-16T15:20:38.056420+00:00",
-    "highlights": [],
-    "id": "route-e4b7264f",
-    "map_style": "direct",
-    "name": "Route Option",
-    "route_type": "walking",
-    "safety_score": 89,
-    "start": "Q2 Stadium, Austin, TX, USA",
-    "summary": "Strong sidewalk coverage and comfortable walking conditions."
-  },
-  {
-    "destination": "UT Tower, Austin, TX, USA",
-    "distance_miles": 8.26,
-    "estimated_minutes": 159,
-    "generated_at": "2026-06-16T15:25:08.673868+00:00",
-    "highlights": [],
-    "id": "quickest-a7524f6b",
-    "map_style": "balanced",
-    "name": "Quickest",
-    "route_type": "walking",
-    "safety_score": 89,
-    "start": "Q2 Stadium, Austin, TX, USA",
-    "summary": "Strong sidewalk coverage and comfortable walking conditions."
-  },
-  {
-    "destination": "UT Tower, Austin, TX, USA",
-    "distance_miles": 8.31,
-    "estimated_minutes": 160,
-    "filename": "map_15.png",
-    "generated_at": "2026-06-16T16:14:48.725864+00:00",
-    "highlights": [
-      "Live Oak Park",
-      "China Family",
-      "Tex Mex Joe's",
-      "Bamboo House Austin",
-      "Vigilante Gastropub & Games"
-    ],
-    "id": "route-d1af76d1",
-    "map_style": "quiet",
-    "name": "Route Option",
-    "route_type": "walking",
-    "safety_score": 90,
-    "start": "Q2 Stadium, Austin, TX, USA",
-    "summary": "Strong sidewalk coverage and comfortable walking conditions."
-  },
-  {
-    "destination": "UT Tower, Austin, TX, USA",
-    "distance_miles": 8.5,
-    "estimated_minutes": 164,
-    "filename": "map_16.png",
-    "generated_at": "2026-06-16T16:14:48.725864+00:00",
-    "highlights": [
-      "Nori",
-      "PD Thai",
-      "Salsa Lim\u00f3n",
-      "Kerbey Lane Cafe",
-      "Roppolo's Pizzeria",
-      "Bikkle",
-      "Maru Japanese",
-      "Sip Pho",
-      "Live Oak Park"
-    ],
-    "id": "route-1f9ee25c",
-    "map_style": "direct",
-    "name": "Route Option",
-    "route_type": "walking",
-    "safety_score": 89,
-    "start": "Q2 Stadium, Austin, TX, USA",
-    "summary": "Strong sidewalk coverage and comfortable walking conditions."
-  },
-  {
-    "destination": "UT Tower, Austin, TX",
-    "distance_miles": 1.7,
-    "estimated_minutes": 35,
-    "filename": "",
-    "generated_at": "2026-06-16T21:11:41.594169+00:00",
-    "highlights": [
-      "Favors calmer neighborhood streets",
-      "Slightly longer route with fewer high-stress crossings",
-      "Best for daytime walking"
-    ],
-    "id": "quiet-neighborhood-3cb6c909",
-    "map_style": "quiet",
-    "name": "Quiet Neighborhood Walk",
-    "route_type": "walking",
-    "safety_score": 82,
-    "start": "Texas Capitol, Austin, TX",
-    "summary": "Generally walkable with a few areas to watch."
-  },
-  {
-    "destination": "UT Tower, Austin, TX",
-    "distance_miles": 1.4,
-    "estimated_minutes": 29,
-    "filename": "",
-    "generated_at": "2026-06-16T21:11:41.594169+00:00",
-    "highlights": [
-      "Prioritizes streets with stronger sidewalk coverage",
-      "Uses better-lit downtown corridors",
-      "Avoids the busiest crossing cluster when possible"
-    ],
-    "id": "balanced-downtown-98c0617e",
-    "map_style": "balanced",
-    "name": "Balanced Downtown Walk",
-    "route_type": "walking",
-    "safety_score": 78,
-    "start": "Texas Capitol, Austin, TX",
-    "summary": "Generally walkable with a few areas to watch."
-  },
-  {
-    "destination": "UT Tower, Austin, TX",
-    "distance_miles": 1.1,
-    "estimated_minutes": 22,
-    "filename": "",
-    "generated_at": "2026-06-16T21:11:41.594169+00:00",
-    "highlights": [
-      "Shortest available sample route",
-      "Good lighting on major blocks",
-      "Includes several busier intersections"
-    ],
-    "id": "direct-commute-5c5a5a6e",
-    "map_style": "direct",
-    "name": "Direct Commute Walk",
-    "route_type": "walking",
-    "safety_score": 68,
-    "start": "Texas Capitol, Austin, TX",
-    "summary": "Usable route, but review the safety notes before walking."
-  },
-  {
-    "destination": "Austin Central Library",
-    "distance_miles": 1.7,
-    "estimated_minutes": 35,
-    "filename": "",
-    "generated_at": "2026-06-17T01:09:23.820231+00:00",
-    "highlights": [
-      "Favors calmer neighborhood streets",
-      "Slightly longer route with fewer high-stress crossings",
-      "Best for daytime walking"
-    ],
-    "id": "quiet-neighborhood-2b6e4012",
-    "map_style": "quiet",
-    "name": "Quiet Neighborhood Walk",
-    "route_type": "walking",
-    "safety_score": 82,
-    "start": "Westbank, Austin, TX",
-    "summary": "Generally walkable with a few areas to watch."
-  },
-  {
-    "destination": "Austin Central Library",
-    "distance_miles": 1.4,
-    "estimated_minutes": 29,
-    "filename": "",
-    "generated_at": "2026-06-17T01:09:23.820231+00:00",
-    "highlights": [
-      "Prioritizes streets with stronger sidewalk coverage",
-      "Uses better-lit downtown corridors",
-      "Avoids the busiest crossing cluster when possible"
-    ],
-    "id": "balanced-downtown-c833d955",
-    "map_style": "balanced",
-    "name": "Balanced Downtown Walk",
-    "route_type": "walking",
-    "safety_score": 78,
-    "start": "Westbank, Austin, TX",
-    "summary": "Generally walkable with a few areas to watch."
-  },
-  {
-    "destination": "Austin Central Library",
-    "distance_miles": 1.1,
-    "estimated_minutes": 22,
-    "filename": "",
-    "generated_at": "2026-06-17T01:09:23.820231+00:00",
-    "highlights": [
-      "Shortest available sample route",
-      "Good lighting on major blocks",
-      "Includes several busier intersections"
-    ],
-    "id": "direct-commute-8ca6acce",
-    "map_style": "direct",
-    "name": "Direct Commute Walk",
-    "route_type": "walking",
-    "safety_score": 68,
-    "start": "Westbank, Austin, TX",
-    "summary": "Usable route, but review the safety notes before walking."
-  },
-  {
     "destination": "test2, Austin, TX",
     "distance_miles": 1.7,
     "estimated_minutes": 35,
@@ -1097,5 +895,119 @@
     "safety_score": 87,
     "start": "UT Tower, Austin, TX, USA",
     "summary": "Strong sidewalk coverage and comfortable walking conditions."
+  },
+  {
+    "destination": "austi, Austin, TX",
+    "distance_miles": 1.7,
+    "estimated_minutes": 35,
+    "filename": "",
+    "generated_at": "2026-06-18T16:52:15.648953+00:00",
+    "highlights": [
+      "Favors calmer neighborhood streets",
+      "Slightly longer route with fewer high-stress crossings",
+      "Best for daytime walking"
+    ],
+    "id": "quiet-neighborhood-d7231baf",
+    "map_style": "quiet",
+    "name": "Quiet Neighborhood Walk",
+    "route_type": "walking",
+    "safety_score": 82,
+    "start": "ut, Austin, TX",
+    "summary": "Generally walkable with a few areas to watch."
+  },
+  {
+    "destination": "austi, Austin, TX",
+    "distance_miles": 1.4,
+    "estimated_minutes": 29,
+    "filename": "",
+    "generated_at": "2026-06-18T16:52:15.648953+00:00",
+    "highlights": [
+      "Prioritizes streets with stronger sidewalk coverage",
+      "Uses better-lit downtown corridors",
+      "Avoids the busiest crossing cluster when possible"
+    ],
+    "id": "balanced-downtown-ae7add1a",
+    "map_style": "balanced",
+    "name": "Balanced Downtown Walk",
+    "route_type": "walking",
+    "safety_score": 78,
+    "start": "ut, Austin, TX",
+    "summary": "Generally walkable with a few areas to watch."
+  },
+  {
+    "destination": "austi, Austin, TX",
+    "distance_miles": 1.1,
+    "estimated_minutes": 22,
+    "filename": "",
+    "generated_at": "2026-06-18T16:52:15.648953+00:00",
+    "highlights": [
+      "Shortest available sample route",
+      "Good lighting on major blocks",
+      "Includes several busier intersections"
+    ],
+    "id": "direct-commute-db1add2a",
+    "map_style": "direct",
+    "name": "Direct Commute Walk",
+    "route_type": "walking",
+    "safety_score": 68,
+    "start": "ut, Austin, TX",
+    "summary": "Usable route, but review the safety notes before walking."
+  },
+  {
+    "destination": "austin central library",
+    "distance_miles": 1.7,
+    "estimated_minutes": 35,
+    "filename": "",
+    "generated_at": "2026-06-18T16:56:54.398461+00:00",
+    "highlights": [
+      "Favors calmer neighborhood streets",
+      "Slightly longer route with fewer high-stress crossings",
+      "Best for daytime walking"
+    ],
+    "id": "quiet-neighborhood-f7633878",
+    "map_style": "quiet",
+    "name": "Quiet Neighborhood Walk",
+    "route_type": "walking",
+    "safety_score": 82,
+    "start": "ut austin",
+    "summary": "Generally walkable with a few areas to watch."
+  },
+  {
+    "destination": "austin central library",
+    "distance_miles": 1.4,
+    "estimated_minutes": 29,
+    "filename": "",
+    "generated_at": "2026-06-18T16:56:54.398461+00:00",
+    "highlights": [
+      "Prioritizes streets with stronger sidewalk coverage",
+      "Uses better-lit downtown corridors",
+      "Avoids the busiest crossing cluster when possible"
+    ],
+    "id": "balanced-downtown-0c9a538b",
+    "map_style": "balanced",
+    "name": "Balanced Downtown Walk",
+    "route_type": "walking",
+    "safety_score": 78,
+    "start": "ut austin",
+    "summary": "Generally walkable with a few areas to watch."
+  },
+  {
+    "destination": "austin central library",
+    "distance_miles": 1.1,
+    "estimated_minutes": 22,
+    "filename": "",
+    "generated_at": "2026-06-18T16:56:54.398461+00:00",
+    "highlights": [
+      "Shortest available sample route",
+      "Good lighting on major blocks",
+      "Includes several busier intersections"
+    ],
+    "id": "direct-commute-30923fc7",
+    "map_style": "direct",
+    "name": "Direct Commute Walk",
+    "route_type": "walking",
+    "safety_score": 68,
+    "start": "ut austin",
+    "summary": "Usable route, but review the safety notes before walking."
   }
 ]
