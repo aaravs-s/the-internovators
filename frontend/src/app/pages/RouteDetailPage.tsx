@@ -12,14 +12,6 @@ const timeOfDay = [
   { time: "10 PM – 6 AM", score: 6.2 },
 ];
 
-const waypoints = [
-  { name: "Start — City Hall Plaza",     type: "start",    note: "Well-lit, CCTV covered" },
-  { name: "Market Street Crossing",      type: "waypoint", note: "Pedestrian-only zone" },
-  { name: "Riverside Embankment",        type: "waypoint", note: "Scenic, footpath 3m wide" },
-  { name: "Main Bridge",                 type: "waypoint", note: "Busy at peak hours" },
-  { name: "End — Central Park Gate",     type: "end",      note: "Staffed entrance, safe" },
-];
-
 export default function RouteDetailPage() {
   const navigate   = useNavigate();
   const { id }     = useParams<{ id: string }>();
@@ -33,8 +25,6 @@ export default function RouteDetailPage() {
       .then(res => res.json())
       .then(setRouteInfo);
   }, [id]);
-
-  console.log(routeInfo)
 
   const API = "http://127.0.0.1:8000";
 
@@ -56,7 +46,7 @@ export default function RouteDetailPage() {
             <span className="font-['Inter',sans-serif] font-medium text-[13px] text-[rgba(255,255,255,0.6)]">Back</span>
           </button>
           <div>
-            <p className="font-['Inter',sans-serif] font-bold text-[32px] text-white tracking-[-0.7px] leading-[40px]">Downtown Loop</p>
+            <p className="font-['Inter',sans-serif] font-bold text-[32px] text-white tracking-[-0.7px] leading-[40px]">{ routeInfo.route.name }</p>
             <p className="font-['Inter',sans-serif] font-normal text-[14px] text-[rgba(255,255,255,0.4)]">8.7 mi · Safety score 9.2</p>
           </div>
         </div>
@@ -75,7 +65,7 @@ export default function RouteDetailPage() {
 
         {/* Actions */}
         <div className="flex gap-[12px]">
-          <PrimaryButton label="Start Navigation" onClick={() => {}} />
+          {/* <PrimaryButton label="Start Navigation" onClick={() => {}} /> */}
           <button onClick={() => setSaved(!saved)}
             className={`flex items-center gap-[8px] h-[52px] px-[24px] rounded-[16px] border cursor-pointer transition-colors ${saved ? "bg-[rgba(196,32,80,0.15)] border-[rgba(196,32,80,0.35)]" : "bg-[rgba(255,255,255,0.05)] border-[rgba(255,255,255,0.1)] hover:border-[rgba(255,255,255,0.2)]"}`}>
             <IconBookmark color={saved ? "#c42050" : "rgba(255,255,255,0.4)"} />
@@ -93,7 +83,7 @@ export default function RouteDetailPage() {
         </div>
 
         {/* Tabs */}
-        <Tabs tabs={["Overview", "Safety", "Reviews", "Waypoints"]} active={activeTab} onChange={setActiveTab} />
+        <Tabs tabs={["Overview", "Safety", "Reviews", "Directions"]} active={activeTab} onChange={setActiveTab} />
 
         {activeTab === "Overview" && (
           <div className="flex gap-[14px]">
@@ -179,16 +169,16 @@ export default function RouteDetailPage() {
           </div>
         )}
 
-        {activeTab === "Waypoints" && (
+        {activeTab === "Directions" && (
           <div className={`${cardBase} overflow-hidden`}>
-            {waypoints.map((w, i) => (
-              <div key={w.name} className={`flex items-center gap-[16px] px-[20px] py-[14px] ${i < waypoints.length - 1 ? "border-b border-[rgba(255,255,255,0.06)]" : ""}`}>
-                <div className={`size-[10px] rounded-full shrink-0 ${w.type === "start" ? "bg-[#22c55e]" : w.type === "end" ? "bg-[#c42050]" : "bg-[rgba(255,255,255,0.25)]"}`} />
+            {routeInfo.route.directions.map(([instruction, distance, type], i) => (
+              <div key={instruction} className={`flex items-center gap-[16px] px-[20px] py-[14px] ${i < routeInfo.route.directions.length - 1 ? "border-b border-[rgba(255,255,255,0.06)]" : ""}`}>
+                <div className={`size-[10px] rounded-full shrink-0 ${type === "start" ? "bg-[#22c55e]" : type === "end" ? "bg-[#c42050]" : "bg-[rgba(255,255,255,0.25)]"}`} />
                 <div className="flex-1">
-                  <p className="font-['Inter',sans-serif] font-medium text-[13px] text-white">{w.name}</p>
-                  <p className="font-['Inter',sans-serif] font-normal text-[12px] text-[rgba(255,255,255,0.35)]">{w.note}</p>
+                  <p className="font-['Inter',sans-serif] font-medium text-[13px] text-white">{instruction}</p>
+                  {/* <p className="font-['Inter',sans-serif] font-normal text-[12px] text-[rgba(255,255,255,0.35)]">{w.note}</p> */}
                 </div>
-                <span className="font-['Inter',sans-serif] font-normal text-[11px] text-[rgba(255,255,255,0.25)]">{(i * 1.8 + 0.5).toFixed(1)} mi</span>
+                <span className="font-['Inter',sans-serif] font-normal text-[11px] text-[rgba(255,255,255,0.25)]">{distance}</span>
               </div>
             ))}
           </div>

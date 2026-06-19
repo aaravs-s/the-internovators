@@ -14,6 +14,7 @@ from services.route_planner import search_routes
 
 import os
 import requests
+import json
 
 router = APIRouter()
 templates = Jinja2Templates(directory=str(settings.templates_dir))
@@ -246,19 +247,17 @@ async def route_detail(request: Request, route_id: str):
     if user:
         user_saved_route = saved_routes_json.get_saved_route_for_user_by_source(route, user.id)
 
-    print({
-        "route": {
-            "id": route["id"],
-            "name": route["name"],
-            "distance": f'{route["distance_miles"]} mi',
-            "duration": f'{route["estimated_minutes"]} min',
-            "safety": route["safety_score"],
-            "tags": route["tags"],
-            "image": f"/maps/{route['filename']}",
-        },
-        "is_saved_route": is_saved_route,
-        "user_saved_route": user_saved_route,
-    })
+    print(route)
+    if "directions" in route:
+        directions = [[f'Start — {route["start"]}', "0.00 mi", "start"]]
+        current_m = 0
+        for step in route["directions"]:
+            directions.append([f'{step["instruction"]}', f'{round(current_m/1609, 2)} mi', "step"])
+            current_m += step["distance"]
+        print(current_m)
+        directions.append([f'End — {route["destination"]}', f"{route['distance_miles']} mi", "end"])
+    else:
+        directions = None
 
     return {
         "route": {
@@ -269,6 +268,7 @@ async def route_detail(request: Request, route_id: str):
             "safety": route["safety_score"],
             "tags": route["tags"],
             "image": f"/maps/{route['filename']}",
+            "directions": directions,
         },
         "is_saved_route": is_saved_route,
         "user_saved_route": user_saved_route,
@@ -289,6 +289,7 @@ async def save_route(
     route_type: str = Form("walking"),
     map_style: str = Form("balanced"),
     filename: str = Form(""),
+    directions: str = Form(...)
 ):
     user = get_current_user(request)
     if not user:
@@ -320,6 +321,7 @@ async def save_route(
             route_type=route_type,
             map_style=map_style,
             filename=filename,
+            directions=route["directions"]
         )
     except ValidationError:
         return RedirectResponse("/generate", status_code=303)

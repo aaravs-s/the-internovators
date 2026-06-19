@@ -105,6 +105,7 @@
         <input type="hidden" name="route_type" value="{{ route.route_type }}" />
         <input type="hidden" name="map_style" value="{{ route.map_style }}" />
         <input type="hidden" name="filename" value="{{ route.filename }}" />
+        <input type="hidden" name="directions" value="{{ route.directions | tojson }}" />
         <button class="button button-small" type="submit">Save</button>
       </form>
     {% elif not user %}

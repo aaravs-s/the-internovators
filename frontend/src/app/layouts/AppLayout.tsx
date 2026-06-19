@@ -124,7 +124,7 @@ function AppHeader() {
 export default function AppLayout() {
   return (
     <div className="bg-[#0a0608] relative size-full">
-      <DarkBackground />
+      {/* <DarkBackground /> */}
       <Sidebar />
       {/* Main content area */}
       <div className="absolute flex flex-col left-[256px] top-0 h-[944px] w-[1293px] overflow-y-auto">
