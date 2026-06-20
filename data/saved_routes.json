@@ -1,7 +1,7 @@
 [
   {
-    "average_rating": 4.0,
     "comments": "",
+<<<<<<< HEAD
     "created_at": "2026-06-17T01:09:48.721803+00:00",
     "destination": "test2, Austin, TX",
     "distance_miles": 1.4,
@@ -23,35 +23,906 @@
     "name": "Balanced Downtown Walk",
     "rating_count": 2,
     "ratings": [
+=======
+    "created_at": "2026-06-19T16:19:45.739562+00:00",
+    "destination": "UT Tower, Austin, TX, USA",
+    "directions": [
+>>>>>>> 6465c6694bd50367086504ba2757849844386d3c
       {
-        "rated_at": "2026-06-17T19:40:19.928404+00:00",
-        "rating": 3,
-        "user_id": "5ac2de14-8ea1-4bf5-bd21-1ff6ec3551ed"
+        "distance": 21.7,
+        "duration": 15.6,
+        "instruction": "Head east",
+        "name": "-",
+        "type": 11,
+        "way_points": [
+          0,
+          6
+        ]
       },
       {
-        "rated_at": "2026-06-17T19:55:47.734516+00:00",
-        "rating": 5,
-        "user_id": "47e78831-62da-4f5a-86ca-c0635e56cdbc"
+        "distance": 3.7,
+        "duration": 2.7,
+        "instruction": "Turn right",
+        "name": "-",
+        "type": 1,
+        "way_points": [
+          6,
+          7
+        ]
+      },
+      {
+        "distance": 160.0,
+        "duration": 115.2,
+        "instruction": "Turn right",
+        "name": "-",
+        "type": 1,
+        "way_points": [
+          7,
+          16
+        ]
+      },
+      {
+        "distance": 245.2,
+        "duration": 176.5,
+        "instruction": "Turn right onto Red Line Trail",
+        "name": "Red Line Trail",
+        "type": 1,
+        "way_points": [
+          16,
+          24
+        ]
+      },
+      {
+        "distance": 7.9,
+        "duration": 5.7,
+        "instruction": "Turn left onto West Road",
+        "name": "West Road",
+        "type": 0,
+        "way_points": [
+          24,
+          25
+        ]
+      },
+      {
+        "distance": 343.8,
+        "duration": 247.5,
+        "instruction": "Turn right onto McKalla Place",
+        "name": "McKalla Place",
+        "type": 1,
+        "way_points": [
+          25,
+          32
+        ]
+      },
+      {
+        "distance": 31.6,
+        "duration": 22.7,
+        "instruction": "Turn left onto Rutland Drive",
+        "name": "Rutland Drive",
+        "type": 0,
+        "way_points": [
+          32,
+          33
+        ]
+      },
+      {
+        "distance": 10.6,
+        "duration": 7.6,
+        "instruction": "Turn right",
+        "name": "-",
+        "type": 1,
+        "way_points": [
+          33,
+          34
+        ]
+      },
+      {
+        "distance": 197.8,
+        "duration": 142.4,
+        "instruction": "Turn left",
+        "name": "-",
+        "type": 0,
+        "way_points": [
+          34,
+          46
+        ]
+      },
+      {
+        "distance": 426.0,
+        "duration": 306.7,
+        "instruction": "Turn right",
+        "name": "-",
+        "type": 1,
+        "way_points": [
+          46,
+          54
+        ]
+      },
+      {
+        "distance": 29.6,
+        "duration": 21.3,
+        "instruction": "Turn right",
+        "name": "-",
+        "type": 1,
+        "way_points": [
+          54,
+          55
+        ]
+      },
+      {
+        "distance": 331.1,
+        "duration": 238.4,
+        "instruction": "Turn left",
+        "name": "-",
+        "type": 0,
+        "way_points": [
+          55,
+          75
+        ]
+      },
+      {
+        "distance": 29.4,
+        "duration": 21.2,
+        "instruction": "Turn sharp right",
+        "name": "-",
+        "type": 3,
+        "way_points": [
+          75,
+          79
+        ]
+      },
+      {
+        "distance": 31.7,
+        "duration": 22.8,
+        "instruction": "Turn left",
+        "name": "-",
+        "type": 0,
+        "way_points": [
+          79,
+          83
+        ]
+      },
+      {
+        "distance": 538.6,
+        "duration": 387.8,
+        "instruction": "Turn sharp right",
+        "name": "-",
+        "type": 3,
+        "way_points": [
+          83,
+          106
+        ]
+      },
+      {
+        "distance": 434.0,
+        "duration": 312.5,
+        "instruction": "Turn left",
+        "name": "-",
+        "type": 0,
+        "way_points": [
+          106,
+          120
+        ]
+      },
+      {
+        "distance": 569.6,
+        "duration": 410.1,
+        "instruction": "Turn right",
+        "name": "-",
+        "type": 1,
+        "way_points": [
+          120,
+          138
+        ]
+      },
+      {
+        "distance": 34.3,
+        "duration": 24.7,
+        "instruction": "Keep right",
+        "name": "-",
+        "type": 13,
+        "way_points": [
+          138,
+          143
+        ]
+      },
+      {
+        "distance": 2.3,
+        "duration": 1.6,
+        "instruction": "Turn left",
+        "name": "-",
+        "type": 0,
+        "way_points": [
+          143,
+          145
+        ]
+      },
+      {
+        "distance": 847.3,
+        "duration": 610.0,
+        "instruction": "Turn right",
+        "name": "-",
+        "type": 1,
+        "way_points": [
+          145,
+          187
+        ]
+      },
+      {
+        "distance": 836.8,
+        "duration": 602.5,
+        "instruction": "Turn right",
+        "name": "-",
+        "type": 1,
+        "way_points": [
+          187,
+          213
+        ]
+      },
+      {
+        "distance": 12.7,
+        "duration": 9.1,
+        "instruction": "Turn sharp right",
+        "name": "-",
+        "type": 3,
+        "way_points": [
+          213,
+          217
+        ]
+      },
+      {
+        "distance": 18.4,
+        "duration": 13.3,
+        "instruction": "Keep right",
+        "name": "-",
+        "type": 13,
+        "way_points": [
+          217,
+          220
+        ]
+      },
+      {
+        "distance": 112.6,
+        "duration": 81.1,
+        "instruction": "Keep left",
+        "name": "-",
+        "type": 12,
+        "way_points": [
+          220,
+          226
+        ]
+      },
+      {
+        "distance": 58.4,
+        "duration": 42.0,
+        "instruction": "Turn left",
+        "name": "-",
+        "type": 0,
+        "way_points": [
+          226,
+          238
+        ]
+      },
+      {
+        "distance": 232.3,
+        "duration": 167.2,
+        "instruction": "Turn left",
+        "name": "-",
+        "type": 0,
+        "way_points": [
+          238,
+          251
+        ]
+      },
+      {
+        "distance": 135.3,
+        "duration": 97.4,
+        "instruction": "Turn left",
+        "name": "-",
+        "type": 0,
+        "way_points": [
+          251,
+          256
+        ]
+      },
+      {
+        "distance": 6.5,
+        "duration": 4.6,
+        "instruction": "Keep right",
+        "name": "-",
+        "type": 13,
+        "way_points": [
+          256,
+          257
+        ]
+      },
+      {
+        "distance": 12.5,
+        "duration": 9.0,
+        "instruction": "Turn left",
+        "name": "-",
+        "type": 0,
+        "way_points": [
+          257,
+          261
+        ]
+      },
+      {
+        "distance": 3.4,
+        "duration": 2.4,
+        "instruction": "Turn left",
+        "name": "-",
+        "type": 0,
+        "way_points": [
+          261,
+          262
+        ]
+      },
+      {
+        "distance": 354.5,
+        "duration": 255.2,
+        "instruction": "Turn right",
+        "name": "-",
+        "type": 1,
+        "way_points": [
+          262,
+          277
+        ]
+      },
+      {
+        "distance": 12.8,
+        "duration": 9.2,
+        "instruction": "Turn left",
+        "name": "-",
+        "type": 0,
+        "way_points": [
+          277,
+          281
+        ]
+      },
+      {
+        "distance": 197.5,
+        "duration": 142.2,
+        "instruction": "Keep left",
+        "name": "-",
+        "type": 12,
+        "way_points": [
+          281,
+          286
+        ]
+      },
+      {
+        "distance": 6.3,
+        "duration": 4.5,
+        "instruction": "Turn slight right",
+        "name": "-",
+        "type": 5,
+        "way_points": [
+          286,
+          288
+        ]
+      },
+      {
+        "distance": 20.3,
+        "duration": 14.6,
+        "instruction": "Turn left",
+        "name": "-",
+        "type": 0,
+        "way_points": [
+          288,
+          292
+        ]
+      },
+      {
+        "distance": 3.8,
+        "duration": 2.8,
+        "instruction": "Turn left",
+        "name": "-",
+        "type": 0,
+        "way_points": [
+          292,
+          293
+        ]
+      },
+      {
+        "distance": 164.7,
+        "duration": 118.6,
+        "instruction": "Turn right",
+        "name": "-",
+        "type": 1,
+        "way_points": [
+          293,
+          296
+        ]
+      },
+      {
+        "distance": 4.5,
+        "duration": 3.2,
+        "instruction": "Turn right",
+        "name": "-",
+        "type": 1,
+        "way_points": [
+          296,
+          297
+        ]
+      },
+      {
+        "distance": 25.7,
+        "duration": 18.5,
+        "instruction": "Turn left",
+        "name": "-",
+        "type": 0,
+        "way_points": [
+          297,
+          298
+        ]
+      },
+      {
+        "distance": 8.2,
+        "duration": 5.9,
+        "instruction": "Turn left",
+        "name": "-",
+        "type": 0,
+        "way_points": [
+          298,
+          299
+        ]
+      },
+      {
+        "distance": 123.7,
+        "duration": 89.0,
+        "instruction": "Turn right",
+        "name": "-",
+        "type": 1,
+        "way_points": [
+          299,
+          305
+        ]
+      },
+      {
+        "distance": 346.0,
+        "duration": 249.1,
+        "instruction": "Turn slight left",
+        "name": "-",
+        "type": 4,
+        "way_points": [
+          305,
+          312
+        ]
+      },
+      {
+        "distance": 12.4,
+        "duration": 9.0,
+        "instruction": "Turn right",
+        "name": "-",
+        "type": 1,
+        "way_points": [
+          312,
+          315
+        ]
+      },
+      {
+        "distance": 2.2,
+        "duration": 1.6,
+        "instruction": "Turn slight left",
+        "name": "-",
+        "type": 4,
+        "way_points": [
+          315,
+          316
+        ]
+      },
+      {
+        "distance": 468.1,
+        "duration": 337.0,
+        "instruction": "Turn slight right",
+        "name": "-",
+        "type": 5,
+        "way_points": [
+          316,
+          332
+        ]
+      },
+      {
+        "distance": 534.4,
+        "duration": 384.7,
+        "instruction": "Continue straight",
+        "name": "-",
+        "type": 6,
+        "way_points": [
+          332,
+          356
+        ]
+      },
+      {
+        "distance": 24.8,
+        "duration": 17.9,
+        "instruction": "Turn left",
+        "name": "-",
+        "type": 0,
+        "way_points": [
+          356,
+          363
+        ]
+      },
+      {
+        "distance": 4.1,
+        "duration": 2.9,
+        "instruction": "Turn left",
+        "name": "-",
+        "type": 0,
+        "way_points": [
+          363,
+          364
+        ]
+      },
+      {
+        "distance": 327.8,
+        "duration": 236.0,
+        "instruction": "Turn right",
+        "name": "-",
+        "type": 1,
+        "way_points": [
+          364,
+          376
+        ]
+      },
+      {
+        "distance": 2.0,
+        "duration": 1.4,
+        "instruction": "Turn slight right",
+        "name": "-",
+        "type": 5,
+        "way_points": [
+          376,
+          377
+        ]
+      },
+      {
+        "distance": 286.7,
+        "duration": 206.4,
+        "instruction": "Turn slight left",
+        "name": "-",
+        "type": 4,
+        "way_points": [
+          377,
+          397
+        ]
+      },
+      {
+        "distance": 279.1,
+        "duration": 201.0,
+        "instruction": "Keep right",
+        "name": "-",
+        "type": 13,
+        "way_points": [
+          397,
+          408
+        ]
+      },
+      {
+        "distance": 20.6,
+        "duration": 14.8,
+        "instruction": "Turn left",
+        "name": "-",
+        "type": 0,
+        "way_points": [
+          408,
+          410
+        ]
+      },
+      {
+        "distance": 466.5,
+        "duration": 335.9,
+        "instruction": "Turn right",
+        "name": "-",
+        "type": 1,
+        "way_points": [
+          410,
+          419
+        ]
+      },
+      {
+        "distance": 21.5,
+        "duration": 15.5,
+        "instruction": "Turn right",
+        "name": "-",
+        "type": 1,
+        "way_points": [
+          419,
+          423
+        ]
+      },
+      {
+        "distance": 309.1,
+        "duration": 222.5,
+        "instruction": "Turn left",
+        "name": "-",
+        "type": 0,
+        "way_points": [
+          423,
+          433
+        ]
+      },
+      {
+        "distance": 137.7,
+        "duration": 99.2,
+        "instruction": "Turn left",
+        "name": "-",
+        "type": 0,
+        "way_points": [
+          433,
+          444
+        ]
+      },
+      {
+        "distance": 1.6,
+        "duration": 1.1,
+        "instruction": "Turn slight right",
+        "name": "-",
+        "type": 5,
+        "way_points": [
+          444,
+          445
+        ]
+      },
+      {
+        "distance": 27.2,
+        "duration": 19.5,
+        "instruction": "Keep left",
+        "name": "-",
+        "type": 12,
+        "way_points": [
+          445,
+          447
+        ]
+      },
+      {
+        "distance": 23.8,
+        "duration": 17.1,
+        "instruction": "Turn left",
+        "name": "-",
+        "type": 0,
+        "way_points": [
+          447,
+          449
+        ]
+      },
+      {
+        "distance": 414.5,
+        "duration": 298.4,
+        "instruction": "Turn right",
+        "name": "-",
+        "type": 1,
+        "way_points": [
+          449,
+          458
+        ]
+      },
+      {
+        "distance": 40.6,
+        "duration": 29.2,
+        "instruction": "Turn left onto West 42nd Street",
+        "name": "West 42nd Street",
+        "type": 0,
+        "way_points": [
+          458,
+          459
+        ]
+      },
+      {
+        "distance": 182.6,
+        "duration": 131.5,
+        "instruction": "Turn right",
+        "name": "-",
+        "type": 1,
+        "way_points": [
+          459,
+          461
+        ]
+      },
+      {
+        "distance": 41.1,
+        "duration": 29.6,
+        "instruction": "Turn right",
+        "name": "-",
+        "type": 1,
+        "way_points": [
+          461,
+          462
+        ]
+      },
+      {
+        "distance": 1355.5,
+        "duration": 975.9,
+        "instruction": "Turn left",
+        "name": "-",
+        "type": 0,
+        "way_points": [
+          462,
+          519
+        ]
+      },
+      {
+        "distance": 247.9,
+        "duration": 178.5,
+        "instruction": "Turn right",
+        "name": "-",
+        "type": 1,
+        "way_points": [
+          519,
+          526
+        ]
+      },
+      {
+        "distance": 107.2,
+        "duration": 77.2,
+        "instruction": "Keep left",
+        "name": "-",
+        "type": 12,
+        "way_points": [
+          526,
+          530
+        ]
+      },
+      {
+        "distance": 272.2,
+        "duration": 196.0,
+        "instruction": "Turn slight right",
+        "name": "-",
+        "type": 5,
+        "way_points": [
+          530,
+          538
+        ]
+      },
+      {
+        "distance": 3.0,
+        "duration": 2.1,
+        "instruction": "Turn slight left",
+        "name": "-",
+        "type": 4,
+        "way_points": [
+          538,
+          539
+        ]
+      },
+      {
+        "distance": 27.9,
+        "duration": 20.1,
+        "instruction": "Turn slight right",
+        "name": "-",
+        "type": 5,
+        "way_points": [
+          539,
+          544
+        ]
+      },
+      {
+        "distance": 33.5,
+        "duration": 24.1,
+        "instruction": "Turn left",
+        "name": "-",
+        "type": 0,
+        "way_points": [
+          544,
+          545
+        ]
+      },
+      {
+        "distance": 92.2,
+        "duration": 66.4,
+        "instruction": "Turn right",
+        "name": "-",
+        "type": 1,
+        "way_points": [
+          545,
+          546
+        ]
+      },
+      {
+        "distance": 51.9,
+        "duration": 37.3,
+        "instruction": "Turn left",
+        "name": "-",
+        "type": 0,
+        "way_points": [
+          546,
+          548
+        ]
+      },
+      {
+        "distance": 138.3,
+        "duration": 99.5,
+        "instruction": "Turn right",
+        "name": "-",
+        "type": 1,
+        "way_points": [
+          548,
+          555
+        ]
+      },
+      {
+        "distance": 7.3,
+        "duration": 5.2,
+        "instruction": "Turn left",
+        "name": "-",
+        "type": 0,
+        "way_points": [
+          555,
+          557
+        ]
+      },
+      {
+        "distance": 8.3,
+        "duration": 6.0,
+        "instruction": "Turn left",
+        "name": "-",
+        "type": 0,
+        "way_points": [
+          557,
+          560
+        ]
+      },
+      {
+        "distance": 86.9,
+        "duration": 62.6,
+        "instruction": "Turn right onto Whitis Avenue",
+        "name": "Whitis Avenue",
+        "type": 1,
+        "way_points": [
+          560,
+          564
+        ]
+      },
+      {
+        "distance": 130.1,
+        "duration": 93.7,
+        "instruction": "Turn left onto Inner Campus Circle",
+        "name": "Inner Campus Circle",
+        "type": 0,
+        "way_points": [
+          564,
+          572
+        ]
+      },
+      {
+        "distance": 82.7,
+        "duration": 59.5,
+        "instruction": "Turn right",
+        "name": "-",
+        "type": 1,
+        "way_points": [
+          572,
+          580
+        ]
+      },
+      {
+        "distance": 19.9,
+        "duration": 14.3,
+        "instruction": "Turn right",
+        "name": "-",
+        "type": 1,
+        "way_points": [
+          580,
+          581
+        ]
+      },
+      {
+        "distance": 0.0,
+        "duration": 0.0,
+        "instruction": "Arrive at your destination, on the right",
+        "name": "-",
+        "type": 10,
+        "way_points": [
+          581,
+          581
+        ]
       }
     ],
-    "route_id": "balanced-downtown-b8dc80b1",
-    "route_type": "walking",
-    "safety_score": 78,
-    "start": "test, Austin, TX",
-    "summary": "Generally walkable with a few areas to watch.",
-    "tags": [],
-    "user_has_liked": false,
-    "user_id": "a3b21833-64b5-47d3-839b-d2f5a380141c",
-    "user_rating": 0
-  },
-  {
-    "average_rating": 0,
-    "comments": "",
-    "created_at": "2026-06-17T16:28:29.879408+00:00",
-    "destination": "UT Tower, Austin, TX, USA",
-    "distance_miles": 8.54,
-    "estimated_minutes": 164,
-    "filename": "map_21.png",
+    "distance_miles": 8.26,
+    "estimated_minutes": 159,
+    "filename": "map_54.png",
     "highlights": [
       "Nori",
       "PD Thai",
@@ -60,23 +931,21 @@
       "Roppolo's Pizzeria",
       "Bikkle",
       "Sip Pho",
-      "Live Oak Park",
-      "1972 Pub"
+      "Live Oak Park"
     ],
-    "id": "677de8c6-4b02-4166-bbae-b110ba19d937",
+    "id": "80e295ca-ecf6-49a2-ba62-20ec287dbec1",
     "is_shared": true,
-    "like_count": 0,
     "liked_by": [],
-    "map_style": "direct",
-    "name": "Route Option",
-    "rating_count": 0,
+    "map_style": "balanced",
+    "name": "Quickest",
     "ratings": [],
-    "route_id": "route-b605d5a4",
+    "route_id": "quickest-42100903",
     "route_type": "walking",
-    "safety_score": 92,
+    "safety_score": 90,
     "start": "Q2 Stadium, Austin, TX, USA",
     "summary": "Strong sidewalk coverage and comfortable walking conditions.",
     "tags": [],
+<<<<<<< HEAD
     "user_has_liked": false,
     "user_id": "a3b21833-64b5-47d3-839b-d2f5a380141c",
     "user_rating": 0
@@ -106,5 +975,8 @@
     "summary": "Generally walkable with a few areas to watch.",
     "tags": [],
     "user_id": "2833a8cf-3e30-4ec6-bc58-958238c3fbfb"
+=======
+    "user_id": "a3b21833-64b5-47d3-839b-d2f5a380141c"
+>>>>>>> 6465c6694bd50367086504ba2757849844386d3c
   }
 ]

@@ -7,8 +7,14 @@ setup-instructions.txt
 .DS_Store
 maps/
 .vercel
+<<<<<<< HEAD
 **/node_modules/
 **/dist/
 **/.vite/
 **/.vite-temp/
 **/.cache/
+=======
+node_modules/
+dist/
+dist-ssr/
+>>>>>>> 6465c6694bd50367086504ba2757849844386d3c

@@ -241,7 +241,8 @@ def search_routes(search: RouteSearchRequest) -> list[RouteOption]:
             "estimated_minutes": minutes,
             "id": "route",
             "name": "Route Option",
-            "map_style": ["balanced", "quiet", "direct"][index % 3]
+            "map_style": ["balanced", "quiet", "direct"][index % 3],
+            "directions": feature["properties"]["segments"][0]["steps"]
             # "bbox": bbox
         })
     route_superlatives = {
@@ -277,9 +278,11 @@ def search_routes(search: RouteSearchRequest) -> list[RouteOption]:
                 highlights=route_highlights,
                 route_type=search.route_type,
                 map_style=route["map_style"],
-                filename=map_image_filename
+                filename=map_image_filename,
+                directions=route["directions"]
             )
         )
+    # print(route_options[-1])
 
 
     return sorted(route_options, key=lambda route: route.safety_score, reverse=True)

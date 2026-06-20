@@ -20,6 +20,7 @@ class RouteOption(BaseModel):
     route_type: str = "walking"
     map_style: str = "balanced"
     filename: str = ""
+    directions: list[dict]
 
 
 class SavedRouteCreate(BaseModel):
@@ -35,6 +36,7 @@ class SavedRouteCreate(BaseModel):
     route_type: str = "walking"
     map_style: str = "balanced"
     filename: str = ""
+    directions: list[dict]
 
 
 class SavedRouteNotesUpdate(BaseModel):

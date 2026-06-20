@@ -87,6 +87,7 @@ def save_route(route_data: SavedRouteCreate, user_id: str) -> dict:
         "route_type": route_data.route_type,
         "map_style": route_data.map_style,
         "filename": route_data.filename,
+        "directions": route_data.directions,
         "comments": "",
         "tags": [],
         "is_shared": True,
