@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+
+{% block title %}Social | SafeWalkers{% endblock %}
+
+{% block content %}
+  <header class="page-header"><div><p class="eyebrow">Community</p><h1>Walk safer together</h1><p>Meet the people sharing useful local routes and knowledge.</p></div><a class="button" href="/explore">Explore routes</a></header>
+  {% if community %}
+    <section class="community-grid">
+      {% for member in community %}
+        <article class="community-card">
+          <a class="avatar avatar-large" href="/users/{{ member.user.username }}">{% if member.user.picture_url %}<img src="{{ member.user.picture_url }}" alt="" />{% else %}{{ member.user.username[:1] | upper }}{% endif %}</a>
+          <div><h2><a href="/users/{{ member.user.username }}">{{ member.user.username }}</a></h2><p>{{ member.user.bio or "Sharing safer ways through the city." }}</p></div>
+          <dl><div><dt>Shared</dt><dd>{{ member.route_count }}</dd></div><div><dt>Avg. safety</dt><dd>{{ member.average_safety }}</dd></div><div><dt>Likes</dt><dd>{{ member.like_count }}</dd></div></dl>
+          <a class="button secondary button-small" href="/users/{{ member.user.username }}">View profile</a>
+        </article>
+      {% endfor %}
+    </section>
+  {% else %}<section class="empty-state"><span class="empty-icon">◌</span><h2>The community is just getting started.</h2><p>Share a saved route to appear here.</p></section>{% endif %}
+
+  {% if recent_routes %}<section class="content-section"><div class="section-heading"><div><p class="eyebrow">Latest activity</p><h2>Recently shared routes</h2></div></div><div class="route-grid compact-grid">{% for route in recent_routes %}{% set show_save = True %}{% include "partials/route_card.html" %}{% endfor %}</div></section>{% endif %}
+{% endblock %}

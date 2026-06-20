@@ -3,28 +3,15 @@
 {% block title %}About | SafeWalkers{% endblock %}
 
 {% block content %}
-  <section class="about-layout">
-    <div>
-      <p class="eyebrow">About SafeWalkers</p>
-      <h1>Safer route planning for everyday movement.</h1>
-      <p class="lede">
-        SafeWalkers is a student-built prototype for comparing walking and biking
-        routes with safety, comfort, and local context in mind.
-      </p>
-      <p>
-        The goal is simple: help people make more confident travel choices by
-        combining route options, safety scoring, saved-route notes, and community
-        knowledge in one lightweight app.
-      </p>
-    </div>
-    <div class="about-card">
-      <div class="mini-map">
-        <span></span>
-        <span></span>
-        <span></span>
-      </div>
-      <h2>Built for Austin first</h2>
-      <p>Designed around city walking, campus trips, errands, commutes, and short rides.</p>
-    </div>
+  <header class="page-header"><div><p class="eyebrow">About SafeWalkers</p><h1>Safer movement starts with better context.</h1><p>SafeWalkers is a student-built prototype for comparing everyday routes with safety, comfort, and local knowledge in mind.</p></div></header>
+  <section class="about-hero panel">
+    <div><h2>Confidence before the first step</h2><p>Our goal is simple: help people make more informed travel choices by combining route options, understandable safety scoring, personal notes, and community knowledge in one lightweight experience.</p><div class="pill-row"><span>Austin first</span><span>Walking + biking</span><span>Community powered</span></div></div>
+    <img src="{{ url_for('static', path='/images/walker.webp') }}" alt="Glossy red walking figure" />
   </section>
+  <section class="value-grid">
+    <article><span>01</span><h2>Useful safety context</h2><p>See route-level details alongside distance and travel time.</p></article>
+    <article><span>02</span><h2>Local knowledge</h2><p>Shared routes, notes, tags, ratings, and likes add human context.</p></article>
+    <article><span>03</span><h2>Lightweight by design</h2><p>A focused prototype that stays understandable and easy to use.</p></article>
+  </section>
+  <section class="cta-panel"><div><p class="eyebrow">Ready to explore?</p><h2>Find a route that feels right.</h2></div><a class="button" href="/generate">Find a route →</a></section>
 {% endblock %}

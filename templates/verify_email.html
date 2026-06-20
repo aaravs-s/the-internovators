@@ -1,28 +1,27 @@
 {% extends "base.html" %}
 
-{% block title %}Email Verification | SafeWalkers{% endblock %}
+{% block title %}Verify your email | SafeWalkers{% endblock %}
 
 {% block content %}
-  <section class="auth-layout">
-    <div>
-      <p class="eyebrow">Email verification</p>
-      <h1>Type in the code from your email.</h1>
-      <p class="lede">For this prototype, use code <strong>123456</strong>.</p>
+  <section class="auth-shell">
+    <div class="auth-visual">
+      <a class="auth-brand" href="/"><img src="{{ url_for('static', path='/images/brand-wordmark.webp') }}" alt="SafeWalkers" /></a>
+      <img class="auth-walker" src="{{ url_for('static', path='/images/walker.webp') }}" alt="Glossy red walking figure" />
+      <div><h1>One quick check</h1><p>Verify your prototype account and start exploring safer routes.</p></div>
     </div>
-
-    <div class="form-card">
-      <form action="/verify-email" method="post">
-        {% if error %}
-          <p class="error">{{ error }}</p>
-        {% endif %}
-        <label for="code">Verification code</label>
-        <input id="code" name="code" type="text" inputmode="numeric" minlength="6" maxlength="6" required />
-        <button class="button" type="submit">Continue to home page</button>
-      </form>
-
-      <form action="/verify-email/resend" method="post">
-        <button class="link-button" type="submit">Resend email</button>
-      </form>
+    <div class="auth-panel">
+      <div class="auth-card">
+        <p class="eyebrow">Email verification</p>
+        <h2>Enter your code</h2>
+        <p class="form-note">For this prototype, use <strong>123456</strong>.</p>
+        <form action="/verify-email" method="post">
+          {% if error %}<p class="alert error">{{ error }}</p>{% endif %}
+          <label for="code">Six-digit code</label>
+          <input class="code-input" id="code" name="code" type="text" inputmode="numeric" autocomplete="one-time-code" minlength="6" maxlength="6" placeholder="123456" required />
+          <button class="button button-wide" type="submit">Continue to dashboard</button>
+        </form>
+        <form action="/verify-email/resend" method="post"><button class="text-button" type="submit">Resend code</button></form>
+      </div>
     </div>
   </section>
 {% endblock %}

@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+
+{% block title %}Home | SafeWalkers{% endblock %}
+
+{% block content %}
+  <header class="page-header">
+    <div><p class="eyebrow">Your dashboard</p><h1>Welcome, {{ user.username }}!</h1><p>Stay safe on every route.</p></div>
+    <div class="header-actions"><a class="button secondary" href="/generate">◎ Find Route</a><a class="avatar" href="/profile" aria-label="Open profile">{{ user.username[:1] | upper }}</a></div>
+  </header>
+
+  <section class="dashboard-grid">
+    <article class="dashboard-spotlight">
+      <div><small>{{ dashboard_stats[0].label }}</small><strong>{{ dashboard_stats[0].value }}</strong><span>{{ dashboard_stats[0].detail }}</span></div>
+      <div class="safety-pulse" aria-hidden="true"><span></span></div>
+      <div class="pill-row"><span>Low Crime</span><span>Well Lit</span><span>Clear Path</span></div>
+    </article>
+    <div class="dashboard-stat-stack">
+      {% for stat in dashboard_stats[1:] %}
+        <article class="metric-card"><small>{{ stat.label }}</small><strong>{{ stat.value }}</strong><span>{{ stat.detail }}</span></article>
+      {% endfor %}
+    </div>
+  </section>
+
+  <section class="panel activity-panel">
+    <div class="section-heading"><h2>{{ activity_title }}</h2><span class="metric-toggle">distance</span></div>
+    <div class="activity-chart" aria-label="{{ activity_title }}">
+      {% for item in activity_series %}
+        <div class="chart-column"><div class="chart-value">{{ item.value }}</div><div class="chart-track"><span style="height: {{ item.height }}%"></span></div><small>{{ item.label }}</small></div>
+      {% endfor %}
+    </div>
+  </section>
+
+  <section class="content-section">
+    <div class="section-heading"><div><p class="eyebrow">Your collection</p><h2>Recent routes</h2></div><a href="/saved">See all →</a></div>
+    {% if recent_routes %}
+      <div class="route-grid compact-grid">
+        {% for route in recent_routes %}{% include "partials/route_card.html" %}{% endfor %}
+      </div>
+    {% else %}
+      <article class="empty-state"><span class="empty-icon">◇</span><h2>Your routes will live here.</h2><p>Find a route, compare the options, and save your favorite.</p><a class="button" href="/generate">Find your first route</a></article>
+    {% endif %}
+  </section>
+
+  <section class="profile-summary panel">
+    <span class="avatar avatar-large">{{ user.username[:1] | upper }}</span>
+    <div><p class="eyebrow">Your profile</p><h2>{{ user.username }}</h2><p>{{ user.bio or "Walking the city, one safe route at a time." }}</p></div>
+    <a class="button secondary" href="/profile">View profile</a>
+  </section>
+{% endblock %}

@@ -14,9 +14,10 @@
     ],
     "id": "bb15d07f-3109-43ea-a4d5-8649ed241574",
     "is_shared": true,
-    "like_count": 1,
+    "like_count": 2,
     "liked_by": [
-      "5ac2de14-8ea1-4bf5-bd21-1ff6ec3551ed"
+      "5ac2de14-8ea1-4bf5-bd21-1ff6ec3551ed",
+      "2833a8cf-3e30-4ec6-bc58-958238c3fbfb"
     ],
     "map_style": "balanced",
     "name": "Balanced Downtown Walk",
@@ -79,5 +80,31 @@
     "user_has_liked": false,
     "user_id": "a3b21833-64b5-47d3-839b-d2f5a380141c",
     "user_rating": 0
+  },
+  {
+    "comments": "",
+    "created_at": "2026-06-20T03:30:09.736465+00:00",
+    "destination": "test2, Austin, TX",
+    "distance_miles": 1.4,
+    "estimated_minutes": 29,
+    "filename": "",
+    "highlights": [
+      "Prioritizes streets with stronger sidewalk coverage",
+      "Uses better-lit downtown corridors",
+      "Avoids the busiest crossing cluster when possible"
+    ],
+    "id": "7e42bcb9-27c9-48e9-8f9f-31f4e88d3df8",
+    "is_shared": true,
+    "liked_by": [],
+    "map_style": "balanced",
+    "name": "Balanced Downtown Walk",
+    "ratings": [],
+    "route_id": "balanced-downtown-b8dc80b1",
+    "route_type": "walking",
+    "safety_score": 78,
+    "start": "test, Austin, TX",
+    "summary": "Generally walkable with a few areas to watch.",
+    "tags": [],
+    "user_id": "2833a8cf-3e30-4ec6-bc58-958238c3fbfb"
   }
 ]

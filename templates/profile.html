@@ -4,98 +4,26 @@
 
 {% block content %}
   {% if not profile_user %}
-    <section class="empty-state">
-      <h1>Profile not found</h1>
-      <p>That SafeWalkers user does not exist.</p>
-    </section>
+    <section class="empty-state"><span class="empty-icon">◌</span><h1>Profile not found</h1><p>That SafeWalkers user does not exist.</p><a class="button" href="/social">Back to community</a></section>
   {% else %}
-    <section class="profile-header">
-      <div class="profile-avatar large">
-        {% if profile_user.picture_url %}
-          <img src="{{ profile_user.picture_url }}" alt="{{ profile_user.username }} profile picture" />
-        {% else %}
-          <span>{{ profile_user.username[:1] | upper }}</span>
-        {% endif %}
-      </div>
-      <div>
-        <p class="eyebrow">Profile</p>
-        <h1>{{ profile_user.username }}</h1>
-        {% if is_self %}
-          <p class="lede">{{ profile_user.email }}</p>
-        {% endif %}
-        <p>{{ profile_user.bio or "This walker has not added a bio yet." }}</p>
-        <p class="form-note">
-          <a href="/routes/saved">{{ saved_routes | length }} saved routes</a>
-        </p>
-      </div>
+    <section class="profile-hero panel">
+      <span class="avatar avatar-xl">{% if profile_user.picture_url %}<img src="{{ profile_user.picture_url }}" alt="{{ profile_user.username }} profile picture" />{% else %}{{ profile_user.username[:1] | upper }}{% endif %}</span>
+      <div class="profile-copy"><p class="eyebrow">{{ 'Your profile' if is_self else 'Community member' }}</p><h1>{{ profile_user.username }}</h1>{% if is_self %}<p class="profile-email">{{ profile_user.email }}</p>{% endif %}<p>{{ profile_user.bio or "This walker has not added a bio yet." }}</p><div class="profile-stats"><span><strong>{{ saved_routes | length }}</strong> routes</span><span><strong>{{ reports | length }}</strong> reports</span></div></div>
+      {% if is_self %}<a class="button secondary" href="#edit-profile">Edit profile</a>{% endif %}
     </section>
 
-    <section class="two-column">
-      <div>
-        <h2>Saved routes</h2>
-        {% if saved_routes %}
-          <div class="stack">
-            {% for route in saved_routes %}
-              {% include "partials/route_card.html" %}
-            {% endfor %}
-          </div>
-        {% else %}
-          <p class="empty">No saved routes yet.</p>
-        {% endif %}
+    <section class="profile-layout">
+      <div class="profile-routes">
+        <div class="section-heading"><div><p class="eyebrow">Collection</p><h2>{{ 'Saved routes' if is_self else 'Shared routes' }}</h2></div></div>
+        {% if saved_routes %}<div class="route-grid single-column">{% for route in saved_routes %}{% include "partials/route_card.html" %}{% endfor %}</div>{% else %}<article class="empty-state compact"><h2>No routes here yet.</h2></article>{% endif %}
       </div>
 
       {% if is_self %}
-        <div class="stack">
-          <section class="form-card">
-            <h2>Edit profile</h2>
-            <form action="/profile" method="post">
-              <label for="picture_url">Picture URL</label>
-              <input id="picture_url" name="picture_url" type="url" maxlength="300" value="{{ profile_user.picture_url }}" />
-
-              <label for="bio">Bio</label>
-              <textarea id="bio" name="bio" maxlength="500">{{ profile_user.bio }}</textarea>
-
-              <button class="button" type="submit">Save profile</button>
-            </form>
-          </section>
-
-          <section class="form-card">
-            <h2>Change password</h2>
-            <form action="/profile/password" method="post">
-              <label for="current_password">Current password</label>
-              <input id="current_password" name="current_password" type="password" required />
-
-              <label for="new_password">New password</label>
-              <input id="new_password" name="new_password" type="password" minlength="8" required />
-
-              <button class="button" type="submit">Change password</button>
-            </form>
-          </section>
-
-          <section>
-            <h2>Safety reports</h2>
-            <form class="form-card compact" action="/reports" method="post">
-              <label for="location">Location</label>
-              <input id="location" name="location" type="text" placeholder="Congress Ave" required />
-
-              <label for="note">Note</label>
-              <textarea id="note" name="note" minlength="5" maxlength="500" required></textarea>
-
-              <button class="button" type="submit">Submit report</button>
-            </form>
-
-            {% if reports %}
-              <div class="stack">
-                {% for report in reports %}
-                  <article class="note-card">
-                    <h3>{{ report.location }}</h3>
-                    <p>{{ report.note }}</p>
-                  </article>
-                {% endfor %}
-              </div>
-            {% endif %}
-          </section>
-        </div>
+        <aside class="profile-controls">
+          <section class="panel form-panel" id="edit-profile"><p class="eyebrow">Profile</p><h2>Edit details</h2><form action="/profile" method="post"><label for="picture_url">Picture URL</label><input id="picture_url" name="picture_url" type="url" maxlength="300" value="{{ profile_user.picture_url }}" placeholder="https://..." /><label for="bio">Bio</label><textarea id="bio" name="bio" maxlength="500" rows="4">{{ profile_user.bio }}</textarea><button class="button button-wide" type="submit">Save profile</button></form></section>
+          <section class="panel form-panel"><p class="eyebrow">Security</p><h2>Change password</h2><form action="/profile/password" method="post"><label for="current_password">Current password</label><input id="current_password" name="current_password" type="password" required /><label for="new_password">New password</label><input id="new_password" name="new_password" type="password" minlength="8" required /><button class="button button-wide secondary" type="submit">Update password</button></form></section>
+          <section class="panel form-panel"><p class="eyebrow">Community safety</p><h2>Submit a report</h2><form action="/reports" method="post"><label for="location">Location</label><input id="location" name="location" type="text" placeholder="Congress Ave" required /><label for="note">What did you notice?</label><textarea id="note" name="note" minlength="5" maxlength="500" rows="4" required></textarea><button class="button button-wide" type="submit">Submit report</button></form>{% if reports %}<div class="report-list">{% for report in reports %}<article><strong>{{ report.location }}</strong><p>{{ report.note }}</p></article>{% endfor %}</div>{% endif %}</section>
+        </aside>
       {% endif %}
     </section>
   {% endif %}

@@ -1,35 +1,33 @@
 {% extends "base.html" %}
 
-{% block title %}Sign up | SafeWalkers{% endblock %}
+{% block title %}Create an account | SafeWalkers{% endblock %}
 
 {% block content %}
-  <section class="auth-layout">
-    <div>
-      <p class="eyebrow">Join SafeWalkers</p>
-      <h1>Create an account</h1>
-      <p class="lede">Accounts are optional, but they let you save routes and add safety reports.</p>
+  <section class="auth-shell">
+    <div class="auth-visual">
+      <a class="auth-brand" href="/"><img src="{{ url_for('static', path='/images/brand-wordmark.webp') }}" alt="SafeWalkers" /></a>
+      <img class="auth-walker" src="{{ url_for('static', path='/images/walker.webp') }}" alt="Glossy red walking figure" />
+      <div><h1>Walk safer together</h1><p>Create an account to save routes and contribute local knowledge.</p></div>
     </div>
-
-    <form class="form-card" action="/signup" method="post">
-      {% if error %}
-        <p class="error">{{ error }}</p>
-      {% endif %}
-
-      <label for="email">Email</label>
-      <input id="email" name="email" type="email" minlength="3" maxlength="80" required />
-
-      <label for="username">Username</label>
-      <input id="username" name="username" type="text" minlength="2" maxlength="30" required />
-
-      <label for="password">Password</label>
-      <input id="password" name="password" type="password" minlength="8" maxlength="100" required />
-
-      <label for="confirm_password">Confirm password</label>
-      <input id="confirm_password" name="confirm_password" type="password" minlength="8" maxlength="100" required />
-
-      <button class="button" type="submit">Create account</button>
-      <p class="form-note">Already have an account? <a href="/login">Login</a></p>
-    </form>
+    <div class="auth-panel">
+      <div class="auth-card auth-card-tall">
+        <p class="eyebrow">Join SafeWalkers</p>
+        <h2>Create account</h2>
+        <form action="/signup" method="post">
+          {% if error %}<p class="alert error">{{ error }}</p>{% endif %}
+          <label for="email">Email</label>
+          <input id="email" name="email" type="email" minlength="3" maxlength="80" autocomplete="email" placeholder="you@example.com" required />
+          <label for="username">Username</label>
+          <input id="username" name="username" type="text" minlength="2" maxlength="30" autocomplete="username" placeholder="Choose a username" required />
+          <label for="password">Password</label>
+          <input id="password" name="password" type="password" minlength="8" maxlength="100" autocomplete="new-password" data-password-strength required />
+          <div class="strength-meter" aria-live="polite"><span></span><span></span><span></span><span></span><small>Use at least 8 characters</small></div>
+          <label for="confirm_password">Confirm password</label>
+          <input id="confirm_password" name="confirm_password" type="password" minlength="8" maxlength="100" autocomplete="new-password" required />
+          <button class="button button-wide" type="submit">Create account <span aria-hidden="true">→</span></button>
+        </form>
+        <p class="auth-switch">Already have an account? <a href="/login">Sign in</a></p>
+      </div>
+    </div>
   </section>
 {% endblock %}
-

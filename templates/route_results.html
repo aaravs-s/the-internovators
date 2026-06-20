@@ -3,23 +3,8 @@
 {% block title %}Generated Routes | SafeWalkers{% endblock %}
 
 {% block content %}
-  <section class="results-header">
-    <div>
-      <p class="eyebrow">Generated routes</p>
-      <h1>{{ start }} to {{ destination }}</h1>
-      <p class="lede">{{ route_type | title }} options ranked with distance, time, and safety context.</p>
-    </div>
-    <a class="button secondary" href="/generate">New search</a>
-  </section>
-
-  {% if error %}
-    <p class="error">{{ error }}</p>
-  {% endif %}
-
-  <section class="stack">
-    {% for route in routes %}
-      {% set show_save = True %}
-      {% include "partials/route_card.html" %}
-    {% endfor %}
-  </section>
+  <header class="page-header"><div><p class="eyebrow">Generated routes</p><h1>{{ start }} <span class="muted-arrow">→</span> {{ destination }}</h1><p>{{ route_type | title }} options ranked with distance, time, and safety context.</p></div><a class="button secondary" href="/generate">New search</a></header>
+  {% if error %}<p class="alert error">{{ error }}</p>{% endif %}
+  {% if routes %}<section class="route-grid">{% for route in routes %}{% set show_save = True %}{% include "partials/route_card.html" %}{% endfor %}</section>
+  {% else %}<section class="empty-state"><span class="empty-icon">◇</span><h2>No routes generated.</h2><p>Adjust your search and try again.</p></section>{% endif %}
 {% endblock %}

@@ -1,83 +1,24 @@
 {% extends "base.html" %}
 
-{% block title %}Generate a Route | SafeWalkers{% endblock %}
+{% block title %}Find a Route | SafeWalkers{% endblock %}
 
 {% block content %}
-  <section class="hero">
-    <div>
-      <p class="eyebrow">Generate a route</p>
-      <h1>Where are we heading?</h1>
-      <p class="lede">Enter a start, destination, and travel type to compare 2-3 route options.</p>
-    </div>
-
-    <form class="search-panel" action="/routes/results" method="post">
-      {% if error %}
-        <p class="error">{{ error }}</p>
-      {% endif %}
-
-      <label for="start">Start location</label>
-      <input id="start" name="start" type="text" placeholder="UT Austin" list="start-suggestions" required />
+  <header class="page-header"><div><p class="eyebrow">Route planner</p><h1>Where are you heading?</h1><p>Compare safer walking and biking options across Austin.</p></div></header>
+  <section class="planner-layout">
+    <form class="panel planner-form" action="/routes/results" method="post">
+      {% if error %}<p class="alert error">{{ error }}</p>{% endif %}
+      <div class="location-field start-field"><span aria-hidden="true"></span><div><label for="start">Start location</label><input id="start" name="start" type="text" placeholder="UT Austin" list="start-suggestions" autocomplete="off" required /></div></div>
       <datalist id="start-suggestions"></datalist>
-
-      <label for="destination">End location</label>
-      <input id="destination" name="destination" type="text" placeholder="Austin Central Library" list="destination-suggestions" required />
+      <div class="route-connector" aria-hidden="true"></div>
+      <div class="location-field end-field"><span aria-hidden="true"></span><div><label for="destination">Destination</label><input id="destination" name="destination" type="text" placeholder="Austin Central Library" list="destination-suggestions" autocomplete="off" required /></div></div>
       <datalist id="destination-suggestions"></datalist>
-
-      <label for="route_type">Type</label>
-      <select id="route_type" name="route_type">
-        <option value="walking">Walking</option>
-        <option value="biking">Biking</option>
-      </select>
-
-      <button class="button" type="submit">Search</button>
+      <fieldset class="travel-selector"><legend>Travel type</legend><label><input type="radio" name="route_type" value="walking" checked /><span>Walking</span></label><label><input type="radio" name="route_type" value="biking" /><span>Biking</span></label></fieldset>
+      <button class="button button-wide" type="submit">Compare safe routes <span aria-hidden="true">→</span></button>
     </form>
+    <div class="planner-preview">
+      <img src="{{ url_for('static', path='/images/route-map.webp') }}" alt="Dark map of central Austin" />
+      <div class="map-overlay"><span class="map-pin pin-start"></span><span class="map-pin pin-end"></span><span class="preview-route-line"></span></div>
+      <article class="map-tip"><small>Safety tip</small><strong>Well-lit paths rank higher after dark.</strong><span>Route scores combine several local factors.</span></article>
+    </div>
   </section>
-{% endblock %}
-
-
-{% block scripts %}
-  <script>
-
-    function debounce(func, delay) {
-      let timeoutId;
-
-      return function (...args) {
-        clearTimeout(timeoutId);
-
-        timeoutId = setTimeout(() => {
-          func.apply(this, args);
-        }, delay);
-      };
-    }
-
-    async function fetchSuggestions(input) {
-      const query = input.value;
-
-      if (query.length < 3) return;
-
-      const response = await fetch(
-        `/autocomplete?q=${encodeURIComponent(query)}`
-      );
-
-      const results = await response.json();
-
-      console.log(results)
-      var innerText = "";
-      results["features"].forEach((item, index) => {
-        innerText += `<option>${item["properties"]["label"]}</option>\n`;
-      });
-      console.log(innerText);
-      console.log(`${input.id}-suggestions`);
-      document.getElementById(`${input.id}-suggestions`).innerHTML = innerText;
-    }
-
-    const debouncedFetch = debounce(fetchSuggestions, 300);
-
-    document.getElementById("start").addEventListener("input", function () {
-      debouncedFetch(this)
-    });
-    document.getElementById("destination").addEventListener("input", function () {
-      debouncedFetch(this)
-    });
-  </script>
 {% endblock %}

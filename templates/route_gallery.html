@@ -3,55 +3,15 @@
 {% block title %}Explore | SafeWalkers{% endblock %}
 
 {% block content %}
-  <section class="results-header">
-    <div>
-      <p class="eyebrow">Route gallery</p>
-      <h1>Shared routes from the community</h1>
-      <p class="lede">Browse routes other SafeWalkers have shared, compare safety scores, and save the ones worth trying.</p>
-    </div>
-    <a class="button" href="/generate">Share a route</a>
-  </section>
+  <header class="page-header"><div><p class="eyebrow">Discover</p><h1>Explore safe routes</h1><p>Browse routes shared by the SafeWalkers community.</p></div><a class="button" href="/generate">Find a route</a></header>
 
-  <form class="filter-bar" action="/routes/gallery" method="get">
-    <label for="route_type">Type</label>
-    <select id="route_type" name="route_type">
-      <option value="all" {% if route_type == "all" %}selected{% endif %}>All types</option>
-      <option value="walking" {% if route_type == "walking" %}selected{% endif %}>Walking</option>
-      <option value="biking" {% if route_type == "biking" %}selected{% endif %}>Biking</option>
-    </select>
-
-    <label for="focus">Focus</label>
-    <select id="focus" name="focus">
-      <option value="all" {% if focus == "all" %}selected{% endif %}>All routes</option>
-      <option value="top-rated" {% if focus == "top-rated" %}selected{% endif %}>Top rated</option>
-      <option value="scenic" {% if focus == "scenic" %}selected{% endif %}>Scenic</option>
-      <option value="safest" {% if focus == "safest" %}selected{% endif %}>Safest</option>
-      <option value="popular" {% if focus == "popular" %}selected{% endif %}>Popular</option>
-    </select>
-
-    <label for="sort">Sort</label>
-    <select id="sort" name="sort">
-      <option value="recent" {% if sort == "recent" %}selected{% endif %}>Recent</option>
-      <option value="community-rating" {% if sort == "community-rating" %}selected{% endif %}>Community rating</option>
-      <option value="safety-score" {% if sort == "safety-score" %}selected{% endif %}>Safety score</option>
-      <option value="most-liked" {% if sort == "most-liked" %}selected{% endif %}>Most liked</option>
-      <option value="shortest" {% if sort == "shortest" %}selected{% endif %}>Shortest</option>
-    </select>
-
-    <button class="button button-small" type="submit">Filter</button>
+  <form class="filter-panel" action="/explore" method="get">
+    <div><label for="route_type">Route type</label><select id="route_type" name="route_type"><option value="all" {% if route_type == 'all' %}selected{% endif %}>All types</option><option value="walking" {% if route_type == 'walking' %}selected{% endif %}>Walking</option><option value="biking" {% if route_type == 'biking' %}selected{% endif %}>Biking</option></select></div>
+    <div><label for="focus">Focus</label><select id="focus" name="focus"><option value="all" {% if focus == 'all' %}selected{% endif %}>All routes</option><option value="top-rated" {% if focus == 'top-rated' %}selected{% endif %}>Top rated</option><option value="scenic" {% if focus == 'scenic' %}selected{% endif %}>Scenic</option><option value="safest" {% if focus == 'safest' %}selected{% endif %}>Safest</option><option value="popular" {% if focus == 'popular' %}selected{% endif %}>Popular</option></select></div>
+    <div><label for="sort">Sort by</label><select id="sort" name="sort"><option value="recent" {% if sort == 'recent' %}selected{% endif %}>Recent</option><option value="community-rating" {% if sort == 'community-rating' %}selected{% endif %}>Community rating</option><option value="safety-score" {% if sort == 'safety-score' %}selected{% endif %}>Safety score</option><option value="most-liked" {% if sort == 'most-liked' %}selected{% endif %}>Most liked</option><option value="shortest" {% if sort == 'shortest' %}selected{% endif %}>Shortest</option></select></div>
+    <button class="button" type="submit">Apply filters</button>
   </form>
 
-  {% if routes %}
-    <section class="stack">
-      {% for route in routes %}
-        {% set show_save = True %}
-        {% include "partials/route_card.html" %}
-      {% endfor %}
-    </section>
-  {% else %}
-    <section class="empty-state">
-      <h2>No shared routes match those filters.</h2>
-      <p>Try a broader filter or generate a route to add the first one.</p>
-    </section>
-  {% endif %}
+  {% if routes %}<section class="route-grid">{% for route in routes %}{% set show_save = True %}{% include "partials/route_card.html" %}{% endfor %}</section>
+  {% else %}<section class="empty-state"><span class="empty-icon">◎</span><h2>No shared routes match.</h2><p>Try broader filters or generate a route to share.</p><a class="button" href="/generate">Generate a route</a></section>{% endif %}
 {% endblock %}

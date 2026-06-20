@@ -21,7 +21,10 @@ VERIFICATION_CODE = "123456"
 
 
 def render(request: Request, name: str, context: dict | None = None, status_code: int = 200):
-    page_context = {"user": get_current_user(request)}
+    page_context = {
+        "user": get_current_user(request),
+        "current_path": request.url.path,
+    }
     if context:
         page_context.update(context)
     return templates.TemplateResponse(
@@ -36,8 +39,21 @@ def route_owner(saved_route: dict) -> dict | None:
     return users_json.get_user_by_id(saved_route["user_id"])
 
 
+def route_with_map_state(route: dict) -> dict:
+    route = dict(route)
+    filename = route.get("filename", "")
+    route["map_available"] = bool(
+        filename
+        and filename == os.path.basename(filename)
+        and (settings.maps_dir / filename).is_file()
+    )
+    return route
+
+
 def route_with_owner(saved_route: dict, viewer_id: str | None = None) -> dict:
-    route = saved_routes_json.route_with_social_fields(saved_route, viewer_id)
+    route = route_with_map_state(
+        saved_routes_json.route_with_social_fields(saved_route, viewer_id)
+    )
     route["owner"] = route_owner(saved_route)
     return route
 
@@ -48,22 +64,77 @@ def get_route_record(route_id: str) -> tuple[dict | None, bool]:
         return route_with_owner(saved_route), True
     generated_route = generated_routes_json.get_generated_route(route_id)
     if generated_route:
-        return generated_route, False
+        return route_with_map_state(generated_route), False
     return None, False
 
 
+def dashboard_context(user) -> dict:
+    saved_routes = [
+        route_with_owner(route, user.id)
+        for route in saved_routes_json.list_saved_routes_for_user(user.id)
+    ]
+    recent_routes = list(reversed(saved_routes[-6:]))
+
+    if saved_routes:
+        total_distance = round(sum(route["distance_miles"] for route in saved_routes), 1)
+        average_safety = round(
+            sum(route["safety_score"] for route in saved_routes) / len(saved_routes),
+            1,
+        )
+        if average_safety > 10:
+            average_safety = round(average_safety / 10, 1)
+        total_likes = sum(route.get("like_count", 0) for route in saved_routes)
+        dashboard_stats = [
+            {"label": "Average safety", "value": str(average_safety), "detail": "Across saved routes"},
+            {"label": "Planned distance", "value": f"{total_distance} mi", "detail": "Across your collection"},
+            {"label": "Saved routes", "value": str(len(saved_routes)), "detail": "Ready when you are"},
+            {"label": "Community likes", "value": str(total_likes), "detail": "On routes you shared"},
+        ]
+        activity_title = "Recent route distance"
+        activity_series = [
+            {
+                "label": route["name"][:10],
+                "value": route["distance_miles"],
+                "height": max(12, min(100, round(route["distance_miles"] * 10))),
+            }
+            for route in saved_routes[-7:]
+        ]
+    else:
+        dashboard_stats = [
+            {"label": "Area safety index", "value": "9.1", "detail": "+0.3 from yesterday"},
+            {"label": "Distance today", "value": "5.5 mi", "detail": "+2.1 from average"},
+            {"label": "Routes walked", "value": "2", "detail": "This week: 12"},
+            {"label": "Calories burned", "value": "412", "detail": "Active day"},
+        ]
+        activity_title = "This week's activity"
+        sample = [("Mon", 41), ("Tue", 23), ("Wed", 78), ("Thu", 8), ("Fri", 55), ("Sat", 100), ("Sun", 30)]
+        activity_series = [
+            {"label": label, "value": value / 10, "height": value}
+            for label, value in sample
+        ]
+
+    return {
+        "dashboard_stats": dashboard_stats,
+        "activity_title": activity_title,
+        "activity_series": activity_series,
+        "recent_routes": recent_routes,
+    }
+
+
 @router.get("/", response_class=HTMLResponse)
+async def landing(request: Request):
+    user = get_current_user(request)
+    if user:
+        return RedirectResponse("/home", status_code=303)
+    return render(request, "index.html")
+
+
+@router.get("/home", response_class=HTMLResponse)
 async def home(request: Request):
     user = get_current_user(request)
-    recent_routes = []
-    if user:
-        recent_routes = [
-            route_with_owner(route, user.id)
-            for route in saved_routes_json.list_gallery_routes(viewer_id=user.id)
-            if route["user_id"] != user.id
-        ][-6:]
-        recent_routes.reverse()
-    return render(request, "index.html", {"recent_routes": recent_routes})
+    if not user:
+        return RedirectResponse("/login", status_code=303)
+    return render(request, "home.html", dashboard_context(user))
 
 
 @router.get("/about", response_class=HTMLResponse)
@@ -90,7 +161,10 @@ async def route_results(
             destination=destination,
             route_type=route_type,
         )
-        routes = generated_routes_json.store_generated_routes(search_routes(search))
+        routes = [
+            route_with_map_state(route)
+            for route in generated_routes_json.store_generated_routes(search_routes(search))
+        ]
         error = None
     except ValidationError:
         routes = []
@@ -109,7 +183,7 @@ async def route_results(
     )
 
 
-@router.get("/routes/saved", response_class=HTMLResponse)
+@router.get("/saved", response_class=HTMLResponse)
 async def saved_routes(request: Request):
     user = get_current_user(request)
     if not user:
@@ -126,7 +200,12 @@ async def saved_routes(request: Request):
     )
 
 
-@router.get("/routes/gallery", response_class=HTMLResponse)
+@router.get("/routes/saved")
+async def legacy_saved_routes():
+    return RedirectResponse("/saved", status_code=307)
+
+
+@router.get("/explore", response_class=HTMLResponse)
 async def route_gallery(
     request: Request,
     route_type: str = Query("all"),
@@ -160,7 +239,51 @@ async def route_gallery(
     )
 
 
-@router.get("/routes/{route_id}", response_class=HTMLResponse)
+@router.get("/routes/gallery")
+async def legacy_route_gallery(request: Request):
+    target = "/explore"
+    if request.url.query:
+        target = f"{target}?{request.url.query}"
+    return RedirectResponse(target, status_code=307)
+
+
+@router.get("/social", response_class=HTMLResponse)
+async def social(request: Request):
+    user = get_current_user(request)
+    viewer_id = user.id if user else None
+    routes = [
+        route_with_owner(route, viewer_id)
+        for route in saved_routes_json.list_gallery_routes(viewer_id=viewer_id)
+    ]
+    community = []
+    for member in users_json.list_users():
+        member_routes = [route for route in routes if route["user_id"] == member["id"]]
+        if not member_routes:
+            continue
+        community.append(
+            {
+                "user": member,
+                "route_count": len(member_routes),
+                "average_safety": round(
+                    (
+                        sum(route["safety_score"] for route in member_routes)
+                        / len(member_routes)
+                    )
+                    / 10,
+                    1,
+                ),
+                "like_count": sum(route.get("like_count", 0) for route in member_routes),
+            }
+        )
+    community.sort(key=lambda member: (member["like_count"], member["route_count"]), reverse=True)
+    return render(
+        request,
+        "social.html",
+        {"community": community, "recent_routes": list(reversed(routes[-6:]))},
+    )
+
+
+@router.get("/route/{route_id}", response_class=HTMLResponse)
 async def route_detail(request: Request, route_id: str):
     route, is_saved_route = get_route_record(route_id)
     user = get_current_user(request)
@@ -191,6 +314,11 @@ async def route_detail(request: Request, route_id: str):
     )
 
 
+@router.get("/routes/{route_id}")
+async def legacy_route_detail(route_id: str):
+    return RedirectResponse(f"/route/{route_id}", status_code=307)
+
+
 @router.post("/routes/save")
 async def save_route(
     request: Request,
@@ -218,7 +346,7 @@ async def save_route(
             and route.get("user_id") != user.id
             and not route.get("is_shared", True)
         ):
-            return RedirectResponse("/routes/gallery", status_code=303)
+            return RedirectResponse("/explore", status_code=303)
         route_id = route.get("route_id", route_id)
         highlights = route.get("highlights", [])
 
@@ -241,7 +369,7 @@ async def save_route(
         return RedirectResponse("/generate", status_code=303)
 
     saved_routes_json.save_route(route_data, user.id)
-    return RedirectResponse("/routes/saved", status_code=303)
+    return RedirectResponse("/saved", status_code=303)
 
 
 @router.post("/routes/{saved_route_id}/sharing")
@@ -259,7 +387,7 @@ async def update_route_sharing(
         user.id,
         is_shared.lower() == "true",
     )
-    return RedirectResponse(f"/routes/{saved_route_id}", status_code=303)
+    return RedirectResponse(f"/route/{saved_route_id}", status_code=303)
 
 
 @router.post("/routes/{saved_route_id}/like")
@@ -269,7 +397,7 @@ async def like_route(request: Request, saved_route_id: str):
         return RedirectResponse("/login", status_code=303)
 
     saved_routes_json.toggle_like(saved_route_id, user.id)
-    return RedirectResponse(f"/routes/{saved_route_id}", status_code=303)
+    return RedirectResponse(f"/route/{saved_route_id}", status_code=303)
 
 
 @router.post("/routes/{saved_route_id}/rating")
@@ -283,7 +411,7 @@ async def rate_route(
         return RedirectResponse("/login", status_code=303)
 
     saved_routes_json.rate_route(saved_route_id, user.id, rating)
-    return RedirectResponse(f"/routes/{saved_route_id}", status_code=303)
+    return RedirectResponse(f"/route/{saved_route_id}", status_code=303)
 
 
 @router.post("/routes/{saved_route_id}/notes")
@@ -300,10 +428,10 @@ async def update_route_notes(
     try:
         notes = SavedRouteNotesUpdate(comments=comments, tags=tags)
     except ValidationError:
-        return RedirectResponse(f"/routes/{saved_route_id}", status_code=303)
+        return RedirectResponse(f"/route/{saved_route_id}", status_code=303)
 
     saved_routes_json.update_route_notes(saved_route_id, user.id, notes)
-    return RedirectResponse(f"/routes/{saved_route_id}", status_code=303)
+    return RedirectResponse(f"/route/{saved_route_id}", status_code=303)
 
 
 @router.get("/login", response_class=HTMLResponse)
@@ -312,10 +440,12 @@ async def login_page(
     mode: str = Query("login"),
     message: str = Query(""),
 ):
+    if mode == "signup":
+        return RedirectResponse("/signup", status_code=303)
     return render(
         request,
         "login.html",
-        {"mode": mode if mode == "signup" else "login", "error": None, "message": message},
+        {"error": None, "message": message},
     )
 
 
@@ -338,7 +468,7 @@ async def login_user(
             status_code=401,
         )
 
-    response = RedirectResponse("/", status_code=303)
+    response = RedirectResponse("/home", status_code=303)
     response.set_cookie(
         settings.session_cookie_name,
         sign_user_id(user["id"]),
@@ -350,8 +480,8 @@ async def login_user(
 
 
 @router.get("/signup", response_class=HTMLResponse)
-async def signup_page():
-    return RedirectResponse("/login?mode=signup", status_code=303)
+async def signup_page(request: Request):
+    return render(request, "signup.html", {"error": None})
 
 
 @router.post("/signup")
@@ -365,8 +495,8 @@ async def signup_user(
     if password != confirm_password:
         return render(
             request,
-            "login.html",
-            {"mode": "signup", "error": "Passwords must match.", "message": ""},
+            "signup.html",
+            {"error": "Passwords must match."},
             status_code=400,
         )
 
@@ -377,19 +507,17 @@ async def signup_user(
     except ValidationError:
         return render(
             request,
-            "login.html",
+            "signup.html",
             {
-                "mode": "signup",
                 "error": "Enter a valid email, username, and password.",
-                "message": "",
             },
             status_code=400,
         )
     except ValueError as error:
         return render(
             request,
-            "login.html",
-            {"mode": "signup", "error": str(error), "message": ""},
+            "signup.html",
+            {"error": str(error)},
             status_code=400,
         )
 
@@ -408,9 +536,9 @@ async def signup_user(
 async def verify_email_page(request: Request):
     user = get_current_user(request)
     if not user:
-        return RedirectResponse("/login?mode=signup", status_code=303)
+        return RedirectResponse("/signup", status_code=303)
     if user.is_verified:
-        return RedirectResponse("/", status_code=303)
+        return RedirectResponse("/home", status_code=303)
     return render(request, "verify_email.html", {"error": None})
 
 
@@ -418,7 +546,7 @@ async def verify_email_page(request: Request):
 async def verify_email(request: Request, code: str = Form(...)):
     user = get_current_user(request)
     if not user:
-        return RedirectResponse("/login?mode=signup", status_code=303)
+        return RedirectResponse("/signup", status_code=303)
     if code.strip() != VERIFICATION_CODE:
         return render(
             request,
@@ -427,7 +555,7 @@ async def verify_email(request: Request, code: str = Form(...)):
             status_code=400,
         )
     users_json.verify_user(user.id)
-    return RedirectResponse("/", status_code=303)
+    return RedirectResponse("/home", status_code=303)
 
 
 @router.post("/verify-email/resend")

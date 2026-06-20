@@ -3,40 +3,75 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#0a0608" />
     <title>{% block title %}SafeWalkers{% endblock %}</title>
     <link rel="stylesheet" href="{{ url_for('static', path='/css/main.css') }}" />
   </head>
-  <body>
-    <header class="site-header">
-      <a class="brand" href="/">SafeWalkers</a>
-      <nav class="nav" aria-label="Primary navigation">
-        <a href="/">Home</a>
-        <a href="/about">About</a>
-        <a href="/generate">Generate a Route</a>
-        <a href="/routes/gallery">Gallery</a>
-        <a href="/routes/saved">Saved Routes</a>
-        {% if user %}
-          <a class="profile-link" href="/profile">
-            {% if user.picture_url %}
-              <img src="{{ user.picture_url }}" alt="{{ user.username }} profile picture" />
-            {% else %}
-              <span>{{ user.username[:1] | upper }}</span>
-            {% endif %}
-            Profile
-          </a>
-          <form action="/logout" method="post">
-            <button class="link-button" type="submit">Log out</button>
-          </form>
-        {% else %}
-          <a href="/login">Login</a>
-          <a class="button button-small" href="/login?mode=signup">Sign up</a>
-        {% endif %}
-      </nav>
-    </header>
+  {% set auth_page = current_path in ['/login', '/signup', '/verify-email'] %}
+  {% set landing_page = current_path == '/' %}
+  <body class="{{ 'auth-page' if auth_page else 'landing-page' if landing_page else 'application-page' }}">
+    <div class="site-background" aria-hidden="true"></div>
 
-    <main class="page">
-      {% block content %}{% endblock %}
+    {% if not auth_page and not landing_page %}
+      <div class="app-shell">
+        <aside class="app-sidebar" id="app-sidebar">
+          <a class="sidebar-brand" href="{{ '/home' if user else '/' }}" aria-label="SafeWalkers home">
+            <img src="{{ url_for('static', path='/images/brand-wordmark.webp') }}" alt="SafeWalkers" />
+          </a>
+
+          <p class="sidebar-label">Navigation</p>
+          <nav class="sidebar-nav" aria-label="Primary navigation">
+            {% if user %}
+              <a class="{{ 'active' if current_path == '/home' else '' }}" href="/home"><span aria-hidden="true">⌂</span>Home</a>
+            {% endif %}
+            <a class="{{ 'active' if current_path == '/generate' or current_path == '/routes/results' else '' }}" href="/generate"><span aria-hidden="true">◇</span>Find Route</a>
+            {% if user %}
+              <a class="{{ 'active' if current_path == '/saved' else '' }}" href="/saved"><span aria-hidden="true">♡</span>Saved</a>
+            {% endif %}
+            <a class="{{ 'active' if current_path == '/explore' else '' }}" href="/explore"><span aria-hidden="true">◎</span>Explore</a>
+            <a class="{{ 'active' if current_path == '/social' else '' }}" href="/social"><span aria-hidden="true">◌</span>Social</a>
+            <a class="{{ 'active' if current_path == '/about' else '' }}" href="/about"><span aria-hidden="true">i</span>About</a>
+          </nav>
+
+          <div class="sidebar-footer">
+            {% if user %}
+              <a class="sidebar-profile {{ 'active' if current_path == '/profile' else '' }}" href="/profile">
+                <span class="avatar avatar-small">
+                  {% if user.picture_url %}<img src="{{ user.picture_url }}" alt="" />{% else %}{{ user.username[:1] | upper }}{% endif %}
+                </span>
+                <span>{{ user.username }}</span>
+              </a>
+              <form action="/logout" method="post">
+                <button class="sidebar-action" type="submit"><span aria-hidden="true">↪</span>Sign out</button>
+              </form>
+            {% else %}
+              <a class="sidebar-action" href="/login"><span aria-hidden="true">→</span>Sign in</a>
+              <a class="sidebar-action accent" href="/signup"><span aria-hidden="true">＋</span>Create account</a>
+            {% endif %}
+          </div>
+        </aside>
+
+        <div class="app-main">
+          <header class="mobile-header">
+            <a class="mobile-brand" href="{{ '/home' if user else '/' }}">SafeWalkers</a>
+            <button class="menu-button" type="button" data-menu-toggle aria-controls="app-sidebar" aria-expanded="false">
+              <span></span><span></span><span></span><span class="sr-only">Toggle navigation</span>
+            </button>
+          </header>
+          <main class="page-content">
+    {% else %}
+      <main class="standalone-page">
+    {% endif %}
+
+    {% block content %}{% endblock %}
     </main>
+
+    {% if not auth_page and not landing_page %}
+        </div>
+      </div>
+    {% endif %}
+
+    <script src="{{ url_for('static', path='/js/app.js') }}" defer></script>
+    {% block scripts %}{% endblock %}
   </body>
-  {% block scripts %}{% endblock %}
 </html>
