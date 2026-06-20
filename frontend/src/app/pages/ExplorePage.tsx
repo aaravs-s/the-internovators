@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router";
+
+import { getRoutes, type RouteSummary } from "@/app/api/routes";
+import { imgRouteMap, homeSvg } from "@/app/assets";
 import { cardBase, SafetyBadge } from "@/app/components/ui";
-import { imgRouteMap } from "@/app/assets";
-import { homeSvg } from "@/app/assets";
-// import { exploreRoutes } from "@/app/data";
 
 const chips = ["All", "Short", "Long", "Highly Rated", "Nearby"];
 
@@ -11,35 +11,59 @@ export default function ExplorePage() {
   const navigate = useNavigate();
   const [search, setSearch] = useState("");
   const [filter, setFilter] = useState("All");
-  const [saved, setSaved]   = useState(new Set([2, 5]));
+  const [saved, setSaved] = useState<Set<string>>(new Set());
+  const [routes, setRoutes] = useState<RouteSummary[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
 
-  const toggle = (id: number) =>
-    setSaved((p) => { const n = new Set(p); n.has(id) ? n.delete(id) : n.add(id); return n; });
+  const toggle = (id: string) => {
+    setSaved((previous) => {
+      const next = new Set(previous);
+      next.has(id) ? next.delete(id) : next.add(id);
+      return next;
+    });
+  };
 
-  const [routes, setRoutes] = useState([]);
   useEffect(() => {
+    let cancelled = false;
     const params = new URLSearchParams({
-      route_type: filter === "All" ? "all" : "walking",
+      route_type: "all",
       focus: "all",
       sort: "recent",
     });
 
-    fetch(`/api/routes?${params.toString()}`)
-      .then(res => res.json())
-      .then(setRoutes);
-  }, [filter]);
+    setLoading(true);
+    setError("");
+    getRoutes(params)
+      .then((results) => {
+        if (!cancelled) setRoutes(results);
+      })
+      .catch((reason: unknown) => {
+        if (!cancelled) {
+          setRoutes([]);
+          setError(reason instanceof Error ? reason.message : "Unable to load routes");
+        }
+      })
+      .finally(() => {
+        if (!cancelled) setLoading(false);
+      });
 
-  const visible = routes.filter((r) => {
-    const matchSearch = r.name.toLowerCase().includes(search.toLowerCase());
+    return () => {
+      cancelled = true;
+    };
+  }, []);
+
+  const normalizedSearch = search.trim().toLowerCase();
+  const visible = routes.filter((route) => {
+    const searchable = `${route.name} ${route.tags.join(" ")}`.toLowerCase();
+    const matchSearch = searchable.includes(normalizedSearch);
     const matchFilter =
-      filter === "All"          ? true :
-      filter === "Short"        ? parseFloat(r.distance) < 4 :
-      filter === "Long"         ? parseFloat(r.distance) >= 4 :
-      filter === "Highly Rated" ? r.safety >= 9 : true;
+      filter === "All" || filter === "Nearby" ? true :
+      filter === "Short" ? route.distance_miles < 4 :
+      filter === "Long" ? route.distance_miles >= 4 :
+      filter === "Highly Rated" ? route.safety_score >= 9 : true;
     return matchSearch && matchFilter;
   });
-
-  const API = "http://127.0.0.1:8000";
 
   return (
     <>
@@ -52,7 +76,6 @@ export default function ExplorePage() {
       </div>
 
       <div className="px-[32px] py-[24px] flex flex-col gap-[20px]">
-        {/* Search */}
         <div className="relative">
           <div className="absolute left-[16px] top-1/2 -translate-y-1/2">
             <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
@@ -60,33 +83,35 @@ export default function ExplorePage() {
               <path d="M11 11l3 3" stroke="rgba(255,255,255,0.3)" strokeLinecap="round" strokeWidth="1.5" />
             </svg>
           </div>
-          <input value={search} onChange={(e) => setSearch(e.target.value)}
+          <input value={search} onChange={(event) => setSearch(event.target.value)}
             placeholder="Search routes, areas, or tags…"
             className="w-full h-[48px] bg-[rgba(255,255,255,0.06)] border border-[rgba(255,255,255,0.1)] rounded-[14px] pl-[44px] pr-[16px] font-['Inter',sans-serif] text-[15px] text-white placeholder-[rgba(255,255,255,0.25)] outline-none focus:border-[rgba(255,255,255,0.2)] transition-colors"
           />
         </div>
 
-        {/* Filter chips */}
         <div className="flex gap-[8px] overflow-x-auto">
-          {chips.map((c) => (
-            <button key={c} onClick={() => setFilter(c)}
-              className={`px-[16px] py-[8px] rounded-[12px] cursor-pointer whitespace-nowrap font-['Inter',sans-serif] font-medium text-[13px] border shrink-0 transition-colors ${filter === c ? "bg-[rgba(196,32,80,0.15)] border-[rgba(196,32,80,0.3)] text-[#c42050]" : "border-[rgba(255,255,255,0.1)] text-[rgba(255,255,255,0.5)] bg-[rgba(255,255,255,0.04)] hover:bg-[rgba(255,255,255,0.07)]"}`}>
-              {c}
+          {chips.map((chip) => (
+            <button key={chip} onClick={() => setFilter(chip)}
+              className={`px-[16px] py-[8px] rounded-[12px] cursor-pointer whitespace-nowrap font-['Inter',sans-serif] font-medium text-[13px] border shrink-0 transition-colors ${filter === chip ? "bg-[rgba(196,32,80,0.15)] border-[rgba(196,32,80,0.3)] text-[#c42050]" : "border-[rgba(255,255,255,0.1)] text-[rgba(255,255,255,0.5)] bg-[rgba(255,255,255,0.04)] hover:bg-[rgba(255,255,255,0.07)]"}`}>
+              {chip}
             </button>
           ))}
         </div>
 
-        {/* Grid */}
-        <div className="grid grid-cols-2 gap-[14px]">
+        {loading && <p className="text-[rgba(255,255,255,0.5)]">Loading routes…</p>}
+        {!loading && error && <p role="alert" className="text-[#fca5a5]">{error}</p>}
+        {!loading && !error && visible.length === 0 && (
+          <p className="text-[rgba(255,255,255,0.4)]">No routes match your search.</p>
+        )}
+
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-[14px]">
           {visible.map((route) => (
             <div key={route.id} className={`${cardBase} overflow-hidden`}>
               <div className="h-[100px] w-full overflow-hidden relative">
-                <img alt="Route image" className="w-full h-full object-cover" src={`${API}${route.image}` || imgRouteMap} />
+                <img alt={`Map preview for ${route.name}`} className="w-full h-full object-cover" src={route.image_url ?? imgRouteMap} />
                 <div className="absolute inset-0 bg-gradient-to-t from-[rgba(10,6,8,0.7)] to-transparent" />
-                <div className="absolute bottom-[10px] left-[14px]">
-                  <SafetyBadge score={route.safety} />
-                </div>
-                <button onClick={() => toggle(route.id)}
+                <div className="absolute bottom-[10px] left-[14px]"><SafetyBadge score={route.safety_score} /></div>
+                <button onClick={() => toggle(route.id)} aria-label={saved.has(route.id) ? "Unsave route" : "Save route"}
                   className="absolute top-[10px] right-[10px] size-[30px] rounded-full bg-[rgba(10,6,8,0.6)] border border-[rgba(255,255,255,0.1)] flex items-center justify-center cursor-pointer hover:border-[rgba(196,32,80,0.4)] transition-colors">
                   <svg width="14" height="14" viewBox="0 0 22 22" fill="none">
                     <path d={homeSvg.p2f4e1d80} stroke={saved.has(route.id) ? "#c42050" : "rgba(255,255,255,0.5)"}
@@ -98,18 +123,18 @@ export default function ExplorePage() {
               <div className="p-[14px]">
                 <p className="font-['Inter',sans-serif] font-semibold text-[14px] text-white mb-[6px]">{route.name}</p>
                 <div className="flex items-center gap-[8px] mb-[10px]">
-                  <span className="font-['Inter',sans-serif] font-normal text-[12px] text-[rgba(255,255,255,0.5)]">{route.distance}</span>
+                  <span className="text-[12px] text-[rgba(255,255,255,0.5)]">{route.distance_miles} mi</span>
                   <div className="size-[3px] rounded-full bg-[rgba(255,255,255,0.2)]" />
-                  <span className="font-['Inter',sans-serif] font-normal text-[12px] text-[rgba(255,255,255,0.5)]">{route.duration}</span>
+                  <span className="text-[12px] text-[rgba(255,255,255,0.5)]">{route.estimated_minutes} min</span>
                 </div>
-                <div className="flex items-center justify-between">
-                  <div className="flex gap-[4px]">
-                    {route.tags.map((t) => (
-                      <span key={t} className="font-['Inter',sans-serif] font-normal text-[10px] px-[7px] py-[2px] rounded-full bg-[rgba(255,255,255,0.07)] border border-[rgba(255,255,255,0.1)] text-[rgba(255,255,255,0.4)]">{t}</span>
+                <div className="flex items-center justify-between gap-[12px]">
+                  <div className="flex gap-[4px] flex-wrap">
+                    {route.tags.map((tag) => (
+                      <span key={tag} className="text-[10px] px-[7px] py-[2px] rounded-full bg-[rgba(255,255,255,0.07)] border border-[rgba(255,255,255,0.1)] text-[rgba(255,255,255,0.4)]">{tag}</span>
                     ))}
                   </div>
-                  <button onClick={() => navigate(`/route/${route.id}`)} className="cursor-pointer">
-                    <span className="font-['Inter',sans-serif] font-semibold text-[12px] text-[#0a84ff]">View →</span>
+                  <button onClick={() => navigate(`/route/${route.id}`)} className="cursor-pointer shrink-0">
+                    <span className="font-semibold text-[12px] text-[#0a84ff]">View →</span>
                   </button>
                 </div>
               </div>

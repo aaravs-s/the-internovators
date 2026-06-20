@@ -5,9 +5,9 @@ enjoyable walking routes to their destinations.
 
 ## Project shape
 
-This is a lightweight FastAPI + Jinja app for a 1-2 month prototype. It uses
-JSON files in `data/` for storage and keeps that storage behind repository
-modules so the team can move to a database later if needed.
+This is a lightweight React + FastAPI app for a 1-2 month prototype. React is
+the primary website, FastAPI provides the JSON API and serves production builds,
+and prototype storage remains in JSON files behind repository modules.
 
 ## Run locally
 
@@ -15,21 +15,33 @@ modules so the team can move to a database later if needed.
 python -m venv .venv
 .venv\Scripts\Activate.ps1
 pip install -e .
+npm ci --prefix frontend
+npm run build --prefix frontend
 fastapi dev main.py
 ```
 
 Then open `http://127.0.0.1:8000`
 
+For frontend hot reload, keep FastAPI running and start Vite in a second terminal:
+
+```powershell
+npm run dev --prefix frontend
+```
+
+Then open `http://127.0.0.1:5173`. Vite proxies API, map, and static requests to
+FastAPI on port 8000.
+
 ## Important folders
 
 - `main.py`: creates and launches the FastAPI app
-- `web`: website pages and form handlers
+- `frontend`: primary React website and Vite configuration
+- `web`: unmounted legacy Jinja pages retained as migration reference
 - `api`: JSON endpoints
 - `services`: route planning, geocoding, safety scoring
 - `repositories`: JSON storage access
 - `schemas`: Pydantic validation models
-- `templates`: Jinja HTML pages
-- `static`: CSS, JavaScript, and images
+- `templates`: legacy Jinja HTML pages
+- `static`: shared and legacy static assets
 - `data`: prototype JSON data
 - `docs`: architecture and team notes
 

@@ -1,8 +1,9 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router";
 import { RadarChart, Radar, PolarGrid, PolarAngleAxis, ResponsiveContainer } from "recharts";
-import { cardBase, SafetyBadge, Tabs, StarRating, PrimaryButton, IconBookmark } from "@/app/components/ui";
-import { imgRouteMap, homeSvg } from "@/app/assets";
+import { getRoute, type RouteDetail } from "@/app/api/routes";
+import { cardBase, SafetyBadge, Tabs, StarRating, IconBookmark } from "@/app/components/ui";
+import { imgRouteMap } from "@/app/assets";
 import { safetyRadar, reviews } from "@/app/data";
 
 const timeOfDay = [
@@ -18,18 +19,46 @@ export default function RouteDetailPage() {
   const [saved, setSaved]       = useState(false);
   const [activeTab, setActiveTab] = useState("Overview");
 
-  const [routeInfo, setRouteInfo] = useState<any>(null);
+  const [route, setRoute] = useState<RouteDetail | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
   useEffect(() => {
+    let cancelled = false;
+    if (!id) {
+      setError("Route not found");
+      setLoading(false);
+      return () => { cancelled = true; };
+    }
 
-    fetch(`/api/routes/${id}`)
-      .then(res => res.json())
-      .then(setRouteInfo);
+    setLoading(true);
+    setError("");
+    getRoute(id)
+      .then((result) => {
+        if (!cancelled) setRoute(result);
+      })
+      .catch((reason: unknown) => {
+        if (!cancelled) {
+          setRoute(null);
+          setError(reason instanceof Error ? reason.message : "Unable to load route");
+        }
+      })
+      .finally(() => {
+        if (!cancelled) setLoading(false);
+      });
+
+    return () => { cancelled = true; };
   }, [id]);
 
-  const API = "http://127.0.0.1:8000";
-
-  if (!routeInfo) {
-    return <div>Loading...</div>;
+  if (loading) {
+    return <div className="p-[32px] text-[rgba(255,255,255,0.5)]">Loading route…</div>;
+  }
+  if (error || !route) {
+    return (
+      <div className="p-[32px] flex flex-col gap-[16px]">
+        <p role="alert" className="text-[#fca5a5]">{error || "Route not found"}</p>
+        <button onClick={() => navigate("/explore")} className="text-left text-[#0a84ff] cursor-pointer">Back to Explore</button>
+      </div>
+    );
   }
 
   return (
@@ -46,8 +75,8 @@ export default function RouteDetailPage() {
             <span className="font-['Inter',sans-serif] font-medium text-[13px] text-[rgba(255,255,255,0.6)]">Back</span>
           </button>
           <div>
-            <p className="font-['Inter',sans-serif] font-bold text-[32px] text-white tracking-[-0.7px] leading-[40px]">{ routeInfo.route.name }</p>
-            <p className="font-['Inter',sans-serif] font-normal text-[14px] text-[rgba(255,255,255,0.4)]">8.7 mi · Safety score 9.2</p>
+            <p className="font-['Inter',sans-serif] font-bold text-[32px] text-white tracking-[-0.7px] leading-[40px]">{route.name}</p>
+            <p className="font-['Inter',sans-serif] font-normal text-[14px] text-[rgba(255,255,255,0.4)]">{route.distance_miles} mi · Safety score {route.safety_score}</p>
           </div>
         </div>
       </div>
@@ -55,17 +84,16 @@ export default function RouteDetailPage() {
       <div className="px-[32px] py-[24px] flex flex-col gap-[20px] max-w-[900px]">
         {/* Map */}
         <div className="rounded-[20px] overflow-hidden h-[220px] relative border border-[rgba(255,255,255,0.08)]">
-          <img alt="Route map" className="w-full h-full object-cover" src={`${API}${routeInfo.route.image}` || imgRouteMap} />
+          <img alt={`Map of ${route.name}`} className="w-full h-full object-cover" src={route.image_url ?? imgRouteMap} />
           <div className="absolute inset-0 bg-gradient-to-t from-[rgba(10,6,8,0.4)] to-transparent" />
           <div className="absolute bottom-[16px] left-[16px] flex gap-[8px]">
-            <SafetyBadge score={9.2} />
+            <SafetyBadge score={route.safety_score} />
             <span className="font-['Inter',sans-serif] font-medium text-[12px] px-[10px] py-[4px] rounded-[20px] bg-[rgba(10,6,8,0.6)] border border-[rgba(255,255,255,0.15)] text-white">Scenic Route</span>
           </div>
         </div>
 
         {/* Actions */}
         <div className="flex gap-[12px]">
-          {/* <PrimaryButton label="Start Navigation" onClick={() => {}} /> */}
           <button onClick={() => setSaved(!saved)}
             className={`flex items-center gap-[8px] h-[52px] px-[24px] rounded-[16px] border cursor-pointer transition-colors ${saved ? "bg-[rgba(196,32,80,0.15)] border-[rgba(196,32,80,0.35)]" : "bg-[rgba(255,255,255,0.05)] border-[rgba(255,255,255,0.1)] hover:border-[rgba(255,255,255,0.2)]"}`}>
             <IconBookmark color={saved ? "#c42050" : "rgba(255,255,255,0.4)"} />
@@ -88,16 +116,29 @@ export default function RouteDetailPage() {
         {activeTab === "Overview" && (
           <div className="flex gap-[14px]">
             {[
-              { label: "Distance",   value: `${routeInfo.route.distance} mi` },
-              { label: "Duration",   value: routeInfo.route.duration  },
-              // { label: "Elevation",  value: "+124 ft"  },
-              { label: "Difficulty", value: routeInfo.route.distance < 3 ? "Easy" : (routeInfo.route.distance > 8 ? "Hard" : "Medium")     },
+              { label: "Distance", value: `${route.distance_miles} mi` },
+              { label: "Duration", value: `${route.estimated_minutes} min` },
+              { label: "Difficulty", value: route.distance_miles < 3 ? "Easy" : (route.distance_miles > 8 ? "Hard" : "Medium") },
             ].map((s) => (
               <div key={s.label} className={`${cardBase} px-[20px] py-[16px] flex-1`}>
                 <p className="font-['Inter',sans-serif] font-normal text-[11px] text-[rgba(255,255,255,0.4)] uppercase tracking-[0.6px] mb-[4px]">{s.label}</p>
                 <p className="font-['Inter',sans-serif] font-bold text-[20px] text-white tracking-[-0.4px]">{s.value}</p>
               </div>
             ))}
+          </div>
+        )}
+
+        {activeTab === "Overview" && (
+          <div className={`${cardBase} p-[20px]`}>
+            <p className="font-semibold text-[14px] text-white mb-[8px]">About this route</p>
+            <p className="text-[13px] leading-[20px] text-[rgba(255,255,255,0.55)]">{route.summary || `${route.start} to ${route.destination}`}</p>
+            {route.highlights.length > 0 && (
+              <div className="flex flex-wrap gap-[6px] mt-[12px]">
+                {route.highlights.map((highlight) => (
+                  <span key={highlight} className="text-[11px] px-[8px] py-[3px] rounded-full bg-[rgba(255,255,255,0.07)] text-[rgba(255,255,255,0.5)]">{highlight}</span>
+                ))}
+              </div>
+            )}
           </div>
         )}
 
@@ -171,14 +212,16 @@ export default function RouteDetailPage() {
 
         {activeTab === "Directions" && (
           <div className={`${cardBase} overflow-hidden`}>
-            {routeInfo.route.directions.map(([instruction, distance, type], i) => (
-              <div key={instruction} className={`flex items-center gap-[16px] px-[20px] py-[14px] ${i < routeInfo.route.directions.length - 1 ? "border-b border-[rgba(255,255,255,0.06)]" : ""}`}>
-                <div className={`size-[10px] rounded-full shrink-0 ${type === "start" ? "bg-[#22c55e]" : type === "end" ? "bg-[#c42050]" : "bg-[rgba(255,255,255,0.25)]"}`} />
+            {route.directions.length === 0 && (
+              <p className="px-[20px] py-[24px] text-[13px] text-[rgba(255,255,255,0.45)]">Turn-by-turn directions are not available for this saved route.</p>
+            )}
+            {route.directions.map((step, index) => (
+              <div key={`${step.kind}-${index}`} className={`flex items-center gap-[16px] px-[20px] py-[14px] ${index < route.directions.length - 1 ? "border-b border-[rgba(255,255,255,0.06)]" : ""}`}>
+                <div className={`size-[10px] rounded-full shrink-0 ${step.kind === "start" ? "bg-[#22c55e]" : step.kind === "end" ? "bg-[#c42050]" : "bg-[rgba(255,255,255,0.25)]"}`} />
                 <div className="flex-1">
-                  <p className="font-['Inter',sans-serif] font-medium text-[13px] text-white">{instruction}</p>
-                  {/* <p className="font-['Inter',sans-serif] font-normal text-[12px] text-[rgba(255,255,255,0.35)]">{w.note}</p> */}
+                  <p className="font-['Inter',sans-serif] font-medium text-[13px] text-white">{step.instruction}</p>
                 </div>
-                <span className="font-['Inter',sans-serif] font-normal text-[11px] text-[rgba(255,255,255,0.25)]">{distance}</span>
+                <span className="font-['Inter',sans-serif] font-normal text-[11px] text-[rgba(255,255,255,0.25)]">{step.distance_miles.toFixed(2)} mi</span>
               </div>
             ))}
           </div>

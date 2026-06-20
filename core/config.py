@@ -18,6 +18,7 @@ class Settings:
     )
     templates_dir = root_dir / "templates"
     static_dir = root_dir / "static"
+    frontend_dist_dir = root_dir / "frontend" / "dist"
     maps_dir = (
         Path(tempfile.gettempdir()) / "safewalkers-maps"
         if os.getenv("VERCEL")

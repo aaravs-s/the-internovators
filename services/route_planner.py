@@ -175,6 +175,14 @@ def generate_map_image (coords):
     return f"map_{inserted_id}.png"
 
 
+def extract_directions(feature: dict) -> list[dict]:
+    segments = feature.get("properties", {}).get("segments") or []
+    if not segments or not isinstance(segments[0], dict):
+        return []
+    steps = segments[0].get("steps") or []
+    return steps if isinstance(steps, list) else []
+
+
 def search_routes(search: RouteSearchRequest) -> list[RouteOption]:
     """Assumes searches are properly formatted addresses, which can be achieved with ORS autocomplete. Right now, this names routes
     'Route Option' unless it's the fastest route, which it calls 'Quickest'."""
@@ -242,7 +250,7 @@ def search_routes(search: RouteSearchRequest) -> list[RouteOption]:
             "id": "route",
             "name": "Route Option",
             "map_style": ["balanced", "quiet", "direct"][index % 3],
-            "directions": feature["properties"]["segments"][0]["steps"]
+            "directions": extract_directions(feature),
             # "bbox": bbox
         })
     route_superlatives = {

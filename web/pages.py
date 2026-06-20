@@ -238,44 +238,6 @@ async def route_gallery(
             "sort": normalized_sort,
         },
     )
-# definition for vite
-@router.get("/api/routes")
-async def get_routes(
-    request: Request,
-    route_type: str = Query("all"),
-    focus: str = Query("all"),
-    sort: str = Query("recent"),
-):
-    user = get_current_user(request)
-    viewer_id = user.id if user else None
-
-    normalized_route_type = route_type if route_type in saved_routes_json.VALID_ROUTE_TYPES else "all"
-    normalized_focus = focus if focus in saved_routes_json.VALID_FOCUS_FILTERS else "all"
-    normalized_sort = sort if sort in saved_routes_json.VALID_SORTS else "recent"
-
-    routes = [
-        route_with_owner(route, viewer_id)
-        for route in saved_routes_json.list_gallery_routes(
-            normalized_route_type,
-            normalized_focus,
-            normalized_sort,
-            viewer_id,
-        )
-    ]
-
-    return [
-        {
-            "id": r["id"],
-            "name": r["name"],
-            "distance": f'{r["distance_miles"]} mi',
-            "duration": f'{r["estimated_minutes"]} min',
-            "safety": r["safety_score"],
-            "tags": r["tags"],
-            "image": f"/maps/{r['filename']}",
-        }
-        for r in routes
-    ]
-
 @router.get("/routes/gallery")
 async def legacy_route_gallery(request: Request):
     target = "/explore"
@@ -349,55 +311,6 @@ async def route_detail(request: Request, route_id: str):
             "user_saved_route": user_saved_route,
         },
     )
-# definition for vite
-@router.get("/api/routes/{route_id}")
-async def route_detail(request: Request, route_id: str):
-    route, is_saved_route = get_route_record(route_id)
-    user = get_current_user(request)
-    if not route:
-        return render(request, "route_detail.html", {"route": None}, status_code=404)
-    if (
-        is_saved_route
-        and not route.get("is_shared", True)
-        and not (user and user.id == route["user_id"])
-    ):
-        return render(request, "route_detail.html", {"route": None}, status_code=404)
-
-    if is_saved_route:
-        route = route_with_owner(route, user.id if user else None)
-
-    user_saved_route = None
-    if user:
-        user_saved_route = saved_routes_json.get_saved_route_for_user_by_source(route, user.id)
-
-    print(route)
-    if "directions" in route:
-        directions = [[f'Start — {route["start"]}', "0.00 mi", "start"]]
-        current_m = 0
-        for step in route["directions"]:
-            directions.append([f'{step["instruction"]}', f'{round(current_m/1609, 2)} mi', "step"])
-            current_m += step["distance"]
-        print(current_m)
-        directions.append([f'End — {route["destination"]}', f"{route['distance_miles']} mi", "end"])
-    else:
-        directions = None
-
-    return {
-        "route": {
-            "id": route["id"],
-            "name": route["name"],
-            "distance": route["distance_miles"],
-            "duration": f'{route["estimated_minutes"]} min',
-            "safety": route["safety_score"],
-            "tags": route["tags"],
-            "image": f"/maps/{route['filename']}",
-            "directions": directions,
-        },
-        "is_saved_route": is_saved_route,
-        "user_saved_route": user_saved_route,
-    }
-
-
 @router.get("/routes/{route_id}")
 async def legacy_route_detail(route_id: str):
     return RedirectResponse(f"/route/{route_id}", status_code=307)
@@ -417,7 +330,7 @@ async def save_route(
     route_type: str = Form("walking"),
     map_style: str = Form("balanced"),
     filename: str = Form(""),
-    directions: str = Form(...)
+    directions: str = Form("[]"),
 ):
     user = get_current_user(request)
     if not user:
@@ -436,6 +349,7 @@ async def save_route(
         highlights = route.get("highlights", [])
 
     try:
+        route_directions = route.get("directions", []) if route else json.loads(directions)
         route_data = SavedRouteCreate(
             route_id=route_id,
             name=name,
@@ -449,9 +363,9 @@ async def save_route(
             route_type=route_type,
             map_style=map_style,
             filename=filename,
-            directions=route["directions"]
+            directions=route_directions,
         )
-    except ValidationError:
+    except (json.JSONDecodeError, ValidationError):
         return RedirectResponse("/generate", status_code=303)
 
     saved_routes_json.save_route(route_data, user.id)

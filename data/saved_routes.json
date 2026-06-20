@@ -1,33 +1,9 @@
 [
   {
     "comments": "",
-<<<<<<< HEAD
-    "created_at": "2026-06-17T01:09:48.721803+00:00",
-    "destination": "test2, Austin, TX",
-    "distance_miles": 1.4,
-    "estimated_minutes": 29,
-    "filename": "",
-    "highlights": [
-      "Prioritizes streets with stronger sidewalk coverage",
-      "Uses better-lit downtown corridors",
-      "Avoids the busiest crossing cluster when possible"
-    ],
-    "id": "bb15d07f-3109-43ea-a4d5-8649ed241574",
-    "is_shared": true,
-    "like_count": 2,
-    "liked_by": [
-      "5ac2de14-8ea1-4bf5-bd21-1ff6ec3551ed",
-      "2833a8cf-3e30-4ec6-bc58-958238c3fbfb"
-    ],
-    "map_style": "balanced",
-    "name": "Balanced Downtown Walk",
-    "rating_count": 2,
-    "ratings": [
-=======
     "created_at": "2026-06-19T16:19:45.739562+00:00",
     "destination": "UT Tower, Austin, TX, USA",
     "directions": [
->>>>>>> 6465c6694bd50367086504ba2757849844386d3c
       {
         "distance": 21.7,
         "duration": 15.6,
@@ -945,15 +921,87 @@
     "start": "Q2 Stadium, Austin, TX, USA",
     "summary": "Strong sidewalk coverage and comfortable walking conditions.",
     "tags": [],
-<<<<<<< HEAD
-    "user_has_liked": false,
-    "user_id": "a3b21833-64b5-47d3-839b-d2f5a380141c",
-    "user_rating": 0
+    "user_id": "a3b21833-64b5-47d3-839b-d2f5a380141c"
+  },
+  {
+    "comments": "",
+    "created_at": "2026-06-17T01:09:48.721803+00:00",
+    "destination": "test2, Austin, TX",
+    "directions": [],
+    "distance_miles": 1.4,
+    "estimated_minutes": 29,
+    "filename": "",
+    "highlights": [
+      "Prioritizes streets with stronger sidewalk coverage",
+      "Uses better-lit downtown corridors",
+      "Avoids the busiest crossing cluster when possible"
+    ],
+    "id": "bb15d07f-3109-43ea-a4d5-8649ed241574",
+    "is_shared": true,
+    "liked_by": [
+      "5ac2de14-8ea1-4bf5-bd21-1ff6ec3551ed",
+      "2833a8cf-3e30-4ec6-bc58-958238c3fbfb"
+    ],
+    "map_style": "balanced",
+    "name": "Balanced Downtown Walk",
+    "ratings": [
+      {
+        "rated_at": "2026-06-17T19:40:19.928404+00:00",
+        "rating": 3,
+        "user_id": "5ac2de14-8ea1-4bf5-bd21-1ff6ec3551ed"
+      },
+      {
+        "rated_at": "2026-06-17T19:55:47.734516+00:00",
+        "rating": 5,
+        "user_id": "47e78831-62da-4f5a-86ca-c0635e56cdbc"
+      }
+    ],
+    "route_id": "balanced-downtown-b8dc80b1",
+    "route_type": "walking",
+    "safety_score": 78,
+    "start": "test, Austin, TX",
+    "summary": "Generally walkable with a few areas to watch.",
+    "tags": [],
+    "user_id": "a3b21833-64b5-47d3-839b-d2f5a380141c"
+  },
+  {
+    "comments": "",
+    "created_at": "2026-06-17T16:28:29.879408+00:00",
+    "destination": "UT Tower, Austin, TX, USA",
+    "directions": [],
+    "distance_miles": 8.54,
+    "estimated_minutes": 164,
+    "filename": "map_21.png",
+    "highlights": [
+      "Nori",
+      "PD Thai",
+      "Salsa Limón",
+      "Kerbey Lane Cafe",
+      "Roppolo's Pizzeria",
+      "Bikkle",
+      "Sip Pho",
+      "Live Oak Park",
+      "1972 Pub"
+    ],
+    "id": "677de8c6-4b02-4166-bbae-b110ba19d937",
+    "is_shared": true,
+    "liked_by": [],
+    "map_style": "direct",
+    "name": "Route Option",
+    "ratings": [],
+    "route_id": "route-b605d5a4",
+    "route_type": "walking",
+    "safety_score": 92,
+    "start": "Q2 Stadium, Austin, TX, USA",
+    "summary": "Strong sidewalk coverage and comfortable walking conditions.",
+    "tags": [],
+    "user_id": "a3b21833-64b5-47d3-839b-d2f5a380141c"
   },
   {
     "comments": "",
     "created_at": "2026-06-20T03:30:09.736465+00:00",
     "destination": "test2, Austin, TX",
+    "directions": [],
     "distance_miles": 1.4,
     "estimated_minutes": 29,
     "filename": "",
@@ -975,8 +1023,5 @@
     "summary": "Generally walkable with a few areas to watch.",
     "tags": [],
     "user_id": "2833a8cf-3e30-4ec6-bc58-958238c3fbfb"
-=======
-    "user_id": "a3b21833-64b5-47d3-839b-d2f5a380141c"
->>>>>>> 6465c6694bd50367086504ba2757849844386d3c
   }
 ]
