@@ -10,6 +10,9 @@ from schemas.route import (
 )
 from services.route_catalog import get_public_route, list_public_routes
 from services.route_planner import search_routes
+from services.autocomplete import autocomplete
+
+from pydantic import ValidationError
 
 router = APIRouter(prefix="/routes", tags=["routes"])
 
@@ -34,8 +37,25 @@ async def gallery_routes(
 
 @router.post("/search", response_model=list[RouteOption])
 async def search_route_options(search: RouteSearchRequest) -> list[RouteOption]:
-    return search_routes(search)
+    try:
+        routes = search_routes(search)
+        error = None
+    except ValidationError:
+        routes = []
+        error = "Enter a valid start, destination, and route type."
 
+    return routes
+    # return {
+    #     "routes": routes,
+    #     "start": search.start,
+    #     "destination": search.destination,
+    #     "route_type": search.route_type,
+    #     "error": error,
+    # }
+
+@router.get("/autocomplete", response_model=dict)
+async def autocomplete_route(q: str = Query(...)):
+    return autocomplete(q)
 
 @router.get("/{route_id}", response_model=RouteDetailPublic)
 async def route_detail(request: Request, route_id: str) -> RouteDetailPublic:

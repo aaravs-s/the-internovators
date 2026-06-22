@@ -1,7 +1,6 @@
-import { useEffect, useState, useMemo } from "react";
+import { useEffect, useState, useMemo, FormEvent } from "react";
 import { useNavigate } from "react-router";
 
-import { getRoutes, type RouteSummary } from "@/app/api/routes";
 import { imgRouteMap, homeSvg } from "@/app/assets";
 import { cardBase, SafetyBadge } from "@/app/components/ui";
 
@@ -21,9 +20,10 @@ export default function ExplorePage() {
 
     const [start, setStart] = useState("");
     const [startSuggestions, setStartSuggestions] = useState<string[]>([]);
-
     const [destination, setDestination] = useState("");
     const [destinationSuggestions, setDestinationSuggestions] = useState<string[]>([]);
+
+    const [type, setType] = useState("walking");
 
     const fetchSuggestions = async (
         query: string,
@@ -35,10 +35,8 @@ export default function ExplorePage() {
         }
 
         const response = await fetch(
-            `/autocomplete?q=${encodeURIComponent(query)}`
+            `/api/routes/autocomplete?q=${encodeURIComponent(query)}`
         );
-
-        console.log(response)
 
         const results = await response.json();
 
@@ -55,15 +53,35 @@ export default function ExplorePage() {
             fetchSuggestions(value, setStartSuggestions);
             }, 300),
         []
-        );
+    );
 
-        const debouncedDestinationFetch = useMemo(
+    const debouncedDestinationFetch = useMemo(
         () =>
             debounce((value: string) => {
             fetchSuggestions(value, setDestinationSuggestions);
             }, 300),
         []
     );
+
+    const handleSubmit = async (e: React.SubmitEvent<HTMLFormElement>) => {
+        e.preventDefault();
+
+        const res = await fetch("/api/routes/search", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                start,
+                destination,
+                route_type: type,
+            }),
+        });
+
+        const data = await res.json();
+        console.log(data);
+    };
+
 
     return (
         <>
@@ -78,7 +96,7 @@ export default function ExplorePage() {
         <div className="px-[32px] py-[24px] flex flex-col gap-[20px]">
             <div className="grid grid-cols-2 gap-[20px]">
                 {/* Search Form */}
-                <div className={`${cardBase} p-[24px]`}>
+                <form onSubmit={handleSubmit} className={`${cardBase} p-[24px]`}>
                     <div className="flex flex-col gap-[18px]">
                     <div>
                         <label className="block text-[13px] text-[rgba(255,255,255,0.45)] mb-[6px]">
@@ -107,22 +125,46 @@ export default function ExplorePage() {
                         Destination
                         </label>
                         <input
-                        type="text"
-                        placeholder="Austin Central Library"
-                        className="w-full h-[50px] px-[16px] rounded-[14px] bg-[rgba(255,255,255,0.05)] border border-[rgba(255,255,255,0.1)] text-white outline-none focus:border-[rgba(196,32,80,0.4)]"
+                            type="text"
+                            placeholder="Austin Central Library"
+                            className="w-full h-[50px] px-[16px] rounded-[14px] bg-[rgba(255,255,255,0.05)] border border-[rgba(255,255,255,0.1)] text-white outline-none focus:border-[rgba(196,32,80,0.4)]"
+                            value={destination}
+                            onChange={(e) => {
+                                setDestination(e.target.value);
+                                debouncedDestinationFetch(e.target.value);
+                            }}
+                            list="destination-suggestions"
                         />
                     </div>
+                    <datalist id="destination-suggestions">
+                        {destinationSuggestions.map((s) => (
+                            <option key={s} value={s} />
+                        ))}
+                    </datalist>
 
                     <div>
                         <p className="text-[13px] text-[rgba(255,255,255,0.45)] mb-[8px]">
                         Travel type
                         </p>
 
-                        <div className="flex gap-[12px]">
+                        <select
+                            value={type}
+                            onChange={(e) => setType(e.target.value)}
+                            className="w-full h-[50px] px-[16px] rounded-[14px] bg-[rgba(255,255,255,0.05)] border border-[rgba(255,255,255,0.1)] text-white outline-none focus:border-[rgba(196,32,80,0.4)]"
+                        >
+                            <option value="walking">Walking</option>
+                            <option value="biking">Biking</option>
+                        </select>
+
+                        {/* <div className="flex gap-[12px]">
                         <label className="flex items-center gap-[8px] text-white">
                             <input
                             type="radio"
                             name="routeType"
+                            value="walking"
+                            onChange={(e) => {
+                                setType(e.target.value)
+                            }}
                             defaultChecked
                             />
                             Walking
@@ -132,19 +174,23 @@ export default function ExplorePage() {
                             <input
                             type="radio"
                             name="routeType"
+                            value="biking"
+                            onChange={(e) => {
+                                setType(e.target.value)
+                            }}
                             />
                             Biking
                         </label>
-                        </div>
+                        </div> */}
                     </div>
 
                     <button
-                        className="h-[52px] rounded-[16px] bg-[#c42050] text-white font-semibold hover:opacity-90 transition-opacity"
+                        className="h-[52px] rounded-[16px] bg-[#c42050] text-white font-semibold hover:opacity-90 transition-opacity cursor-pointer"
                     >
                         Compare Safe Routes →
                     </button>
                     </div>
-                </div>
+                </form>
 
                 {/* Preview Panel */}
                 <div className={`${cardBase} overflow-hidden relative`}>
