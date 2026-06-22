@@ -10,6 +10,7 @@ import ForgotPasswordPage   from "./pages/ForgotPasswordPage";
 import HomePage             from "./pages/HomePage";
 import SavedPage            from "./pages/SavedPage";
 import ExplorePage          from "./pages/ExplorePage";
+import GeneratePage         from "./pages/GeneratePage";
 import RouteDetailPage      from "./pages/RouteDetailPage";
 import ProfilePage          from "./pages/ProfilePage";
 import SocialPage           from "./pages/SocialPage";
@@ -35,6 +36,7 @@ export const router = createBrowserRouter([
       { path: "home",              Component: HomePage           },
       { path: "saved",             Component: SavedPage          },
       { path: "explore",           Component: ExplorePage        },
+      { path: "generate",          Component: GeneratePage       },
       { path: "route/:id",         Component: RouteDetailPage    },
       { path: "profile",           Component: ProfilePage        },
       { path: "social",            Component: SocialPage         },

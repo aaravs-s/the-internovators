@@ -7,9 +7,10 @@ const UNREAD = 3; // In a real app this would come from global state / context
 type NavDef = { to: string; label: string; icon: (c: string) => React.ReactNode; badge?: number };
 
 const navItems: NavDef[] = [
-  { to: "/home",    label: "Home",    icon: (c) => <IconHome     color={c} /> },
-  { to: "/saved",   label: "Saved",   icon: (c) => <IconBookmark color={c} />, badge: 12 },
-  { to: "/explore", label: "Explore", icon: (c) => <IconCompass  color={c} /> },
+  { to: "/home",     label: "Home",     icon: (c) => <IconHome     color={c} /> },
+  { to: "/saved",    label: "Saved",    icon: (c) => <IconBookmark color={c} />, badge: 12 },
+  { to: "/explore",  label: "Explore",  icon: (c) => <IconCompass  color={c} /> },
+  { to: "/generate", label: "Generate", icon: (c) => <IconCompass color={c} /> },
   { to: "/social",  label: "Social",  icon: (c) => <IconSocial   color={c} />, badge: 3 },
   { to: "/about",   label: "About",   icon: (c) => <IconHome     color={c} /> },
 ];
