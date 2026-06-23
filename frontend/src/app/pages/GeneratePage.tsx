@@ -1,4 +1,4 @@
-import { useEffect, useState, useMemo, FormEvent } from "react";
+import { useEffect, useState, useMemo } from "react";
 import { useNavigate } from "react-router";
 
 import { imgRouteMap, homeSvg } from "@/app/assets";
@@ -16,7 +16,8 @@ function debounce(func: (...args: any[]) => void, delay: number) {
   };
 }
 
-export default function ExplorePage() {
+export default function GeneratePage() {
+    const navigate = useNavigate();
 
     const [start, setStart] = useState("");
     const [startSuggestions, setStartSuggestions] = useState<string[]>([]);
@@ -79,7 +80,10 @@ export default function ExplorePage() {
         });
 
         const data = await res.json();
-        console.log(data);
+
+        navigate("/results", {
+            state: { routes: data },
+        });
     };
 
 

@@ -11,6 +11,7 @@ import HomePage             from "./pages/HomePage";
 import SavedPage            from "./pages/SavedPage";
 import ExplorePage          from "./pages/ExplorePage";
 import GeneratePage         from "./pages/GeneratePage";
+import RouteResultsPage     from "./pages/RouteResultsPage";
 import RouteDetailPage      from "./pages/RouteDetailPage";
 import ProfilePage          from "./pages/ProfilePage";
 import SocialPage           from "./pages/SocialPage";
@@ -37,6 +38,7 @@ export const router = createBrowserRouter([
       { path: "saved",             Component: SavedPage          },
       { path: "explore",           Component: ExplorePage        },
       { path: "generate",          Component: GeneratePage       },
+      { path: "results",           Component: RouteResultsPage   },
       { path: "route/:id",         Component: RouteDetailPage    },
       { path: "profile",           Component: ProfilePage        },
       { path: "social",            Component: SocialPage         },
