@@ -1,10 +1,11 @@
 import { useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router";
+import { useNavigate, useParams, useLocation } from "react-router";
 import { RadarChart, Radar, PolarGrid, PolarAngleAxis, ResponsiveContainer } from "recharts";
 import { getRoute, type RouteDetail } from "@/app/api/routes";
 import { cardBase, SafetyBadge, Tabs, StarRating, IconBookmark } from "@/app/components/ui";
 import { imgRouteMap } from "@/app/assets";
 import { safetyRadar, reviews } from "@/app/data";
+
 
 const timeOfDay = [
   { time: "6 AM – 12 PM", score: 9.4 },
@@ -15,6 +16,11 @@ const timeOfDay = [
 
 export default function RouteDetailPage() {
   const navigate   = useNavigate();
+  const location = useLocation();
+  const source = location.state?.source;
+
+  console.log(source)
+  
   const { id }     = useParams<{ id: string }>();
   const [saved, setSaved]       = useState(false);
   const [activeTab, setActiveTab] = useState("Overview");
@@ -32,7 +38,7 @@ export default function RouteDetailPage() {
 
     setLoading(true);
     setError("");
-    getRoute(id)
+    getRoute(id, source)
       .then((result) => {
         if (!cancelled) setRoute(result);
       })

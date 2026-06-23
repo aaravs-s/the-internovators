@@ -39,6 +39,7 @@ export const router = createBrowserRouter([
       { path: "explore",           Component: ExplorePage        },
       { path: "generate",          Component: GeneratePage       },
       { path: "results",           Component: RouteResultsPage   },
+      { path: "results/:id",       Component: RouteDetailPage    },
       { path: "route/:id",         Component: RouteDetailPage    },
       { path: "profile",           Component: ProfilePage        },
       { path: "social",            Component: SocialPage         },

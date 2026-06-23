@@ -73,6 +73,8 @@ async def search_route_options(search: RouteSearchRequest) -> list[RouteOption]:
         routes = []
         error = "Enter a valid start, destination, and route type."
 
+    generated_routes_json.store_generated_routes(routes)
+
     return routes
     # return {
     #     "routes": routes,
@@ -140,6 +142,13 @@ async def autocomplete_route(q: str = Query(...)):
 
 #     saved_routes_json.save_route(route_data, user.id)
 #     return RedirectResponse("/saved", status_code=303)
+
+@router.get("/results/{route_id}", response_model=RouteDetailPublic)
+async def route_detail(request: Request, route_id: str) -> RouteDetailPublic:
+    route = generated_routes_json.get_generated_route(route_id)
+    if route is None:
+        raise HTTPException(status_code=404, detail="Route not found")
+    return route
 
 @router.get("/{route_id}", response_model=RouteDetailPublic)
 async def route_detail(request: Request, route_id: str) -> RouteDetailPublic:

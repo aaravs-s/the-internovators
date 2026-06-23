@@ -133,7 +133,7 @@ export default function ExplorePage() {
                       <span key={tag} className="text-[10px] px-[7px] py-[2px] rounded-full bg-[rgba(255,255,255,0.07)] border border-[rgba(255,255,255,0.1)] text-[rgba(255,255,255,0.4)]">{tag}</span>
                     ))}
                   </div>
-                  <button onClick={() => navigate(`/route/${route.id}`)} className="cursor-pointer shrink-0">
+                  <button onClick={() => navigate(`/route/${route.id}`, {state: { source: "saved" }})} className="cursor-pointer shrink-0">
                     <span className="font-semibold text-[12px] text-[#0a84ff]">View →</span>
                   </button>
                 </div>

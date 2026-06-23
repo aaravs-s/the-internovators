@@ -50,7 +50,12 @@ export function getRoutes(
 
 export function getRoute(
   routeId: string,
+  source: string,
   fetcher: typeof fetch = fetch,
 ): Promise<RouteDetail> {
-  return requestJson<RouteDetail>(`/api/routes/${encodeURIComponent(routeId)}`, fetcher);
+  if (source === "saved"){
+    return requestJson<RouteDetail>(`/api/routes/${encodeURIComponent(routeId)}`, fetcher);
+  } else {
+    return requestJson<RouteDetail>(`/api/routes/results/${encodeURIComponent(routeId)}`, fetcher);
+  }
 }

@@ -9,6 +9,12 @@ from schemas.route import RouteOption
 def list_generated_routes() -> list[dict]:
     return read_list(settings.generated_routes_file)
 
+def transform_step(step):
+    return {
+        "instruction": step["instruction"],
+        "distance_miles": step["distance"] / 1609,
+        "kind": "start" if step["type"] == 11 else ("end" if step["type"] == 10 else "step"),
+    }
 
 def store_generated_routes(routes: list[RouteOption]) -> list[dict]:
     records = list_generated_routes()
@@ -17,14 +23,14 @@ def store_generated_routes(routes: list[RouteOption]) -> list[dict]:
 
     for route in routes:
         route_record = route.model_dump()
-        route_record["id"] = f"{route.id}-{uuid4().hex[:8]}"
+        print(route_record)
         route_record["generated_at"] = generated_at
+        route_record["directions"] = [transform_step(s) for s in route_record["directions"]]
         stored_routes.append(route_record)
 
     records.extend(stored_routes)
     write_list(settings.generated_routes_file, records[-50:])
     return stored_routes
-
 
 def get_generated_route(route_id: str) -> dict | None:
     return next(
