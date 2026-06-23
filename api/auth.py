@@ -1,6 +1,7 @@
-from fastapi import APIRouter, HTTPException, Response
+from fastapi import APIRouter, HTTPException, Response, Request
 
 from core.config import settings
+from core.dependencies import get_current_user
 from core.security import sign_user_id
 from repositories import users_json
 from schemas.user import UserCreate, UserLogin, UserPublic
@@ -32,3 +33,15 @@ async def login(credentials: UserLogin, response: Response) -> dict[str, str]:
         max_age=60 * 60 * 24 * 14,
     )
     return {"status": "ok"}
+
+@router.get("/me")
+async def me(request: Request):
+    user = get_current_user(request)
+
+    if not user:
+        raise HTTPException(status_code=401, detail="Not authenticated")
+
+    return {
+        "id": user.id,
+        "username": user.username,
+    }

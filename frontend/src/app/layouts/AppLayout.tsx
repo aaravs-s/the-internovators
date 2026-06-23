@@ -1,8 +1,11 @@
+import { useEffect, useState } from "react";
 import { Outlet, NavLink, useNavigate } from "react-router";
+
 import { DarkBackground, IconHome, IconBookmark, IconCompass, IconSocial, IconGear, IconBell } from "@/app/components/ui";
 import { imgSWLogo, imgProfile } from "@/app/assets";
+import { useAuth } from "../../auth/AuthContext";
 
-const UNREAD = 3; // In a real app this would come from global state / context
+const UNREAD = 3; // later this comes from global state / context
 
 type NavDef = { to: string; label: string; icon: (c: string) => React.ReactNode; badge?: number };
 
@@ -18,6 +21,12 @@ const navItems: NavDef[] = [
 function Sidebar() {
   const navigate = useNavigate();
 
+  const { user, loading, logout } = useAuth();
+
+  if (loading) {
+    return <div>Loading...</div>;
+  }
+
   return (
     <div
       className="absolute flex flex-col items-start left-0 top-0 w-[256px] h-full z-10"
@@ -30,9 +39,9 @@ function Sidebar() {
         <div className="h-[54px] w-[81px]">
           <img alt="SafeWalkers" className="w-full h-full object-contain" src={imgSWLogo} />
         </div>
-        <NavLink to="/notifications" className="cursor-pointer p-[6px] rounded-[10px] hover:bg-[rgba(255,255,255,0.05)] transition-colors">
+        {/* <NavLink to="/notifications" className="cursor-pointer p-[6px] rounded-[10px] hover:bg-[rgba(255,255,255,0.05)] transition-colors">
           <IconBell color="rgba(255,255,255,0.45)" badge={UNREAD} />
-        </NavLink>
+        </NavLink> */}
       </div>
 
       {/* Section label */}
@@ -87,6 +96,21 @@ function Sidebar() {
             <>
               <IconGear color={isActive ? "#c42050" : "rgba(255,255,255,0.35)"} />
               <span className={`font-['Inter',sans-serif] font-medium text-[15px] ${isActive ? "text-[#c42050]" : "text-[rgba(255,255,255,0.55)]"}`}>Settings</span>
+            </>
+          )}
+        </NavLink>
+
+        <NavLink to="/profile"
+          className={({ isActive }) =>
+            `relative rounded-[14px] w-full flex items-center gap-[12px] px-[17px] py-[12px] cursor-pointer transition-colors ${isActive ? "bg-[rgba(196,32,80,0.15)] border border-[rgba(196,32,80,0.25)]" : "hover:bg-[rgba(255,255,255,0.04)]"}`
+          }
+        >
+          {({ isActive }) => (
+            <>
+              <span className={`text-[15px] font-semibold text-[${isActive ? "#c42050" : "rgba(255,255,255,0.35)"}]`}>
+                {user?.username?.charAt(0).toUpperCase()}
+              </span>
+              <span className={`font-['Inter',sans-serif] font-medium text-[15px] ${isActive ? "text-[#c42050]" : "text-[rgba(255,255,255,0.55)]"}`}>{ user?.username }</span>
             </>
           )}
         </NavLink>

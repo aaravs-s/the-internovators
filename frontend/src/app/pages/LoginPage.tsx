@@ -6,6 +6,37 @@ export default function LoginPage() {
   const navigate = useNavigate();
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
+
+  const handleSubmit = async (e: React.SubmitEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setError("");
+
+    const res = await fetch("/api/auth/login", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        credentials: "include",
+        body: JSON.stringify({
+            username,
+            password,
+        }),
+    });
+
+    const data = await res.json();
+    if (!res.ok) {
+        // const error = await res.json();
+        // console.error(error.detail);
+        setError(data.detail ?? "Login failed");
+        return;
+    }
+
+    console.log(data);
+
+    navigate("/home");
+
+  };
 
   return (
     <div className="flex flex-col gap-[0]">
@@ -14,20 +45,29 @@ export default function LoginPage() {
         <p className="font-['Inter',sans-serif] font-normal text-[14px] text-[rgba(255,255,255,0.4)]">Welcome back — your city awaits.</p>
       </div>
 
-      <FormInput label="Username" placeholder="Enter your username" value={username} onChange={setUsername} />
-      <div className="mt-[16px]">
-        <FormInput label="Password" placeholder="Enter your password" type="password" value={password} onChange={setPassword} />
-      </div>
+      <form>
+        <FormInput label="Username" placeholder="Enter your username" value={username} onChange={setUsername} />
+        <div className="mt-[16px]">
+          <FormInput label="Password" placeholder="Enter your password" type="password" value={password} onChange={setPassword} />
+        </div>
 
-      <div className="mt-[12px]">
-        <Link to="/forgot-password" className="font-['Inter',sans-serif] font-semibold text-[14px] text-[#0a84ff]">
-          Forgot Password?
-        </Link>
-      </div>
+        <div className="mt-[12px]">
+          <Link to="/forgot-password" className="font-['Inter',sans-serif] font-semibold text-[14px] text-[#0a84ff]">
+            Forgot Password?
+          </Link>
+        </div>
 
-      <div className="mt-[20px]">
-        <PrimaryButton label="Sign In" onClick={() => navigate("/home")} wide />
-      </div>
+        {/* Error display */}
+        {error && (
+          <p className="text-red-400">
+            {error}
+          </p>
+        )}
+
+        <div className="mt-[20px]">
+          <PrimaryButton label="Sign In" onClick={ handleSubmit } wide />
+        </div>
+      </form>
 
       {/* Divider */}
       <div className="flex items-center gap-[12px] mt-[20px]">

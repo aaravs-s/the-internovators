@@ -15,6 +15,7 @@ from staticmap import StaticMap, Line
 import time
 import sqlite3
 from services.points_of_interest import find_pois
+from uuid import uuid4
 
 # fastapi dev main.py --host 127.0.0.1 --reload
 
@@ -275,7 +276,7 @@ def search_routes(search: RouteSearchRequest) -> list[RouteOption]:
         
         route_options.append(
             RouteOption(
-                id=route["id"],
+                id=f"{route["id"]}-{uuid4().hex[:8]}",
                 name=route["name"],
                 start=start,
                 destination=destination,
