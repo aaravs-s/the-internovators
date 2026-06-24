@@ -18,8 +18,6 @@ export default function RouteDetailPage() {
   const navigate   = useNavigate();
   const location = useLocation();
   const source = location.state?.source;
-
-  console.log(source)
   
   const { id }     = useParams<{ id: string }>();
   const [saved, setSaved]       = useState(false);
@@ -54,6 +52,7 @@ export default function RouteDetailPage() {
 
     return () => { cancelled = true; };
   }, [id]);
+  console.log(route)
 
   if (loading) {
     return <div className="p-[32px] text-[rgba(255,255,255,0.5)]">Loading route…</div>;
@@ -90,7 +89,7 @@ export default function RouteDetailPage() {
       <div className="px-[32px] py-[24px] flex flex-col gap-[20px] max-w-[900px]">
         {/* Map */}
         <div className="rounded-[20px] overflow-hidden h-[220px] relative border border-[rgba(255,255,255,0.08)]">
-          <img alt={`Map of ${route.name}`} className="w-full h-full object-cover" src={route.image_url ?? imgRouteMap} />
+          <img alt={`Map of ${route.name}`} className="w-full h-full object-cover" src={ route.filename === "" ? imgRouteMap : `/maps/${route.filename}` } />
           <div className="absolute inset-0 bg-gradient-to-t from-[rgba(10,6,8,0.4)] to-transparent" />
           <div className="absolute bottom-[16px] left-[16px] flex gap-[8px]">
             <SafetyBadge score={route.safety_score} />

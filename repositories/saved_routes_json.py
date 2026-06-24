@@ -101,7 +101,6 @@ def save_route_generated(route_data: SavedRouteCreate, user_id: str) -> dict:
 
 def save_route_shared(route_id: str, user_id: str) -> dict:
     saved_routes = list_saved_routes()
-    print(route_id)
     
     saved_route = None
     for i in range(len(saved_routes)):
@@ -109,7 +108,6 @@ def save_route_shared(route_id: str, user_id: str) -> dict:
             saved_routes[i]["user_id"].append(user_id)
             saved_route = saved_routes[i]
             break
-    print(saved_route)
 
     write_list(settings.saved_routes_file, saved_routes)
     return saved_route

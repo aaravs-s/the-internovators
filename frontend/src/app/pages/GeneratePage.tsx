@@ -1,7 +1,7 @@
 import { useEffect, useState, useMemo } from "react";
 import { useNavigate } from "react-router";
 
-import { imgRouteMap, homeSvg } from "@/app/assets";
+import { imgRouteMap, homeSvg, loadingGif } from "@/app/assets";
 import { cardBase, SafetyBadge } from "@/app/components/ui";
 
 function debounce(func: (...args: any[]) => void, delay: number) {
@@ -23,6 +23,7 @@ export default function GeneratePage() {
     const [startSuggestions, setStartSuggestions] = useState<string[]>([]);
     const [destination, setDestination] = useState("");
     const [destinationSuggestions, setDestinationSuggestions] = useState<string[]>([]);
+    const [searching, setSearching] = useState(false);
 
     const [type, setType] = useState("walking");
 
@@ -66,6 +67,8 @@ export default function GeneratePage() {
 
     const handleSubmit = async (e: React.SubmitEvent<HTMLFormElement>) => {
         e.preventDefault();
+
+        setSearching(true);
 
         const res = await fetch("/api/routes/search", {
             method: "POST",
@@ -159,39 +162,30 @@ export default function GeneratePage() {
                             <option value="walking">Walking</option>
                             <option value="biking">Biking</option>
                         </select>
-
-                        {/* <div className="flex gap-[12px]">
-                        <label className="flex items-center gap-[8px] text-white">
-                            <input
-                            type="radio"
-                            name="routeType"
-                            value="walking"
-                            onChange={(e) => {
-                                setType(e.target.value)
-                            }}
-                            defaultChecked
-                            />
-                            Walking
-                        </label>
-
-                        <label className="flex items-center gap-[8px] text-white">
-                            <input
-                            type="radio"
-                            name="routeType"
-                            value="biking"
-                            onChange={(e) => {
-                                setType(e.target.value)
-                            }}
-                            />
-                            Biking
-                        </label>
-                        </div> */}
                     </div>
 
                     <button
-                        className="h-[52px] rounded-[16px] bg-[#c42050] text-white font-semibold hover:opacity-90 transition-opacity cursor-pointer"
+                        className={`h-[52px] rounded-[16px] ${searching ? "bg-rgba(255,255,255,0.05) disabled cursor-default text-[#c42050]" : "bg-[#c42050] cursor-pointer text-white"} font-semibold hover:opacity-90 transition-opacity flex items-center justify-center gap-2`}
                     >
-                        Compare Safe Routes →
+                        {searching ? (
+                            <>
+                                <span>Searching</span>
+                                <span className="w-5 h-5 flex items-center justify-center">
+                                <img
+                                    src={loadingGif}
+                                    alt="Loading..."
+                                    className="w-full h-full object-contain"
+                                />
+                                </span>
+                            </>
+                            ) : (
+                            <>
+                                <span>Compare Safe Routes</span>
+                                <span className="w-5 h-5 flex items-center justify-center">
+                                →
+                                </span>
+                            </>
+                        )}
                     </button>
                     </div>
                 </form>

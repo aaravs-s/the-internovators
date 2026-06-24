@@ -16,8 +16,6 @@ export default function RouteResultsPage() {
 
     const routes = state.routes;
 
-    console.log(routes)
-
     const saveRoute = async (routeId: string) => {
         await fetch(`/api/routes/save-generated/${routeId}`, {
             method: "POST",
@@ -54,7 +52,6 @@ export default function RouteResultsPage() {
             setSaved((_) => {
                 return new Set<string>(routes.map((route) => route.route_id))
             });
-            console.log(saved)
             } catch (err) {
                 console.error(err);
             }
@@ -82,7 +79,7 @@ export default function RouteResultsPage() {
                     routes.map((route) => (
                         <div key={route.id} className={`${cardBase} overflow-hidden`}>
                             <div className="h-[100px] w-full overflow-hidden relative">
-                                <img alt={`Map preview for ${route.name}`} className="w-full h-full object-cover" src={`/maps/${route.filename ?? imgRouteMap}`} />
+                                <img alt={`Map preview for ${route.name}`} className="w-full h-full object-cover" src={ route.filename === "" ? imgRouteMap : `/maps/${route.filename}` } />
                                 <div className="absolute inset-0 bg-gradient-to-t from-[rgba(10,6,8,0.7)] to-transparent" />
                                 <div className="absolute bottom-[10px] left-[14px]"><SafetyBadge score={route.safety_score} /></div>
                                 <button onClick={() => toggle(route.id)} aria-label={saved.has(route.id) ? "Unsave route" : "Save route"}

@@ -89,7 +89,6 @@ export default function ExplorePage() {
 
     loadSavedRoutes();
   }, []);
-  console.log(saved)
 
   const normalizedSearch = search.trim().toLowerCase();
   const visible = routes.filter((route) => {

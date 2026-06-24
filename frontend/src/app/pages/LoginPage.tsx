@@ -32,8 +32,6 @@ export default function LoginPage() {
         return;
     }
 
-    console.log(data);
-
     navigate("/home");
 
   };

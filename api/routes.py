@@ -92,7 +92,6 @@ async def autocomplete_route(q: str = Query(...)):
 async def get_saved_routes(request: Request) -> RouteDetailPublic:
     user = get_current_user(request)
     routes = saved_routes_json.list_saved_routes()
-    print(routes)
     return [r for r in routes if user.id in r["user_id"]]
 
 @router.post("/save-generated/{route_id}", response_model=RouteDetailPublic)

@@ -27,7 +27,6 @@ function Sidebar() {
   if (user_loading) {
     return <div>Loading...</div>;
   }
-  console.log(user)
 
   return (
     <div
