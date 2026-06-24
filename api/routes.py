@@ -88,63 +88,29 @@ async def search_route_options(search: RouteSearchRequest) -> list[RouteOption]:
 async def autocomplete_route(q: str = Query(...)):
     return autocomplete(q)
 
-# @router.post("/save")
-# async def save_route(
-#     request: Request,
-#     route_id: str = Form(...),
-#     name: str = Form(...),
-#     start: str = Form(...),
-#     destination: str = Form(...),
-#     distance_miles: float = Form(...),
-#     estimated_minutes: int = Form(0),
-#     safety_score: int = Form(...),
-#     summary: str = Form(""),
-#     route_type: str = Form("walking"),
-#     map_style: str = Form("balanced"),
-#     filename: str = Form(""),
-#     directions: str = Form("[]"),
-# ):
-#     user = get_current_user(request)
-#     if not user:
-#         return RedirectResponse("/login", status_code=303)
+@router.get("/get-saved", response_model=list[dict])
+async def get_saved_routes(request: Request) -> RouteDetailPublic:
+    user = get_current_user(request)
+    routes = saved_routes_json.list_saved_routes()
+    print(routes)
+    return [r for r in routes if user.id in r["user_id"]]
 
-#     highlights = []
-#     route, _ = get_route_record(route_id)
-#     if route:
-#         if (
-#             route.get("user_id")
-#             and route.get("user_id") != user.id
-#             and not route.get("is_shared", True)
-#         ):
-#             return RedirectResponse("/explore", status_code=303)
-#         route_id = route.get("route_id", route_id)
-#         highlights = route.get("highlights", [])
+@router.post("/save-generated/{route_id}", response_model=RouteDetailPublic)
+async def save_generated_route(request: Request, route_id: str) -> RouteDetailPublic:
+    user = get_current_user(request)
+    route = generated_routes_json.get_generated_route(route_id)
+    if route is None:
+        raise HTTPException(status_code=404, detail="Route not found")
+    saved_routes_json.save_route_generated(SavedRouteCreate.model_validate(route), user.id)
+    return route
 
-#     try:
-#         route_directions = route.get("directions", []) if route else json.loads(directions)
-#         route_data = SavedRouteCreate(
-#             route_id=route_id,
-#             name=name,
-#             start=start,
-#             destination=destination,
-#             distance_miles=distance_miles,
-#             estimated_minutes=estimated_minutes,
-#             safety_score=safety_score,
-#             summary=summary,
-#             highlights=highlights,
-#             route_type=route_type,
-#             map_style=map_style,
-#             filename=filename,
-#             directions=route_directions,
-#         )
-#     except (json.JSONDecodeError, ValidationError):
-#         return RedirectResponse("/generate", status_code=303)
-
-#     saved_routes_json.save_route(route_data, user.id)
-#     return RedirectResponse("/saved", status_code=303)
+@router.post("/save-shared/{route_id}", response_model=dict)
+async def save_shared_route(request: Request, route_id: str) -> RouteDetailPublic:
+    user = get_current_user(request)
+    return saved_routes_json.save_route_shared(route_id, user.id)
 
 @router.get("/results/{route_id}", response_model=RouteDetailPublic)
-async def route_detail(request: Request, route_id: str) -> RouteDetailPublic:
+async def generated_route_detail(request: Request, route_id: str) -> RouteDetailPublic:
     route = generated_routes_json.get_generated_route(route_id)
     if route is None:
         raise HTTPException(status_code=404, detail="Route not found")

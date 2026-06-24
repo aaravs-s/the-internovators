@@ -59,13 +59,13 @@ def _write_enriched_routes(saved_routes: list[dict]) -> None:
     )
 
 
-def save_route(route_data: SavedRouteCreate, user_id: str) -> dict:
+def save_route_generated(route_data: SavedRouteCreate, user_id: str) -> dict:
     saved_routes = list_saved_routes()
     existing = next(
         (
             route
             for route in saved_routes
-            if route["user_id"] == user_id and route["route_id"] == route_data.route_id
+            if user_id in route["user_id"] and route["route_id"] == route_data.id
         ),
         None,
     )
@@ -75,7 +75,7 @@ def save_route(route_data: SavedRouteCreate, user_id: str) -> dict:
     saved_route = {
         "id": str(uuid4()),
         "user_id": user_id,
-        "route_id": route_data.route_id,
+        "route_id": route_data.id,
         "name": route_data.name,
         "start": route_data.start,
         "destination": route_data.destination,
@@ -99,6 +99,20 @@ def save_route(route_data: SavedRouteCreate, user_id: str) -> dict:
     write_list(settings.saved_routes_file, saved_routes)
     return saved_route
 
+def save_route_shared(route_id: str, user_id: str) -> dict:
+    saved_routes = list_saved_routes()
+    print(route_id)
+    
+    saved_route = None
+    for i in range(len(saved_routes)):
+        if route_id == saved_routes[i]["id"]:
+            saved_routes[i]["user_id"].append(user_id)
+            saved_route = saved_routes[i]
+            break
+    print(saved_route)
+
+    write_list(settings.saved_routes_file, saved_routes)
+    return saved_route
 
 def list_saved_routes_for_user(user_id: str) -> list[dict]:
     return [route for route in list_saved_routes() if route["user_id"] == user_id]

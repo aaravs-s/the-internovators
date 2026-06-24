@@ -21,15 +21,17 @@ const navItems: NavDef[] = [
 function Sidebar() {
   const navigate = useNavigate();
 
-  const { user, loading, logout } = useAuth();
+  const { user, user_loading, logout } = useAuth();
 
-  if (loading) {
+
+  if (user_loading) {
     return <div>Loading...</div>;
   }
+  console.log(user)
 
   return (
     <div
-      className="absolute flex flex-col items-start left-0 top-0 w-[256px] h-full z-10"
+      className="fixed flex flex-col items-start left-0 top-0 w-[256px] h-full z-10"
       style={{ background: "rgba(10,6,8,0.65)", backdropFilter: "blur(20px)" }}
     >
       <div aria-hidden className="absolute border-[rgba(255,255,255,0.07)] border-r border-solid inset-0 pointer-events-none" />
@@ -115,8 +117,9 @@ function Sidebar() {
           )}
         </NavLink>
 
-        <button onClick={() => navigate("/")}
+        <button onClick={() => { logout(); navigate("/"); }}
           className="flex gap-[12px] items-center px-[17px] py-[11px] cursor-pointer w-full rounded-[14px] hover:bg-[rgba(255,255,255,0.04)] transition-colors"
+  
         >
           <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
             <path d="M7 2H3a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h4M12 13l4-4-4-4M16 9H7" stroke="rgba(255,255,255,0.3)" strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.4" />

@@ -23,7 +23,6 @@ def store_generated_routes(routes: list[RouteOption]) -> list[dict]:
 
     for route in routes:
         route_record = route.model_dump()
-        print(route_record)
         route_record["generated_at"] = generated_at
         route_record["directions"] = [transform_step(s) for s in route_record["directions"]]
         stored_routes.append(route_record)

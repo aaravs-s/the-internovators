@@ -26,7 +26,7 @@ class RouteOption(BaseModel):
 
 
 class SavedRouteCreate(BaseModel):
-    route_id: str
+    id: str
     name: str
     start: str
     destination: str

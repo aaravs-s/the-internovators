@@ -16,10 +16,23 @@ export default function ExplorePage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
+  const saveRoute = async (routeId: string) => {
+    await fetch(`/api/routes/save-shared/${routeId}`, {
+      method: "POST",
+      credentials: "include",
+    });
+  };
+
+
   const toggle = (id: string) => {
     setSaved((previous) => {
       const next = new Set(previous);
-      next.has(id) ? next.delete(id) : next.add(id);
+      if (next.has(id)) {
+        next.delete(id);
+      } else {
+        next.add(id);
+        saveRoute(id);
+      }
       return next;
     });
   };
@@ -52,6 +65,31 @@ export default function ExplorePage() {
       cancelled = true;
     };
   }, []);
+
+  useEffect(() => {
+    const loadSavedRoutes = async () => {
+      try {
+      const response = await fetch("/api/routes/get-saved", {
+        credentials: "include",
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to load saved routes");
+      }
+
+      const routes = await response.json();
+
+      setSaved((_) => {
+        return new Set<string>(routes.map((route) => route.id))
+      });
+      } catch (err) {
+        console.error(err);
+      }
+    };
+
+    loadSavedRoutes();
+  }, []);
+  console.log(saved)
 
   const normalizedSearch = search.trim().toLowerCase();
   const visible = routes.filter((route) => {
@@ -112,7 +150,8 @@ export default function ExplorePage() {
                 <div className="absolute inset-0 bg-gradient-to-t from-[rgba(10,6,8,0.7)] to-transparent" />
                 <div className="absolute bottom-[10px] left-[14px]"><SafetyBadge score={route.safety_score} /></div>
                 <button onClick={() => toggle(route.id)} aria-label={saved.has(route.id) ? "Unsave route" : "Save route"}
-                  className="absolute top-[10px] right-[10px] size-[30px] rounded-full bg-[rgba(10,6,8,0.6)] border border-[rgba(255,255,255,0.1)] flex items-center justify-center cursor-pointer hover:border-[rgba(196,32,80,0.4)] transition-colors">
+                  disabled={saved.has(route.id)}
+                  className={`absolute top-[10px] right-[10px] size-[30px] rounded-full bg-[rgba(10,6,8,0.6)] border border-[rgba(255,255,255,0.1)] flex items-center justify-center cursor-${saved.has(route.id) ? "default" : "pointer"} hover:border-[rgba(196,32,80,0.4)] transition-colors`}>
                   <svg width="14" height="14" viewBox="0 0 22 22" fill="none">
                     <path d={homeSvg.p2f4e1d80} stroke={saved.has(route.id) ? "#c42050" : "rgba(255,255,255,0.5)"}
                       strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.83333"

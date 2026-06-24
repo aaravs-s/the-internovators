@@ -8,7 +8,7 @@ export type User = {
 
 type AuthContextType = {
   user: User | null;
-  loading: boolean;
+  user_loading: boolean;
   refreshUser: () => Promise<void>;
   logout: () => void;
 };
@@ -17,7 +17,7 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
-  const [loading, setLoading] = useState(true);
+  const [user_loading, setuser_loading] = useState(true);
 
   const refreshUser = async () => {
     try {
@@ -35,7 +35,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     } catch (err) {
       setUser(null);
     } finally {
-      setLoading(false);
+      setuser_loading(false);
     }
   };
 
@@ -52,7 +52,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   };
 
   return (
-    <AuthContext.Provider value={{ user, loading, refreshUser, logout }}>
+    <AuthContext.Provider value={{ user, user_loading, refreshUser, logout }}>
       {children}
     </AuthContext.Provider>
   );
