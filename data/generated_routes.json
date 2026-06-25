@@ -7168,5 +7168,1511 @@
     "safety_score": 88,
     "start": "Q2 Stadium, Austin, TX, USA",
     "summary": "Strong sidewalk coverage and comfortable walking conditions."
+  },
+  {
+    "destination": "UT Tower, Austin, TX, USA",
+    "directions": [
+      {
+        "distance_miles": 0.03623368551895587,
+        "instruction": "Head north",
+        "kind": "start"
+      },
+      {
+        "distance_miles": 0.03014294592914854,
+        "instruction": "Turn left onto Red Line Trail",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.03642013673088875,
+        "instruction": "Turn slight left",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.06239900559353636,
+        "instruction": "Turn left",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.0022374145431945307,
+        "instruction": "Turn right",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.019577377252952145,
+        "instruction": "Turn left onto Red Line Trail",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.010814170292106897,
+        "instruction": "Turn right",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.11398384089496583,
+        "instruction": "Turn left onto Red Line Trail",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.002486016159105034,
+        "instruction": "Continue straight",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.011000621504039776,
+        "instruction": "Turn left",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.0018645121193287756,
+        "instruction": "Turn left",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.3381603480422623,
+        "instruction": "Turn right",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.013424487259167185,
+        "instruction": "Turn left",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.015848353014294592,
+        "instruction": "Turn right",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.1064636420136731,
+        "instruction": "Turn slight left onto Burnet Road, FM 1325",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.1576755748912368,
+        "instruction": "Turn left",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.15612181479179613,
+        "instruction": "Turn right",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.03803604723430702,
+        "instruction": "Keep left",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.08539465506525792,
+        "instruction": "Continue straight onto McNeil Road",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.0053449347420758235,
+        "instruction": "Turn left",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.26382846488502176,
+        "instruction": "Turn right",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.0009322560596643878,
+        "instruction": "Turn right",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.06208825357364823,
+        "instruction": "Turn left",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 1.487010565568676,
+        "instruction": "Turn slight left",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.0025481665630826596,
+        "instruction": "Turn left",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.14418893722809198,
+        "instruction": "Turn right",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.30950901180857676,
+        "instruction": "Turn slight left",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.10882535736482286,
+        "instruction": "Turn left onto Burnet Lane",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.005904288377874456,
+        "instruction": "Turn left",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.003356121814791796,
+        "instruction": "Turn slight left",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.15301429459291485,
+        "instruction": "Turn slight right",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.005469235550031076,
+        "instruction": "Turn left",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.17712865133623368,
+        "instruction": "Turn right onto Hardy Drive",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.022560596643878182,
+        "instruction": "Turn right onto Burbank Street",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.0039154754505904285,
+        "instruction": "Turn left",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.0018023617153511498,
+        "instruction": "Turn right",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.36979490366687384,
+        "instruction": "Turn left",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.03163455562461156,
+        "instruction": "Turn right onto Romeria Drive",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.14176507147296458,
+        "instruction": "Turn left",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.013610938471100061,
+        "instruction": "Keep left",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.023927905531385955,
+        "instruction": "Turn right",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.016967060285891858,
+        "instruction": "Turn sharp left",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.30459912989434434,
+        "instruction": "Keep left",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.012802983219390928,
+        "instruction": "Turn right",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.7041019266625234,
+        "instruction": "Turn left",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.0015537600994406464,
+        "instruction": "Turn right",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.3770665009322561,
+        "instruction": "Turn left",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.265941578620261,
+        "instruction": "Keep left",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.008017402113113735,
+        "instruction": "Turn left",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.19011808576755748,
+        "instruction": "Turn slight right",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.005717837165941578,
+        "instruction": "Turn left",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.004723430702299565,
+        "instruction": "Turn slight right",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.007209446861404599,
+        "instruction": "Turn right onto Marathon Boulevard",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.07004350528278434,
+        "instruction": "Turn left onto West 40th Street",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.023617153511497825,
+        "instruction": "Turn right",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.08104412678682411,
+        "instruction": "Turn right",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.12249844623990055,
+        "instruction": "Keep left",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.03610938471100062,
+        "instruction": "Turn right",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.16737103791174643,
+        "instruction": "Turn slight right onto West Avenue",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.06612802983219392,
+        "instruction": "Turn left",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.007768800497203232,
+        "instruction": "Turn left onto West 34th Street",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.004164077066500933,
+        "instruction": "Turn right",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.02113113735239279,
+        "instruction": "Turn left",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.1858297078931013,
+        "instruction": "Turn right onto Kings Lane",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.027656929770043505,
+        "instruction": "Turn left onto West 31st Street",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.003542573026724674,
+        "instruction": "Turn right onto Washington Square",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.008638906152889994,
+        "instruction": "Turn left",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.0880049720323182,
+        "instruction": "Turn right",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.030205096333126166,
+        "instruction": "Turn left",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.003853325046612803,
+        "instruction": "Turn right",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.01230577998756992,
+        "instruction": "Turn left onto West 30th Street",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.0944686140459913,
+        "instruction": "Turn right onto Rio Grande Street",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.002175264139216905,
+        "instruction": "Turn left",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.012678682411435674,
+        "instruction": "Turn right",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.1165941578620261,
+        "instruction": "Turn slight left",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.10832815413300187,
+        "instruction": "Keep left",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.2067122436295836,
+        "instruction": "Keep left",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.0014294592914853945,
+        "instruction": "Turn left",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.04804226227470478,
+        "instruction": "Turn right",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.01261653200745805,
+        "instruction": "Turn left",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.06320696084524549,
+        "instruction": "Turn right",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.05419515226848975,
+        "instruction": "Turn left",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.07613424487259167,
+        "instruction": "Turn right",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.0053449347420758235,
+        "instruction": "Turn left",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.002486016159105034,
+        "instruction": "Turn left",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.05593536357986327,
+        "instruction": "Turn right onto Whitis Avenue",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.08085767557489124,
+        "instruction": "Turn left onto Inner Campus Circle",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.05139838408949658,
+        "instruction": "Turn right",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.012367930391547544,
+        "instruction": "Turn right",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.0,
+        "instruction": "Arrive at your destination, on the right",
+        "kind": "end"
+      }
+    ],
+    "distance_miles": 8.44,
+    "estimated_minutes": 162,
+    "filename": "map_131.png",
+    "generated_at": "2026-06-25T15:06:29.957213+00:00",
+    "highlights": [
+      "Turnstile",
+      "Bill Miller BBQ",
+      "Kerbey Lane Cafe",
+      "Roppolo's Pizzeria",
+      "CAVA",
+      "Tumble22",
+      "Citizen All Day",
+      "Maru Japanese",
+      "Cabo Bob's"
+    ],
+    "id": "quickest-77bd55e5",
+    "map_style": "balanced",
+    "name": "Quickest",
+    "route_type": "walking",
+    "safety_score": 94,
+    "start": "Q2 Stadium, Austin, TX, USA",
+    "summary": "Strong sidewalk coverage and comfortable walking conditions."
+  },
+  {
+    "destination": "UT Tower, Austin, TX, USA",
+    "directions": [
+      {
+        "distance_miles": 0.03623368551895587,
+        "instruction": "Head north",
+        "kind": "start"
+      },
+      {
+        "distance_miles": 0.03014294592914854,
+        "instruction": "Turn left onto Red Line Trail",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.03642013673088875,
+        "instruction": "Turn slight left",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.06239900559353636,
+        "instruction": "Turn left",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.0022374145431945307,
+        "instruction": "Turn right",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.019577377252952145,
+        "instruction": "Turn left onto Red Line Trail",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.010814170292106897,
+        "instruction": "Turn right",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.11398384089496583,
+        "instruction": "Turn left onto Red Line Trail",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.002486016159105034,
+        "instruction": "Continue straight",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.011000621504039776,
+        "instruction": "Turn left",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.0018645121193287756,
+        "instruction": "Turn left",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.3381603480422623,
+        "instruction": "Turn right",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.013424487259167185,
+        "instruction": "Turn left",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.015848353014294592,
+        "instruction": "Turn right",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.1064636420136731,
+        "instruction": "Turn slight left onto Burnet Road, FM 1325",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.1576755748912368,
+        "instruction": "Turn left",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.15612181479179613,
+        "instruction": "Turn right",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.03803604723430702,
+        "instruction": "Keep left",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.08539465506525792,
+        "instruction": "Continue straight onto McNeil Road",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.0053449347420758235,
+        "instruction": "Turn left",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.26382846488502176,
+        "instruction": "Turn right",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.0009322560596643878,
+        "instruction": "Turn right",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.06208825357364823,
+        "instruction": "Turn left",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 1.0390926041019266,
+        "instruction": "Turn slight left",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.05463020509633313,
+        "instruction": "Turn left",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.13927905531385953,
+        "instruction": "Turn right onto Brockman Street",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.43921690490988197,
+        "instruction": "Turn left",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.009384711000621503,
+        "instruction": "Keep right",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.01678060907395898,
+        "instruction": "Turn right",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.0007458048477315102,
+        "instruction": "Turn left",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.2801118707271597,
+        "instruction": "Turn right",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 1.257799875699192,
+        "instruction": "Turn left onto Dartmouth Avenue",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.0034804226227470474,
+        "instruction": "Turn left",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.16233685518955873,
+        "instruction": "Turn right",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.001678060907395898,
+        "instruction": "Turn left",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.0037290242386575512,
+        "instruction": "Turn right",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.016967060285891858,
+        "instruction": "Turn left",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.12423865755127408,
+        "instruction": "Turn left",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.2203853325046613,
+        "instruction": "Turn right",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.015413300186451212,
+        "instruction": "Turn right",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.0025481665630826596,
+        "instruction": "Turn left",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.20372902423865755,
+        "instruction": "Turn right",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.001243008079552517,
+        "instruction": "Turn slight right",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.1781852082038533,
+        "instruction": "Turn slight left",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.17346177750155378,
+        "instruction": "Keep right",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.012802983219390928,
+        "instruction": "Turn left",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.2899316345556246,
+        "instruction": "Turn right",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.013362336855189559,
+        "instruction": "Turn right",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.19210689869484154,
+        "instruction": "Turn left",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.08558110627719079,
+        "instruction": "Turn left",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.014418893722809198,
+        "instruction": "Turn left",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.004412678682411435,
+        "instruction": "Turn right",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.11808576755748912,
+        "instruction": "Turn left",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.1763828464885022,
+        "instruction": "Turn right onto Avenue B",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.0074580484773151025,
+        "instruction": "Enter the roundabout and take the 1st exit onto West 43rd Street",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.02802983219390926,
+        "instruction": "Continue straight onto West 43rd Street",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.08881292728402734,
+        "instruction": "Turn right",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.058732131758856436,
+        "instruction": "Turn left onto West 42nd Street",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.08278433809819763,
+        "instruction": "Turn right",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.02430080795525171,
+        "instruction": "Turn left",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.00435052827843381,
+        "instruction": "Turn right",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.004972032318210068,
+        "instruction": "Turn left onto West 41st Street",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.12175264139216906,
+        "instruction": "Turn right onto Avenue D",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.004723430702299565,
+        "instruction": "Turn left",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.05736482287134866,
+        "instruction": "Turn right",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.00584213797389683,
+        "instruction": "Turn left",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.004101926662523306,
+        "instruction": "Turn right",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.043816034804226224,
+        "instruction": "Turn left onto West 39th Street",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.14816656308266005,
+        "instruction": "Turn right",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.006277190801740211,
+        "instruction": "Turn left",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.0015537600994406464,
+        "instruction": "Turn right onto Speedway",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.0046612802983219395,
+        "instruction": "Turn left onto East 37th Street",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.04394033561218148,
+        "instruction": "Turn right",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.024984462399005595,
+        "instruction": "Turn left",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.004599129894344313,
+        "instruction": "Turn right",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.008452454940957116,
+        "instruction": "Turn left onto East 35th Street",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.3256059664387818,
+        "instruction": "Turn right onto Helms Street",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.05469235550031075,
+        "instruction": "Turn left",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.008514605344934742,
+        "instruction": "Turn right",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.03561218147917961,
+        "instruction": "Turn left",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.07203231821006836,
+        "instruction": "Turn right",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.0027967681789931634,
+        "instruction": "Turn slight left",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.011187072715972654,
+        "instruction": "Keep left",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.011746426351771286,
+        "instruction": "Turn right",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.23467992541951524,
+        "instruction": "Turn right",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.0009322560596643878,
+        "instruction": "Turn right",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.09011808576755749,
+        "instruction": "Turn left",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.10341827221876942,
+        "instruction": "Turn slight left onto Speedway",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.03275326289620883,
+        "instruction": "Turn right",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.026724673710379118,
+        "instruction": "Turn slight left",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.06948415164698571,
+        "instruction": "Turn left",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.004785581106277191,
+        "instruction": "Turn right",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.01168427594779366,
+        "instruction": "Turn left",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.012367930391547544,
+        "instruction": "Turn right",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.0,
+        "instruction": "Arrive at your destination, on the right",
+        "kind": "end"
+      }
+    ],
+    "distance_miles": 8.71,
+    "estimated_minutes": 168,
+    "filename": "map_133.png",
+    "generated_at": "2026-06-25T15:06:29.957213+00:00",
+    "highlights": [
+      "Turnstile",
+      "Bill Miller BBQ",
+      "Enchiladas Y Mas",
+      "Lone Star Kolaches",
+      "H-E-B Plaza",
+      "Northwest Plaza",
+      "Casa Chapala",
+      "Vaquero Taquero",
+      "Titaya's Thai Cuisine"
+    ],
+    "id": "route-a56a7d43",
+    "map_style": "direct",
+    "name": "Route Option",
+    "route_type": "walking",
+    "safety_score": 94,
+    "start": "Q2 Stadium, Austin, TX, USA",
+    "summary": "Strong sidewalk coverage and comfortable walking conditions."
+  },
+  {
+    "destination": "UT Tower, Austin, TX, USA",
+    "directions": [
+      {
+        "distance_miles": 0.01348663766314481,
+        "instruction": "Head east",
+        "kind": "start"
+      },
+      {
+        "distance_miles": 0.0022995649471721567,
+        "instruction": "Turn right",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.09944064636420137,
+        "instruction": "Turn right",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.1523927905531386,
+        "instruction": "Turn right onto Red Line Trail",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.004909881914232443,
+        "instruction": "Turn left onto West Road",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.2136730888750777,
+        "instruction": "Turn right onto McKalla Place",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.01963952765692977,
+        "instruction": "Turn left onto Rutland Drive",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.00658794282162834,
+        "instruction": "Turn right",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.12293349906774395,
+        "instruction": "Turn left",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.26476072094468617,
+        "instruction": "Turn right",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.018396519577377254,
+        "instruction": "Turn right",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.20577998756991922,
+        "instruction": "Turn left",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.01963952765692977,
+        "instruction": "Keep right",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.13915475450590428,
+        "instruction": "Turn right",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.013424487259167185,
+        "instruction": "Turn right",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.20323182100683654,
+        "instruction": "Turn left",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.23045369794903667,
+        "instruction": "Turn slight left",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.25226848974518334,
+        "instruction": "Turn right onto Meadow Vale",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.058421379738968306,
+        "instruction": "Turn right",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.010254816656308266,
+        "instruction": "Turn left",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.09459291485394654,
+        "instruction": "Turn right",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.0802983219390926,
+        "instruction": "Turn left",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.004599129894344313,
+        "instruction": "Turn right",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.021628340584213795,
+        "instruction": "Turn left onto Norseman Terrace",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.06059664387818521,
+        "instruction": "Turn right onto Tronewood Drive",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.004536979490366687,
+        "instruction": "Turn left",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.06078309509011808,
+        "instruction": "Turn right",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.0022995649471721567,
+        "instruction": "Turn slight left",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.028713486637663148,
+        "instruction": "Turn slight left",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.17364822871348662,
+        "instruction": "Turn right",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.1396519577377253,
+        "instruction": "Turn left",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.17433188315724052,
+        "instruction": "Turn right onto Maine Drive",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.20348042262274704,
+        "instruction": "Turn left onto Colony North Drive",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.0418272218769422,
+        "instruction": "Turn sharp right onto Jamestown Drive",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.08527035425730267,
+        "instruction": "Turn left onto Thurmond Street",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.005717837165941578,
+        "instruction": "Turn right onto Goldfinch Court",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.04891236793039155,
+        "instruction": "Turn left",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.03834679925419515,
+        "instruction": "Turn right",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.012678682411435674,
+        "instruction": "Turn left",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.014356743318831574,
+        "instruction": "Turn right",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.02411435674331883,
+        "instruction": "Turn left",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.014978247358607831,
+        "instruction": "Turn left",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.007768800497203232,
+        "instruction": "Turn sharp right",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.031075201988812928,
+        "instruction": "Turn left",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.17588564325668116,
+        "instruction": "Turn sharp right",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.0235550031075202,
+        "instruction": "Turn left",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.27234307022995646,
+        "instruction": "Turn right",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.002113113735239279,
+        "instruction": "Turn left",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.0819763828464885,
+        "instruction": "Turn right",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.23642013673088874,
+        "instruction": "Turn right",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.001305158483530143,
+        "instruction": "Turn slight left",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.008949658172778123,
+        "instruction": "Turn slight right",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.002486016159105034,
+        "instruction": "Turn right",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.4383467992541951,
+        "instruction": "Turn left",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.005096333126165319,
+        "instruction": "Turn slight left",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.0362958359229335,
+        "instruction": "Keep left",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.009944064636420136,
+        "instruction": "Keep left",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.16482287134866375,
+        "instruction": "Turn slight left",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.08328154133001865,
+        "instruction": "Keep right",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.011932877563704163,
+        "instruction": "Turn sharp right",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.012927284027346178,
+        "instruction": "Keep right",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.01423244251087632,
+        "instruction": "Turn left onto Red Line Trail",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.40012430080795525,
+        "instruction": "Turn right",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.0011808576755748912,
+        "instruction": "Turn slight right",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.18688626476072093,
+        "instruction": "Turn slight left",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.13623368551895587,
+        "instruction": "Turn left",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.190366687383468,
+        "instruction": "Turn right onto Link Avenue",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.060534493474207585,
+        "instruction": "Turn left",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.014481044126786824,
+        "instruction": "Turn right",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.0016159105034182723,
+        "instruction": "Turn left",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.057426973275326296,
+        "instruction": "Keep right",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.26382846488502176,
+        "instruction": "Turn slight right",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.009571162212554381,
+        "instruction": "Turn slight left",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.0032318210068365445,
+        "instruction": "Turn left",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.16594157862026104,
+        "instruction": "Turn right onto Avenue F",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.011062771908017403,
+        "instruction": "Turn left onto East 51st Street",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.3555003107520199,
+        "instruction": "Turn right onto Avenue F",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.01901802361715351,
+        "instruction": "Turn right onto East 47th Street",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.9631448104412679,
+        "instruction": "Turn left onto Avenue F",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.020758234928527033,
+        "instruction": "Turn left onto East 35th Street",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.004536979490366687,
+        "instruction": "Turn right",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.01783716594157862,
+        "instruction": "Turn left",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.33511497824735864,
+        "instruction": "Turn right onto Grooms Street",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.007022995649471722,
+        "instruction": "Turn left",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.008514605344934742,
+        "instruction": "Turn right",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.03561218147917961,
+        "instruction": "Turn left",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.07203231821006836,
+        "instruction": "Turn right",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.0027967681789931634,
+        "instruction": "Turn slight left",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.011187072715972654,
+        "instruction": "Keep left",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.011746426351771286,
+        "instruction": "Turn right",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.23467992541951524,
+        "instruction": "Turn right",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.0009322560596643878,
+        "instruction": "Turn right",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.09011808576755749,
+        "instruction": "Turn left",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.10341827221876942,
+        "instruction": "Turn slight left onto Speedway",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.03275326289620883,
+        "instruction": "Turn right",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.026724673710379118,
+        "instruction": "Turn slight left",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.06948415164698571,
+        "instruction": "Turn left",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.004785581106277191,
+        "instruction": "Turn right",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.01168427594779366,
+        "instruction": "Turn left",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.012367930391547544,
+        "instruction": "Turn right",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.0,
+        "instruction": "Arrive at your destination, on the right",
+        "kind": "end"
+      }
+    ],
+    "distance_miles": 8.96,
+    "estimated_minutes": 173,
+    "filename": "map_132.png",
+    "generated_at": "2026-06-25T15:06:29.957213+00:00",
+    "highlights": [
+      "Live Oak Park",
+      "China Family",
+      "Bamboo House Austin",
+      "Vigilante Gastropub & Games"
+    ],
+    "id": "route-fdcf50a4",
+    "map_style": "quiet",
+    "name": "Route Option",
+    "route_type": "walking",
+    "safety_score": 93,
+    "start": "Q2 Stadium, Austin, TX, USA",
+    "summary": "Strong sidewalk coverage and comfortable walking conditions."
   }
 ]

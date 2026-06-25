@@ -26,6 +26,7 @@ export default function RouteDetailPage() {
   const [route, setRoute] = useState<RouteDetail | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+
   useEffect(() => {
     let cancelled = false;
     if (!id) {
@@ -52,7 +53,42 @@ export default function RouteDetailPage() {
 
     return () => { cancelled = true; };
   }, [id]);
-  console.log(route)
+
+  useEffect(() => {
+    const loadSavedRoutes = async () => {
+      try {
+      const response = await fetch("/api/routes/get-saved", {
+        credentials: "include",
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to load saved routes");
+      }
+
+      const saved_routes = await response.json();
+
+      saved_routes.forEach((saved_route: any) => {
+        if (saved_route.route_id === id) {
+          setSaved(true);
+          return true;
+        }
+      });
+
+      } catch (err) {
+        console.error(err);
+      }
+    };
+
+    loadSavedRoutes();
+  }, []);
+
+  const saveRoute = async (routeId: string) => {
+    setSaved(true);
+    await fetch(`/api/routes/save-${source == "generated" ? "generated" : "shared"}/${routeId}`, {
+      method: "POST",
+      credentials: "include",
+    });
+  };
 
   if (loading) {
     return <div className="p-[32px] text-[rgba(255,255,255,0.5)]">Loading route…</div>;
@@ -89,7 +125,11 @@ export default function RouteDetailPage() {
       <div className="px-[32px] py-[24px] flex flex-col gap-[20px] max-w-[900px]">
         {/* Map */}
         <div className="rounded-[20px] overflow-hidden h-[220px] relative border border-[rgba(255,255,255,0.08)]">
-          <img alt={`Map of ${route.name}`} className="w-full h-full object-cover" src={ route.filename === "" ? imgRouteMap : `/maps/${route.filename}` } />
+          <img alt={`Map of ${route.name}`} className="w-full h-full object-cover" 
+            src={ source == "generated" ?
+              (route.filename == null ? imgRouteMap : `/maps/${route.filename}`) : 
+              (route.image_url == null ? imgRouteMap : route.image_url) } 
+          />
           <div className="absolute inset-0 bg-gradient-to-t from-[rgba(10,6,8,0.4)] to-transparent" />
           <div className="absolute bottom-[16px] left-[16px] flex gap-[8px]">
             <SafetyBadge score={route.safety_score} />
@@ -99,8 +139,9 @@ export default function RouteDetailPage() {
 
         {/* Actions */}
         <div className="flex gap-[12px]">
-          <button onClick={() => setSaved(!saved)}
-            className={`flex items-center gap-[8px] h-[52px] px-[24px] rounded-[16px] border cursor-pointer transition-colors ${saved ? "bg-[rgba(196,32,80,0.15)] border-[rgba(196,32,80,0.35)]" : "bg-[rgba(255,255,255,0.05)] border-[rgba(255,255,255,0.1)] hover:border-[rgba(255,255,255,0.2)]"}`}>
+          <button onClick={() => saveRoute(id!)}
+            disabled={saved}
+            className={`flex items-center gap-[8px] h-[52px] px-[24px] rounded-[16px] border transition-colors ${saved ? "bg-[rgba(196,32,80,0.15)] border-[rgba(196,32,80,0.35)] cursor-default" : "bg-[rgba(255,255,255,0.05)] border-[rgba(255,255,255,0.1)] hover:border-[rgba(255,255,255,0.2)] cursor-pointer"}`}>
             <IconBookmark color={saved ? "#c42050" : "rgba(255,255,255,0.4)"} />
             <span className={`font-['Inter',sans-serif] font-semibold text-[15px] ${saved ? "text-[#c42050]" : "text-[rgba(255,255,255,0.55)]"}`}>{saved ? "Saved" : "Save"}</span>
           </button>

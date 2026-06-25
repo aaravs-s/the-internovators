@@ -77,10 +77,10 @@ export default function ExplorePage() {
         throw new Error("Failed to load saved routes");
       }
 
-      const routes = await response.json();
+      const saved_routes = await response.json();
 
       setSaved((_) => {
-        return new Set<string>(routes.map((route) => route.id))
+        return new Set<string>(saved_routes.map((saved_route) => saved_route.id))
       });
       } catch (err) {
         console.error(err);
