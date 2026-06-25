@@ -166,7 +166,7 @@ def generate_map_image (coords):
 
         conn.commit()
 
-    m = StaticMap(400, 400, url_template='https://basemaps.cartocdn.com/dark_nolabels/{z}/{x}/{y}.png')
+    m = StaticMap(600, 300, url_template='https://basemaps.cartocdn.com/dark_nolabels/{z}/{x}/{y}.png')
     line = Line(coords, '#0A84FF', 3)
     m.add_line(line)
 

@@ -6,10 +6,11 @@ from schemas.route import DirectionStepPublic, RouteDetailPublic, RouteSummaryPu
 
 
 def normalize_safety_score(score: float | int) -> float:
-    normalized = float(score)
-    if normalized > 10:
-        normalized /= 10
-    return round(max(0, min(normalized, 10)), 1)
+    # normalized = float(score)
+    # if normalized <= 10:
+    #     normalized *= 10
+    # return round(max(0, min(normalized, 10)), 1)
+    return score
 
 
 def route_image_url(route: dict) -> str | None:

@@ -113,7 +113,7 @@ def save_route_shared(route_id: str, user_id: str) -> dict:
     return saved_route
 
 def list_saved_routes_for_user(user_id: str) -> list[dict]:
-    return [route for route in list_saved_routes() if route["user_id"] == user_id]
+    return [route for route in list_saved_routes() if user_id in route["user_id"]]
 
 
 def list_shared_routes_for_user(user_id: str) -> list[dict]:
@@ -136,7 +136,7 @@ def get_saved_route_for_user(route_id: str, user_id: str) -> dict | None:
         (
             route
             for route in list_saved_routes()
-            if route["route_id"] == route_id and route["user_id"] == user_id
+            if route["route_id"] == route_id and user_id in route["user_id"]
         ),
         None,
     )
@@ -219,7 +219,7 @@ def _sort_key(sort: str):
 def set_route_sharing(saved_route_id: str, user_id: str, is_shared: bool) -> dict | None:
     saved_routes = list_saved_routes()
     for route in saved_routes:
-        if route["id"] == saved_route_id and route["user_id"] == user_id:
+        if route["id"] == saved_route_id and user_id in route["user_id"]:
             route["is_shared"] = is_shared
             _write_enriched_routes(saved_routes)
             return route_with_social_fields(route)
@@ -231,7 +231,7 @@ def toggle_like(saved_route_id: str, user_id: str) -> dict | None:
     for route in saved_routes:
         if (
             route["id"] != saved_route_id
-            or route["user_id"] == user_id
+            or user_id in route["user_id"]
             or not route.get("is_shared", True)
         ):
             continue
@@ -255,7 +255,7 @@ def rate_route(saved_route_id: str, user_id: str, rating: int) -> dict | None:
     for route in saved_routes:
         if (
             route["id"] != saved_route_id
-            or route["user_id"] == user_id
+            or user_id in route["user_id"]
             or not route.get("is_shared", True)
         ):
             continue
@@ -283,7 +283,7 @@ def update_route_notes(
 ) -> dict | None:
     saved_routes = list_saved_routes()
     for route in saved_routes:
-        if route["id"] == saved_route_id and route["user_id"] == user_id:
+        if route["id"] == saved_route_id and user_id in route["user_id"]:
             route["comments"] = notes_data.comments.strip()
             route["tags"] = [
                 tag.strip()

@@ -1,24 +1,76 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router";
 import { cardBase, SafetyBadge, IconBookmark } from "@/app/components/ui";
 import { imgRouteMap } from "@/app/assets";
-import { exploreRoutes } from "@/app/data";
 
 const filters = ["All", "Short", "Long", "Highly Rated"];
+
+interface Direction {
+  distance_miles: number,
+  instruction: string,
+  kind: string
+}
+
+interface SavedRoute {
+  average_rating: number,
+  comments: string,
+  created_at: string,
+  destination: string,
+  directions: Direction[],
+  distance_miles: number,
+  estimated_minutes: number,
+  filename: string,
+  highlights: string[],
+  id: string,
+  is_shared: boolean,
+  like_count: number,
+  liked_by: string[],
+  map_style: string,
+  name: string,
+  rating_count: number,
+  ratings: number[],
+  route_id: string,
+  route_type: string,
+  safety_score: number,
+  start: number,
+  summary: string,
+  tags: string[],
+  user_has_liked: boolean,
+  user_id: string[],
+  user_rating: number
+}
 
 export default function SavedPage() {
   const navigate = useNavigate();
   const [filter, setFilter]   = useState("All");
-  const [saved, setSaved]     = useState(new Set([1, 2, 3, 4, 5, 6]));
+  const [saved, setSaved]     = useState<SavedRoute[]>([]);
 
-  const toggle = (id: number) =>
-    setSaved((p) => { const n = new Set(p); n.has(id) ? n.delete(id) : n.add(id); return n; });
+  useEffect(() => {
+    const loadSavedRoutes = async () => {
+      try {
+      const response = await fetch("/api/routes/get-user-saved", {
+        credentials: "include",
+      });
 
-  const visible = exploreRoutes.filter((r) => {
-    if (!saved.has(r.id)) return false;
-    if (filter === "Short")        return parseFloat(r.distance) < 4;
-    if (filter === "Long")         return parseFloat(r.distance) >= 4;
-    if (filter === "Highly Rated") return r.safety >= 9;
+      if (!response.ok) {
+        throw new Error("Failed to load saved routes");
+      }
+
+      const saved_routes = await response.json();
+
+      setSaved(saved_routes);
+      } catch (err) {
+        console.error(err);
+      }
+    };
+
+    loadSavedRoutes();
+  }, []);
+
+  const visible = saved.filter((r) => {
+    if (filter === "Short")        return r.distance_miles < 4;
+    if (filter === "Long")         return r.distance_miles >= 4;
+    if (filter === "Highly Rated") return r.safety_score >= 90;
     return true;
   });
 
@@ -28,7 +80,7 @@ export default function SavedPage() {
         <div aria-hidden className="absolute border-[rgba(255,255,255,0.05)] border-b border-solid inset-0 pointer-events-none" />
         <div className="pb-[17px] pt-[28px] px-[32px]">
           <p className="font-['Inter',sans-serif] font-bold text-[38px] text-white tracking-[-0.8px]">Saved Routes</p>
-          <p className="font-['Inter',sans-serif] font-normal text-[14px] text-[rgba(255,255,255,0.4)]">{saved.size} routes saved</p>
+          <p className="font-['Inter',sans-serif] font-normal text-[14px] text-[rgba(255,255,255,0.4)]">{saved.length} routes saved</p>
         </div>
       </div>
 
@@ -46,21 +98,21 @@ export default function SavedPage() {
         {/* Route list */}
         <div className="flex flex-col gap-[12px]">
           {visible.map((route) => (
-            <button key={route.id} onClick={() => navigate(`/route/${route.id}`)}
+            <button key={route.id} onClick={() => navigate(`/route/${route.route_id}`, {state: { source: "saved" }})}
               className={`${cardBase} text-left w-full cursor-pointer hover:border-[rgba(255,255,255,0.15)] transition-colors relative`}>
               <div className="flex items-center gap-[16px] p-[16px]">
                 <div className="size-[64px] rounded-[12px] overflow-hidden shrink-0">
-                  <img alt="" className="w-full h-full object-cover" src={imgRouteMap} />
+                  <img alt="" className="w-full h-full object-cover" src={route.filename == "" || route.filename == null ? imgRouteMap : `/maps/${route.filename}`} />
                 </div>
                 <div className="flex-1">
                   <div className="flex items-center gap-[8px] mb-[4px]">
                     <p className="font-['Inter',sans-serif] font-semibold text-[15px] text-white">{route.name}</p>
-                    <SafetyBadge score={route.safety} />
+                    <SafetyBadge score={route.safety_score} />
                   </div>
                   <div className="flex items-center gap-[10px]">
-                    <span className="font-['Inter',sans-serif] font-normal text-[12px] text-[rgba(255,255,255,0.5)]">{route.distance}</span>
+                    <span className="font-['Inter',sans-serif] font-normal text-[12px] text-[rgba(255,255,255,0.5)]">{route.distance_miles} mi</span>
                     <div className="size-[3px] rounded-full bg-[rgba(255,255,255,0.2)]" />
-                    <span className="font-['Inter',sans-serif] font-normal text-[12px] text-[rgba(255,255,255,0.5)]">{route.duration}</span>
+                    <span className="font-['Inter',sans-serif] font-normal text-[12px] text-[rgba(255,255,255,0.5)]">{route.estimated_minutes} min</span>
                     <div className="flex gap-[4px]">
                       {route.tags.map((t) => (
                         <span key={t} className="font-['Inter',sans-serif] font-normal text-[11px] px-[7px] py-[2px] rounded-full bg-[rgba(255,255,255,0.07)] border border-[rgba(255,255,255,0.1)] text-[rgba(255,255,255,0.4)]">{t}</span>
@@ -68,10 +120,10 @@ export default function SavedPage() {
                     </div>
                   </div>
                 </div>
-                <button onClick={(e) => { e.stopPropagation(); toggle(route.id); }}
+                {/* <button onClick={(e) => { e.stopPropagation(); toggle(route.id); }}
                   className="p-[8px] rounded-[10px] bg-[rgba(196,32,80,0.1)] border border-[rgba(196,32,80,0.2)] cursor-pointer hover:bg-[rgba(196,32,80,0.2)] transition-colors">
                   <IconBookmark color="#c42050" />
-                </button>
+                </button> */}
                 <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
                   <path d="M6 12L10 8L6 4" stroke="white" strokeLinecap="round" strokeLinejoin="round" strokeOpacity="0.25" strokeWidth="1.33333" />
                 </svg>

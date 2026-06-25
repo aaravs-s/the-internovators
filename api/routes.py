@@ -94,6 +94,12 @@ async def get_saved_routes(request: Request) -> RouteDetailPublic:
     routes = saved_routes_json.list_saved_routes()
     return [r for r in routes if user.id in r["user_id"]]
 
+@router.get("/get-user-saved", response_model=list[dict])
+async def get_user_saved_routes(request: Request) -> RouteDetailPublic:
+    user = get_current_user(request)
+    routes = saved_routes_json.list_saved_routes_for_user(user.id)
+    return routes
+
 @router.post("/save-generated/{route_id}", response_model=RouteDetailPublic)
 async def save_generated_route(request: Request, route_id: str) -> RouteDetailPublic:
     user = get_current_user(request)

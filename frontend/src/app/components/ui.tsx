@@ -100,13 +100,13 @@ export function FormInput({ label, placeholder, type = "text", value, onChange }
 
 // ── Safety badge ──────────────────────────────────────────────────────────────
 export function SafetyBadge({ score }: { score: number }) {
-  const color  = score >= 9 ? "#22c55e" : score >= 7.5 ? "#f59e0b" : "#ef4444";
-  const bg     = score >= 9 ? "rgba(34,197,94,0.12)"  : score >= 7.5 ? "rgba(245,158,11,0.12)" : "rgba(239,68,68,0.12)";
-  const border = score >= 9 ? "rgba(34,197,94,0.25)"  : score >= 7.5 ? "rgba(245,158,11,0.25)" : "rgba(239,68,68,0.25)";
+  const color  = score >= 90 ? "#22c55e" : score >= 75 ? "#f59e0b" : "#ef4444";
+  const bg     = score >= 90 ? "rgba(34,197,94,0.12)"  : score >= 75 ? "rgba(245,158,11,0.12)" : "rgba(239,68,68,0.12)";
+  const border = score >= 90 ? "rgba(34,197,94,0.25)"  : score >= 75 ? "rgba(245,158,11,0.25)" : "rgba(239,68,68,0.25)";
   return (
     <div className="flex items-center gap-[6px] px-[10px] py-[4px] rounded-[20px]" style={{ background: bg, border: `1px solid ${border}` }}>
       <div className="size-[6px] rounded-full" style={{ background: color }} />
-      <span className="font-['Inter',sans-serif] font-semibold text-[12px]" style={{ color }}>{score.toFixed(1)}</span>
+      <span className="font-['Inter',sans-serif] font-semibold text-[12px]" style={{ color }}>{score}</span>
     </div>
   );
 }

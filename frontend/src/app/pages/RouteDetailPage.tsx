@@ -38,7 +38,7 @@ export default function RouteDetailPage() {
     setLoading(true);
     setError("");
     getRoute(id, source)
-      .then((result) => {
+      .then((result: any) => {
         if (!cancelled) setRoute(result);
       })
       .catch((reason: unknown) => {
@@ -124,8 +124,8 @@ export default function RouteDetailPage() {
 
       <div className="px-[32px] py-[24px] flex flex-col gap-[20px] max-w-[900px]">
         {/* Map */}
-        <div className="rounded-[20px] overflow-hidden h-[220px] relative border border-[rgba(255,255,255,0.08)]">
-          <img alt={`Map of ${route.name}`} className="w-full h-full object-cover" 
+        <div className="rounded-[20px] overflow-hidden relative border border-[rgba(255,255,255,0.08)]">
+          <img alt={`Map of ${route.name}`} className="w-full h-full object-contain" 
             src={ source == "generated" ?
               (route.filename == null ? imgRouteMap : `/maps/${route.filename}`) : 
               (route.image_url == null ? imgRouteMap : route.image_url) } 
@@ -267,7 +267,7 @@ export default function RouteDetailPage() {
                 <div className="flex-1">
                   <p className="font-['Inter',sans-serif] font-medium text-[13px] text-white">{step.instruction}</p>
                 </div>
-                <span className="font-['Inter',sans-serif] font-normal text-[11px] text-[rgba(255,255,255,0.25)]">{step.distance_miles.toFixed(2)} mi</span>
+                <span className="font-['Inter',sans-serif] font-normal text-[11px] text-[rgba(255,255,255,0.25)]">{step.distance_miles} mi</span>
               </div>
             ))}
           </div>

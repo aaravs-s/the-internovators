@@ -5,7 +5,6 @@ setup-instructions.txt
 .env
 *.pyc
 .DS_Store
-maps/
 .vercel
 **/node_modules/
 **/dist/

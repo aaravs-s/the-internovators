@@ -98,7 +98,7 @@ export default function ExplorePage() {
       filter === "All" || filter === "Nearby" ? true :
       filter === "Short" ? route.distance_miles < 4 :
       filter === "Long" ? route.distance_miles >= 4 :
-      filter === "Highly Rated" ? route.safety_score >= 9 : true;
+      filter === "Highly Rated" ? route.safety_score >= 90 : true;
     return matchSearch && matchFilter;
   });
 
@@ -144,8 +144,8 @@ export default function ExplorePage() {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-[14px]">
           {visible.map((route) => (
             <div key={route.id} className={`${cardBase} overflow-hidden`}>
-              <div className="h-[100px] w-full overflow-hidden relative">
-                <img alt={`Map preview for ${route.name}`} className="w-full h-full object-cover" src={route.image_url ?? imgRouteMap} />
+              <div className="w-full overflow-hidden relative">
+                <img alt={`Map preview for ${route.name}`} className="w-full h-full object-contain" src={route.image_url ?? imgRouteMap} />
                 <div className="absolute inset-0 bg-gradient-to-t from-[rgba(10,6,8,0.7)] to-transparent" />
                 <div className="absolute bottom-[10px] left-[14px]"><SafetyBadge score={route.safety_score} /></div>
                 <button onClick={() => toggle(route.id)} aria-label={saved.has(route.id) ? "Unsave route" : "Save route"}
