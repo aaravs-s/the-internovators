@@ -21,7 +21,7 @@ fastapi dev main.py
 ```
 
 Then open `http://127.0.0.1:8000`
-
+a
 For frontend hot reload, keep FastAPI running and start Vite in a second terminal:
 
 ```powershell
