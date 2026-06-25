@@ -14,12 +14,15 @@ export interface DirectionStep {
   kind: "start" | "step" | "end";
 }
 
+export type RouteCoordinate = [number, number];
+
 export interface RouteDetail extends RouteSummary {
   start: string;
   destination: string;
   summary: string;
   highlights: string[];
   directions: DirectionStep[];
+  coordinates: RouteCoordinate[];
 }
 
 

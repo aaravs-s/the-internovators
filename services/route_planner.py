@@ -184,6 +184,108 @@ def extract_directions(feature: dict) -> list[dict]:
     return steps if isinstance(steps, list) else []
 
 
+def extract_tomtom_coordinates(route: dict) -> list[list[float]]:
+    coordinates = []
+    for leg in route.get("legs", []):
+        for point in leg.get("points", []):
+            coordinates.append([point["longitude"], point["latitude"]])
+    return coordinates
+
+
+def extract_tomtom_directions(route: dict) -> list[dict]:
+    directions = []
+    guidance = route.get("guidance", {})
+    for instruction in guidance.get("instructions", []):
+        text = instruction.get("message") or instruction.get("instruction")
+        if not text:
+            continue
+        directions.append(
+            {
+                "instruction": text,
+                "distance": instruction.get("routeOffsetInMeters", 0),
+            }
+        )
+    return directions
+
+
+def build_tomtom_routes(search: RouteSearchRequest) -> list[RouteOption]:
+    start = normalize_place_name(search.start)
+    destination = normalize_place_name(search.destination)
+    start_coordinates = get_coordinates(start)
+    dest_coordinates = get_coordinates(destination)
+    travel_mode = "bicycle" if search.route_type == "biking" else "pedestrian"
+
+    response = requests.get(
+        "https://api.tomtom.com/routing/1/calculateRoute/"
+        f"{start_coordinates[1]},{start_coordinates[0]}:"
+        f"{dest_coordinates[1]},{dest_coordinates[0]}/json",
+        params={
+            "key": TT_API_KEY,
+            "travelMode": travel_mode,
+            "routeType": "fastest",
+            "maxAlternatives": 2,
+            "instructionsType": "text",
+            "language": "en-US",
+        },
+    )
+    response.raise_for_status()
+    data = response.json()
+
+    generated_routes = []
+    for index, route in enumerate(data["routes"]):
+        coordinates = extract_tomtom_coordinates(route)
+        if not coordinates:
+            continue
+        summary = route["summary"]
+        generated_routes.append(
+            {
+                "coordinates": coordinates,
+                "distance_miles": round(summary["lengthInMeters"] / 1609, 2),
+                "estimated_minutes": max(1, int(summary["travelTimeInSeconds"] / 60)),
+                "id": "route",
+                "name": "Route Option",
+                "map_style": ["balanced", "quiet", "direct"][index % 3],
+                "directions": extract_tomtom_directions(route),
+            }
+        )
+
+    if not generated_routes:
+        return []
+
+    quickest_index = min(
+        range(len(generated_routes)),
+        key=lambda index: generated_routes[index]["estimated_minutes"],
+    )
+    generated_routes[quickest_index]["id"] = "quickest"
+    generated_routes[quickest_index]["name"] = "Quickest"
+
+    route_options: list[RouteOption] = []
+    for route in generated_routes:
+        score = calculate_safety_score(route)
+        map_image_filename = generate_map_image(route["coordinates"])
+        route_highlights = find_pois(route) if ORS_API_KEY else []
+        route_options.append(
+            RouteOption(
+                id=f"{route['id']}-{uuid4().hex[:8]}",
+                name=route["name"],
+                start=start,
+                destination=destination,
+                distance_miles=route["distance_miles"],
+                estimated_minutes=route["estimated_minutes"],
+                safety_score=score,
+                summary=describe_score(score),
+                highlights=route_highlights,
+                route_type=search.route_type,
+                map_style=route["map_style"],
+                filename=map_image_filename,
+                directions=route["directions"],
+                coordinates=route["coordinates"],
+            )
+        )
+
+    return sorted(route_options, key=lambda route: route.safety_score, reverse=True)
+
+
 def search_routes(search: RouteSearchRequest) -> list[RouteOption]:
     """Assumes searches are properly formatted addresses, which can be achieved with ORS autocomplete. Right now, this names routes
     'Route Option' unless it's the fastest route, which it calls 'Quickest'."""
@@ -195,8 +297,15 @@ def search_routes(search: RouteSearchRequest) -> list[RouteOption]:
     # UT Tower, Austin, TX, USA
     # Texas State Capitol, Austin, TX, USA
 
-    if not ORS_API_KEY or not TT_API_KEY:
+    if not TT_API_KEY:
         return build_sample_routes(search)
+
+    if not ORS_API_KEY:
+        try:
+            routes = build_tomtom_routes(search)
+            return routes or build_sample_routes(search)
+        except (KeyError, requests.RequestException, ValueError):
+            return build_sample_routes(search)
 
     start = normalize_place_name(search.start)
     destination = normalize_place_name(search.destination)
@@ -234,7 +343,11 @@ def search_routes(search: RouteSearchRequest) -> list[RouteOption]:
         response.raise_for_status()
         data = response.json()
     except (KeyError, requests.RequestException, ValueError):
-        return build_sample_routes(search)
+        try:
+            routes = build_tomtom_routes(search)
+            return routes or build_sample_routes(search)
+        except (KeyError, requests.RequestException, ValueError):
+            return build_sample_routes(search)
 
     generated_routes = []
     # rectangular container of routes, so that we only request the traffic data we need
@@ -276,7 +389,7 @@ def search_routes(search: RouteSearchRequest) -> list[RouteOption]:
         
         route_options.append(
             RouteOption(
-                id=f"{route["id"]}-{uuid4().hex[:8]}",
+                id=f"{route['id']}-{uuid4().hex[:8]}",
                 name=route["name"],
                 start=start,
                 destination=destination,
@@ -288,7 +401,8 @@ def search_routes(search: RouteSearchRequest) -> list[RouteOption]:
                 route_type=search.route_type,
                 map_style=route["map_style"],
                 filename=map_image_filename,
-                directions=route["directions"]
+                directions=route["directions"],
+                coordinates=route["coordinates"],
             )
         )
     # print(route_options[-1])

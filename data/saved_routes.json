@@ -3885,5 +3885,1104 @@
     "user_has_liked": false,
     "user_id": "47e78831-62da-4f5a-86ca-c0635e56cdbc",
     "user_rating": 0
+  },
+  {
+    "average_rating": 0,
+    "comments": "",
+    "created_at": "2026-06-25T16:48:53.782113+00:00",
+    "destination": "Austin Central Library, Austin, TX",
+    "directions": [
+      {
+        "distance_miles": 0.011373523927905532,
+        "instruction": "Head south",
+        "kind": "start"
+      },
+      {
+        "distance_miles": 0.09732753262896209,
+        "instruction": "Turn right",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.1297700435052828,
+        "instruction": "Turn left",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.05320074580484773,
+        "instruction": "Turn right",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.013113735239279056,
+        "instruction": "Turn slight right",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.10950901180857675,
+        "instruction": "Turn left",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.013362336855189559,
+        "instruction": "Turn right",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.0036047234307022996,
+        "instruction": "Turn left",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.0310130515848353,
+        "instruction": "Turn left",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.17582349285270352,
+        "instruction": "Turn right",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.0037290242386575512,
+        "instruction": "Turn left onto Speedway",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.037290242386575516,
+        "instruction": "Turn right onto East 21st Street",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.0053449347420758235,
+        "instruction": "Turn left",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.08446239900559353,
+        "instruction": "Turn right",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.07886886264760722,
+        "instruction": "Turn left",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.022871348663766312,
+        "instruction": "Turn right",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.07806090739589806,
+        "instruction": "Turn left",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.023492852703542573,
+        "instruction": "Turn sharp right",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.01653200745804848,
+        "instruction": "Turn sharp left",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.013859540087010565,
+        "instruction": "Turn right",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.19117464263517714,
+        "instruction": "Turn sharp left",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.008638906152889994,
+        "instruction": "Turn sharp left",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.05543816034804226,
+        "instruction": "Turn right",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.0004972032318210068,
+        "instruction": "Turn slight right",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.13853325046612802,
+        "instruction": "Turn slight left",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.0029832193909260407,
+        "instruction": "Turn right",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.011373523927905532,
+        "instruction": "Turn left",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.001243008079552517,
+        "instruction": "Turn left",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.15537600994406464,
+        "instruction": "Turn slight right",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.0005593536357986327,
+        "instruction": "Turn right",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.06761963952765693,
+        "instruction": "Keep left",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.053760099440646365,
+        "instruction": "Keep right",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.06482287134866377,
+        "instruction": "Turn left",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.01379738968303294,
+        "instruction": "Turn right",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.054381603480422626,
+        "instruction": "Turn left",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.0,
+        "instruction": "Arrive at your destination, on the right",
+        "kind": "end"
+      }
+    ],
+    "distance_miles": 1.82,
+    "estimated_minutes": 35,
+    "filename": "map_31.png",
+    "highlights": [
+      "Texas Memorial Museum",
+      "Texas Chili Parlor",
+      "Austin Public Library - Austin History Center"
+    ],
+    "id": "93cb1f97-0ca8-47d7-84a6-ae67cb97703a",
+    "is_shared": true,
+    "like_count": 0,
+    "liked_by": [],
+    "map_style": "quiet",
+    "name": "Route Option",
+    "rating_count": 0,
+    "ratings": [],
+    "route_id": "route-1cf07f06",
+    "route_type": "walking",
+    "safety_score": 96,
+    "start": "Ut Austin, Austin, TX",
+    "summary": "Strong sidewalk coverage and comfortable walking conditions.",
+    "tags": [],
+    "user_has_liked": false,
+    "user_id": "a3b21833-64b5-47d3-839b-d2f5a380141c",
+    "user_rating": 0
+  },
+  {
+    "comments": "",
+    "coordinates": [
+      [
+        -97.730169,
+        30.286994
+      ],
+      [
+        -97.730198,
+        30.286909
+      ],
+      [
+        -97.730219,
+        30.286836
+      ],
+      [
+        -97.73046,
+        30.286827
+      ],
+      [
+        -97.730875,
+        30.286858
+      ],
+      [
+        -97.730984,
+        30.286866
+      ],
+      [
+        -97.731586,
+        30.286911
+      ],
+      [
+        -97.731845,
+        30.286931
+      ],
+      [
+        -97.731859,
+        30.286771
+      ],
+      [
+        -97.7319,
+        30.286619
+      ],
+      [
+        -97.73197,
+        30.286523
+      ],
+      [
+        -97.732043,
+        30.286484
+      ],
+      [
+        -97.732301,
+        30.28634
+      ],
+      [
+        -97.732415,
+        30.28624
+      ],
+      [
+        -97.732531,
+        30.286059
+      ],
+      [
+        -97.732614,
+        30.285779
+      ],
+      [
+        -97.732653,
+        30.285528
+      ],
+      [
+        -97.732693,
+        30.285312
+      ],
+      [
+        -97.732779,
+        30.285319
+      ],
+      [
+        -97.732869,
+        30.285326
+      ],
+      [
+        -97.733367,
+        30.285366
+      ],
+      [
+        -97.733552,
+        30.285379
+      ],
+      [
+        -97.733576,
+        30.285366
+      ],
+      [
+        -97.733684,
+        30.285378
+      ],
+      [
+        -97.733776,
+        30.285388
+      ],
+      [
+        -97.733794,
+        30.28539
+      ],
+      [
+        -97.733803,
+        30.285379
+      ],
+      [
+        -97.733814,
+        30.28532
+      ],
+      [
+        -97.733833,
+        30.285215
+      ],
+      [
+        -97.73384,
+        30.285172
+      ],
+      [
+        -97.733927,
+        30.284747
+      ],
+      [
+        -97.733998,
+        30.28444
+      ],
+      [
+        -97.734094,
+        30.283949
+      ],
+      [
+        -97.734123,
+        30.283832
+      ],
+      [
+        -97.73425,
+        30.283802
+      ],
+      [
+        -97.734326,
+        30.283757
+      ],
+      [
+        -97.734326,
+        30.283742
+      ],
+      [
+        -97.734359,
+        30.283719
+      ],
+      [
+        -97.734359,
+        30.283672
+      ],
+      [
+        -97.734376,
+        30.283504
+      ],
+      [
+        -97.734486,
+        30.283331
+      ],
+      [
+        -97.734494,
+        30.283296
+      ],
+      [
+        -97.734626,
+        30.283309
+      ],
+      [
+        -97.736081,
+        30.283426
+      ],
+      [
+        -97.737082,
+        30.283503
+      ],
+      [
+        -97.737169,
+        30.283507
+      ],
+      [
+        -97.737428,
+        30.283523
+      ],
+      [
+        -97.737434,
+        30.283469
+      ],
+      [
+        -97.738057,
+        30.283515
+      ],
+      [
+        -97.738065,
+        30.283438
+      ],
+      [
+        -97.73851,
+        30.283474
+      ],
+      [
+        -97.739025,
+        30.283509
+      ],
+      [
+        -97.739365,
+        30.283532
+      ],
+      [
+        -97.739434,
+        30.283537
+      ],
+      [
+        -97.739475,
+        30.283539
+      ],
+      [
+        -97.739521,
+        30.283542
+      ],
+      [
+        -97.739562,
+        30.283545
+      ],
+      [
+        -97.739748,
+        30.28356
+      ],
+      [
+        -97.739795,
+        30.283564
+      ],
+      [
+        -97.739837,
+        30.283577
+      ],
+      [
+        -97.740691,
+        30.283642
+      ],
+      [
+        -97.740714,
+        30.283616
+      ],
+      [
+        -97.740798,
+        30.283624
+      ],
+      [
+        -97.740871,
+        30.283632
+      ],
+      [
+        -97.740876,
+        30.28365
+      ],
+      [
+        -97.741796,
+        30.283708
+      ],
+      [
+        -97.741952,
+        30.28372
+      ],
+      [
+        -97.742046,
+        30.283724
+      ],
+      [
+        -97.742089,
+        30.283726
+      ],
+      [
+        -97.742088,
+        30.283352
+      ],
+      [
+        -97.742154,
+        30.28296
+      ],
+      [
+        -97.742179,
+        30.282669
+      ],
+      [
+        -97.74226,
+        30.281961
+      ],
+      [
+        -97.742281,
+        30.281921
+      ],
+      [
+        -97.742236,
+        30.281906
+      ],
+      [
+        -97.742272,
+        30.281883
+      ],
+      [
+        -97.742403,
+        30.281867
+      ],
+      [
+        -97.742486,
+        30.281891
+      ],
+      [
+        -97.742532,
+        30.281782
+      ],
+      [
+        -97.742626,
+        30.28181
+      ],
+      [
+        -97.742627,
+        30.281804
+      ],
+      [
+        -97.742747,
+        30.281486
+      ],
+      [
+        -97.74278,
+        30.281442
+      ],
+      [
+        -97.742821,
+        30.281389
+      ],
+      [
+        -97.74298,
+        30.280963
+      ],
+      [
+        -97.742982,
+        30.280886
+      ],
+      [
+        -97.742984,
+        30.280834
+      ],
+      [
+        -97.742991,
+        30.280819
+      ],
+      [
+        -97.743058,
+        30.280639
+      ],
+      [
+        -97.743218,
+        30.280252
+      ],
+      [
+        -97.743285,
+        30.280079
+      ],
+      [
+        -97.743324,
+        30.280013
+      ],
+      [
+        -97.743368,
+        30.27994
+      ],
+      [
+        -97.743633,
+        30.279199
+      ],
+      [
+        -97.743626,
+        30.279188
+      ],
+      [
+        -97.743649,
+        30.279134
+      ],
+      [
+        -97.743676,
+        30.279071
+      ],
+      [
+        -97.743667,
+        30.279059
+      ],
+      [
+        -97.743812,
+        30.278693
+      ],
+      [
+        -97.743897,
+        30.278455
+      ],
+      [
+        -97.743948,
+        30.278312
+      ],
+      [
+        -97.743948,
+        30.278301
+      ],
+      [
+        -97.743966,
+        30.278243
+      ],
+      [
+        -97.744001,
+        30.278134
+      ],
+      [
+        -97.744016,
+        30.278087
+      ],
+      [
+        -97.744026,
+        30.278066
+      ],
+      [
+        -97.744155,
+        30.277697
+      ],
+      [
+        -97.744302,
+        30.277319
+      ],
+      [
+        -97.744331,
+        30.277305
+      ],
+      [
+        -97.744345,
+        30.27723
+      ],
+      [
+        -97.744362,
+        30.277163
+      ],
+      [
+        -97.744374,
+        30.277133
+      ],
+      [
+        -97.74452,
+        30.276739
+      ],
+      [
+        -97.744657,
+        30.276379
+      ],
+      [
+        -97.744647,
+        30.276362
+      ],
+      [
+        -97.744666,
+        30.276343
+      ],
+      [
+        -97.744683,
+        30.276286
+      ],
+      [
+        -97.744698,
+        30.276235
+      ],
+      [
+        -97.744707,
+        30.276207
+      ],
+      [
+        -97.744721,
+        30.276204
+      ],
+      [
+        -97.744874,
+        30.275764
+      ],
+      [
+        -97.74488,
+        30.275746
+      ],
+      [
+        -97.744891,
+        30.275714
+      ],
+      [
+        -97.745064,
+        30.275243
+      ],
+      [
+        -97.745068,
+        30.275232
+      ],
+      [
+        -97.7451,
+        30.27523
+      ],
+      [
+        -97.745119,
+        30.275182
+      ],
+      [
+        -97.745158,
+        30.275078
+      ],
+      [
+        -97.74517,
+        30.275047
+      ],
+      [
+        -97.745201,
+        30.27504
+      ],
+      [
+        -97.745231,
+        30.275048
+      ],
+      [
+        -97.745323,
+        30.27507
+      ],
+      [
+        -97.745319,
+        30.275047
+      ],
+      [
+        -97.745484,
+        30.274612
+      ],
+      [
+        -97.745509,
+        30.274594
+      ],
+      [
+        -97.745541,
+        30.27457
+      ],
+      [
+        -97.745703,
+        30.274119
+      ],
+      [
+        -97.745745,
+        30.274037
+      ],
+      [
+        -97.745776,
+        30.27397
+      ],
+      [
+        -97.745725,
+        30.273953
+      ],
+      [
+        -97.746009,
+        30.27316
+      ],
+      [
+        -97.745876,
+        30.273119
+      ],
+      [
+        -97.745882,
+        30.273104
+      ],
+      [
+        -97.745895,
+        30.273054
+      ],
+      [
+        -97.745911,
+        30.272991
+      ],
+      [
+        -97.74592,
+        30.272966
+      ],
+      [
+        -97.745924,
+        30.272952
+      ],
+      [
+        -97.74583,
+        30.272807
+      ],
+      [
+        -97.745623,
+        30.272625
+      ],
+      [
+        -97.745464,
+        30.272365
+      ],
+      [
+        -97.745336,
+        30.272277
+      ],
+      [
+        -97.745271,
+        30.272177
+      ],
+      [
+        -97.745255,
+        30.272173
+      ],
+      [
+        -97.745243,
+        30.27217
+      ],
+      [
+        -97.745333,
+        30.271944
+      ],
+      [
+        -97.745338,
+        30.271929
+      ],
+      [
+        -97.745358,
+        30.27187
+      ],
+      [
+        -97.745379,
+        30.271812
+      ],
+      [
+        -97.745391,
+        30.271772
+      ],
+      [
+        -97.745612,
+        30.271195
+      ]
+    ],
+    "created_at": "2026-06-25T17:09:28.213983+00:00",
+    "destination": "Austin Central Library, Austin, TX",
+    "directions": [
+      {
+        "distance_miles": 0.011373523927905532,
+        "instruction": "Head south",
+        "kind": "start"
+      },
+      {
+        "distance_miles": 0.09732753262896209,
+        "instruction": "Turn right",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.1297700435052828,
+        "instruction": "Turn left",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.05320074580484773,
+        "instruction": "Turn right",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.013113735239279056,
+        "instruction": "Turn slight right",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.10950901180857675,
+        "instruction": "Turn left",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.013362336855189559,
+        "instruction": "Turn right",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.0036047234307022996,
+        "instruction": "Turn left",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.0310130515848353,
+        "instruction": "Turn left",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.17582349285270352,
+        "instruction": "Turn right",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.0037290242386575512,
+        "instruction": "Turn left onto Speedway",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.037290242386575516,
+        "instruction": "Turn right onto East 21st Street",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.0053449347420758235,
+        "instruction": "Turn left",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.1596643878185208,
+        "instruction": "Turn right",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.00944686140459913,
+        "instruction": "Turn right",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.001305158483530143,
+        "instruction": "Turn right",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.072591671845867,
+        "instruction": "Turn left",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.12560596643878186,
+        "instruction": "Turn left",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.002858918582970789,
+        "instruction": "Turn left",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.010565568676196395,
+        "instruction": "Turn sharp right",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.005220633934120572,
+        "instruction": "Turn slight right onto West Martin Luther King Jr Boulevard",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.00795525170913611,
+        "instruction": "Turn left",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.1968924798011187,
+        "instruction": "Turn right",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.0008701056556867619,
+        "instruction": "Turn left",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.008638906152889994,
+        "instruction": "Turn right",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.0009322560596643878,
+        "instruction": "Turn left",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.12616532007458048,
+        "instruction": "Turn right",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.0019266625233064015,
+        "instruction": "Turn slight right",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.06699813548788067,
+        "instruction": "Turn left",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.001367308887507769,
+        "instruction": "Turn left",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.011435674331883156,
+        "instruction": "Turn right",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.0008701056556867619,
+        "instruction": "Turn right",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.08551895587321318,
+        "instruction": "Turn left",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.00944686140459913,
+        "instruction": "Turn right",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.08154133001864511,
+        "instruction": "Turn sharp left",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.00329397141081417,
+        "instruction": "Turn left",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.05736482287134866,
+        "instruction": "Turn right onto Woodmansee Plaza",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.008452454940957116,
+        "instruction": "Turn left",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.011870727159726539,
+        "instruction": "Turn right",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.06886264760720945,
+        "instruction": "Keep left",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.0709136109384711,
+        "instruction": "Turn right",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.0,
+        "instruction": "Arrive at your destination, on the right",
+        "kind": "end"
+      }
+    ],
+    "distance_miles": 1.89,
+    "estimated_minutes": 36,
+    "filename": "map_38.png",
+    "highlights": [
+      "Texas Memorial Museum",
+      "Wooldridge Square Park",
+      "Austin Public Library - Austin History Center",
+      "1914 Noodles & More",
+      "Ph\u1edf Th\u00e1is\u01a1n",
+      "1914 Poke Bowl",
+      "China Family",
+      "K-Bop",
+      "Burger Bar"
+    ],
+    "id": "1d82fbad-ad18-4794-8823-6e4b57881bee",
+    "is_shared": true,
+    "liked_by": [],
+    "map_style": "direct",
+    "name": "Route Option",
+    "ratings": [],
+    "route_id": "route-ef642fe3",
+    "route_type": "walking",
+    "safety_score": 100,
+    "start": "UT austin, Austin, TX",
+    "summary": "Strong sidewalk coverage and comfortable walking conditions.",
+    "tags": [],
+    "user_id": "a3b21833-64b5-47d3-839b-d2f5a380141c"
   }
 ]

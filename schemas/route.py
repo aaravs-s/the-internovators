@@ -23,6 +23,7 @@ class RouteOption(BaseModel):
     map_style: str = "balanced"
     filename: str = ""
     directions: list[dict] = Field(default_factory=list)
+    coordinates: list[list[float]] = Field(default_factory=list)
 
 
 class SavedRouteCreate(BaseModel):
@@ -39,6 +40,7 @@ class SavedRouteCreate(BaseModel):
     map_style: str = "balanced"
     filename: str = ""
     directions: list[dict] = Field(default_factory=list)
+    coordinates: list[list[float]] = Field(default_factory=list)
 
 
 class RouteSummaryPublic(BaseModel):
@@ -63,6 +65,7 @@ class RouteDetailPublic(RouteSummaryPublic):
     summary: str = ""
     highlights: list[str] = Field(default_factory=list)
     directions: list[DirectionStepPublic] = Field(default_factory=list)
+    coordinates: list[list[float]] = Field(default_factory=list)
 
 
 class SavedRouteNotesUpdate(BaseModel):

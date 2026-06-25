@@ -79,6 +79,7 @@ def _detail(route: dict) -> RouteDetailPublic:
         summary=route.get("summary", ""),
         highlights=list(route.get("highlights", [])),
         directions=_direction_steps(route),
+        coordinates=list(route.get("coordinates", [])),
     )
 
 
