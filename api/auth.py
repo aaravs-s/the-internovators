@@ -44,4 +44,7 @@ async def me(request: Request):
     return {
         "id": user.id,
         "username": user.username,
+        "email": user.email,
+        "bio": user.bio,
+        "created_at": user.created_at.split("-")[0]
     }

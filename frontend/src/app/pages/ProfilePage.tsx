@@ -1,16 +1,35 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router";
 import { AreaChart, Area, XAxis, ResponsiveContainer, Tooltip } from "recharts";
 import { cardBase, SafetyBadge, Tabs, IconGear } from "@/app/components/ui";
 import { imgProfile, imgRouteMap } from "@/app/assets";
 import { monthlyActivity, socialUsers } from "@/app/data";
+import { useAuth } from "../../auth/AuthContext";
 
 export default function ProfilePage() {
   const navigate = useNavigate();
   const [editing, setEditing]     = useState(false);
-  const [name, setName]           = useState("Your Name");
-  const [bio, setBio]             = useState("Walking the city, one safe route at a time.");
   const [activeTab, setActiveTab] = useState("Activity");
+  const { user, user_loading, logout } = useAuth();
+  const [bio, setBio] = useState("")
+
+  useEffect(() => {
+    setBio(user?.bio ?? "")
+  }, [user]);
+
+  const saveBio = async () => {
+    const params = new URLSearchParams({
+      new_bio: bio,
+    });
+    await fetch(`/api/users/update-bio?${params}`, {
+      method: "POST",
+      credentials: "include",
+    });
+  };
+  
+  if (user_loading) {
+    return <div>Loading...</div>;
+  }
 
   return (
     <>
@@ -21,11 +40,11 @@ export default function ProfilePage() {
             <p className="font-['Inter',sans-serif] font-bold text-[38px] text-white tracking-[-0.8px]">My Profile</p>
             <p className="font-['Inter',sans-serif] font-normal text-[14px] text-[rgba(255,255,255,0.4)]">Your walks, your stats, your routes.</p>
           </div>
-          <button onClick={() => navigate("/settings")}
+          {/* <button onClick={() => navigate("/settings")}
             className="flex items-center gap-[8px] h-[40px] px-[14px] bg-[rgba(255,255,255,0.06)] border border-[rgba(255,255,255,0.1)] rounded-[12px] cursor-pointer hover:bg-[rgba(255,255,255,0.09)] transition-colors">
             <IconGear color="rgba(255,255,255,0.5)" />
             <span className="font-['Inter',sans-serif] font-medium text-[13px] text-[rgba(255,255,255,0.6)]">Settings</span>
-          </button>
+          </button> */}
         </div>
       </div>
 
@@ -37,28 +56,32 @@ export default function ProfilePage() {
               <img alt="Profile" className="w-full h-full object-cover" src={imgProfile} />
             </div>
             <div className="flex-1">
-              {editing
-                ? <input value={name} onChange={(e) => setName(e.target.value)} className="bg-[rgba(255,255,255,0.07)] border border-[rgba(255,255,255,0.1)] rounded-[10px] px-[12px] py-[8px] text-white text-[18px] font-semibold w-full outline-none mb-[6px]" />
-                : <p className="font-['Inter',sans-serif] font-bold text-[22px] text-white tracking-[-0.5px] mb-[4px]">{name}</p>}
-              <p className="font-['Inter',sans-serif] font-normal text-[13px] text-[rgba(255,255,255,0.4)]">@yourname · Member since 2024</p>
+              <p className="font-['Inter',sans-serif] font-bold text-[22px] text-white tracking-[-0.5px] mb-[4px]">{user?.username ?? "username"}</p>
+              <p className="font-['Inter',sans-serif] font-normal text-[13px] text-[rgba(255,255,255,0.4)]">{user?.email ? `${user?.email} · ` : ""}User since {user!.created_at}</p>
             </div>
-            <button onClick={() => setEditing(!editing)}
-              className={`px-[16px] py-[8px] rounded-[12px] border cursor-pointer transition-colors ${editing ? "border-[rgba(196,32,80,0.35)] bg-[rgba(196,32,80,0.15)]" : "border-[rgba(255,255,255,0.12)] bg-[rgba(255,255,255,0.05)] hover:bg-[rgba(255,255,255,0.08)]"}`}>
+            <button onClick={() => { 
+              if (editing) {
+                saveBio()
+              }
+              setEditing(!editing);
+            }}
+              className={`px-[16px] py-[8px] rounded-[12px] border cursor-pointer transition-colors ${editing ? "border-[rgba(196,32,80,0.35)] bg-[rgba(196,32,80,0.15)]" : "border-[rgba(255,255,255,0.12)] bg-[rgba(255,255,255,0.05)] hover:bg-[rgba(255,255,255,0.08)]"}`}
+            >
               <span className={`font-['Inter',sans-serif] font-semibold text-[13px] ${editing ? "text-[#c42050]" : "text-[rgba(255,255,255,0.6)]"}`}>{editing ? "Save" : "Edit Profile"}</span>
             </button>
           </div>
           {editing
-            ? <textarea value={bio} onChange={(e) => setBio(e.target.value)} rows={2} className="bg-[rgba(255,255,255,0.07)] border border-[rgba(255,255,255,0.1)] rounded-[10px] px-[12px] py-[8px] text-[rgba(255,255,255,0.7)] text-[14px] w-full outline-none resize-none leading-[22px] mb-[14px]" />
+            ? <textarea value={bio ?? ""} onChange={(e) => setBio(e.target.value)} rows={2} className="bg-[rgba(255,255,255,0.07)] border border-[rgba(255,255,255,0.1)] rounded-[10px] px-[12px] py-[8px] text-[rgba(255,255,255,0.7)] text-[14px] w-full outline-none resize-none leading-[22px] mb-[14px]" />
             : <p className="font-['Inter',sans-serif] font-normal text-[14px] text-[rgba(255,255,255,0.55)] leading-[22px] mb-[14px]">{bio}</p>}
           {/* Achievement badges */}
-          <div className="flex gap-[8px]">
+          {/* <div className="flex gap-[8px]">
             {[{ label: "Night Walker", color: "#8b5cf6" }, { label: "100 Routes", color: "#f59e0b" }, { label: "City Explorer", color: "#0a84ff" }].map((a) => (
               <div key={a.label} className="flex items-center gap-[5px] px-[10px] py-[4px] rounded-full border" style={{ background: `${a.color}15`, borderColor: `${a.color}30` }}>
                 <div className="size-[5px] rounded-full" style={{ background: a.color }} />
                 <span className="font-['Inter',sans-serif] font-medium text-[11px]" style={{ color: a.color }}>{a.label}</span>
               </div>
             ))}
-          </div>
+          </div> */}
         </div>
 
         {/* Stats */}

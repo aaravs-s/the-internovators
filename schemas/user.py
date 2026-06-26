@@ -19,6 +19,7 @@ class UserPublic(BaseModel):
     bio: str = ""
     picture_url: str = ""
     is_verified: bool = False
+    created_at: str
 
 
 class UserProfileUpdate(BaseModel):

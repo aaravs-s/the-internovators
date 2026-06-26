@@ -3,7 +3,9 @@ import { createContext, useContext, useEffect, useState } from "react";
 export type User = {
   id: string;
   username: string;
-  email?: string;
+  email: string;
+  bio: string;
+  created_at: string;
 };
 
 type AuthContextType = {

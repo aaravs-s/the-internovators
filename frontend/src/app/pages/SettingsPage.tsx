@@ -14,28 +14,28 @@ type Settings = {
 };
 
 const sections: { title: string; items: { key: keyof Settings; label: string; desc: string }[] }[] = [
-  {
-    title: "Notifications",
-    items: [
-      { key: "pushNotifications", label: "Push Notifications", desc: "Receive alerts and updates" },
-      { key: "safetyAlerts",      label: "Safety Alerts",      desc: "Real-time warnings for your area" },
-      { key: "friendActivity",    label: "Friend Activity",    desc: "When friends complete routes" },
-    ],
-  },
-  {
-    title: "Privacy & Location",
-    items: [
-      { key: "locationTracking", label: "Location Tracking", desc: "Required for route safety" },
-      { key: "shareLocation",    label: "Share with Friends", desc: "Let friends see your position" },
-      { key: "anonymousMode",    label: "Anonymous Mode",    desc: "Hide your identity on social" },
-    ],
-  },
+  // {
+  //   title: "Notifications",
+  //   items: [
+  //     { key: "pushNotifications", label: "Push Notifications", desc: "Receive alerts and updates" },
+  //     { key: "safetyAlerts",      label: "Safety Alerts",      desc: "Real-time warnings for your area" },
+  //     { key: "friendActivity",    label: "Friend Activity",    desc: "When friends complete routes" },
+  //   ],
+  // },
+  // {
+  //   title: "Privacy & Location",
+  //   items: [
+  //     { key: "locationTracking", label: "Location Tracking", desc: "Required for route safety" },
+  //     { key: "shareLocation",    label: "Share with Friends", desc: "Let friends see your position" },
+  //     { key: "anonymousMode",    label: "Anonymous Mode",    desc: "Hide your identity on social" },
+  //   ],
+  // },
   {
     title: "App Preferences",
     items: [
       { key: "darkMode",       label: "Dark Mode",         desc: "Always-on dark interface" },
-      { key: "hapticsEnabled", label: "Haptic Feedback",   desc: "Vibration on interactions" },
-      { key: "autoSave",       label: "Auto-Save Routes",  desc: "Save completed routes automatically" },
+      // { key: "hapticsEnabled", label: "Haptic Feedback",   desc: "Vibration on interactions" },
+      // { key: "autoSave",       label: "Auto-Save Routes",  desc: "Save completed routes automatically" },
     ],
   },
 ];
@@ -97,7 +97,7 @@ export default function SettingsPage() {
         </div>
 
         <div className="text-center pb-[8px]">
-          <p className="font-['Inter',sans-serif] font-normal text-[12px] text-[rgba(255,255,255,0.2)]">SafeWalkers v2.4.1 · © 2024 SafeWalkers Inc.</p>
+          <p className="font-['Inter',sans-serif] font-normal text-[12px] text-[rgba(255,255,255,0.2)]">SafeWalkers v1.0.0 · © 2026 The Internovators</p>
         </div>
       </div>
     </>

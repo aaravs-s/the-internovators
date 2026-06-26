@@ -37,7 +37,7 @@
     "username": "test"
   },
   {
-    "bio": "",
+    "bio": "This is my new bio!",
     "created_at": "2026-06-17T19:41:04.823029+00:00",
     "email": "example@example.com",
     "id": "47e78831-62da-4f5a-86ca-c0635e56cdbc",

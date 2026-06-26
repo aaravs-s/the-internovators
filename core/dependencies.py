@@ -21,6 +21,7 @@ def get_current_user(request: Request) -> UserPublic | None:
         username=user["username"],
         email=user["email"],
         bio=user.get("bio", ""),
+        created_at=user["created_at"],
         picture_url=user.get("picture_url", ""),
         is_verified=user.get("is_verified", False),
     )
