@@ -17,7 +17,7 @@ const timeOfDay = [
 export default function RouteDetailPage() {
   const navigate   = useNavigate();
   const location = useLocation();
-  const source = location.state?.source;
+  const source = location.state?.source ?? "saved";
   
   const { id }     = useParams<{ id: string }>();
   const [saved, setSaved]       = useState(false);
@@ -26,6 +26,7 @@ export default function RouteDetailPage() {
   const [route, setRoute] = useState<RouteDetail | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+  const [linkCopied, setLinkCopied] = useState(false);
 
   useEffect(() => {
     let cancelled = false;
@@ -68,7 +69,6 @@ export default function RouteDetailPage() {
       const saved_routes = await response.json();
 
       saved_routes.forEach((saved_route: any) => {
-        console.log(saved_route, id)
         if (saved_route.route_id === id || saved_route.id === id) {
           setSaved(true);
           return true;
@@ -89,6 +89,17 @@ export default function RouteDetailPage() {
       method: "POST",
       credentials: "include",
     });
+  };
+
+  const copyLink = async () => {
+    try {
+      await navigator.clipboard.writeText(window.location.href);
+      setLinkCopied(true);
+      
+      setTimeout(() => setLinkCopied(false), 2000); 
+    } catch (err) {
+      console.error("Failed to copy text: ", err);
+    }
   };
 
   if (loading) {
@@ -146,15 +157,21 @@ export default function RouteDetailPage() {
             <IconBookmark color={saved ? "#c42050" : "rgba(255,255,255,0.4)"} />
             <span className={`font-['Inter',sans-serif] font-semibold text-[15px] ${saved ? "text-[#c42050]" : "text-[rgba(255,255,255,0.55)]"}`}>{saved ? "Saved" : "Save"}</span>
           </button>
-          <button className="flex items-center gap-[8px] h-[52px] px-[20px] rounded-[16px] border border-[rgba(255,255,255,0.1)] bg-[rgba(255,255,255,0.05)] cursor-pointer hover:border-[rgba(255,255,255,0.2)] transition-colors">
-            <svg width="18" height="18" viewBox="0 0 20 20" fill="none">
-              <circle cx="14" cy="5" r="2.5" stroke="rgba(255,255,255,0.4)" strokeWidth="1.5"/>
-              <circle cx="14" cy="15" r="2.5" stroke="rgba(255,255,255,0.4)" strokeWidth="1.5"/>
-              <circle cx="5" cy="10" r="2.5" stroke="rgba(255,255,255,0.4)" strokeWidth="1.5"/>
-              <path d="M11.5 6.5l-5 2M11.5 13.5l-5-2" stroke="rgba(255,255,255,0.4)" strokeWidth="1.5" strokeLinecap="round"/>
-            </svg>
-            <span className="font-['Inter',sans-serif] font-semibold text-[15px] text-[rgba(255,255,255,0.55)]">Share</span>
-          </button>
+          {(source === "saved") ? (
+            <button 
+              className="flex items-center gap-[8px] h-[52px] px-[20px] rounded-[16px] border border-[rgba(255,255,255,0.1)] bg-[rgba(255,255,255,0.05)] cursor-pointer hover:border-[rgba(255,255,255,0.2)] transition-colors"
+              onClick={copyLink}
+            >
+              <svg width="18" height="18" viewBox="0 0 20 20" fill="none">
+                <circle cx="14" cy="5" r="2.5" stroke="rgba(255,255,255,0.4)" strokeWidth="1.5"/>
+                <circle cx="14" cy="15" r="2.5" stroke="rgba(255,255,255,0.4)" strokeWidth="1.5"/>
+                <circle cx="5" cy="10" r="2.5" stroke="rgba(255,255,255,0.4)" strokeWidth="1.5"/>
+                <path d="M11.5 6.5l-5 2M11.5 13.5l-5-2" stroke="rgba(255,255,255,0.4)" strokeWidth="1.5" strokeLinecap="round"/>
+              </svg>
+              <span className="font-['Inter',sans-serif] font-semibold text-[15px] text-[rgba(255,255,255,0.55)]">{linkCopied ? "Link copied!" : "Share"}</span>
+            </button>
+          ) : (<></>)}
+
         </div>
 
         {/* Tabs */}

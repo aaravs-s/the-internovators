@@ -795,6 +795,7 @@
     "user_rating": 0
   },
   {
+    "average_rating": 0,
     "comments": "",
     "created_at": "2026-06-25T16:24:16.055053+00:00",
     "destination": "UT Tower, Austin, TX, USA",
@@ -1171,13 +1172,795 @@
     ],
     "id": "5511ffb4-b6e6-4801-b0dd-5782e80567ec",
     "is_shared": true,
+    "like_count": 0,
     "liked_by": [],
     "map_style": "balanced",
     "name": "Quickest",
+    "rating_count": 0,
     "ratings": [],
     "route_id": "quickest-2e55744e",
     "route_type": "walking",
     "safety_score": 84,
+    "start": "Barton Springs Pool, Austin, TX, USA",
+    "summary": "Generally walkable with a few areas to watch.",
+    "tags": [],
+    "user_has_liked": false,
+    "user_id": "47e78831-62da-4f5a-86ca-c0635e56cdbc",
+    "user_rating": 0
+  },
+  {
+    "average_rating": 0,
+    "comments": "",
+    "created_at": "2026-06-26T16:31:41.120434+00:00",
+    "destination": "UT Tower, Austin, TX, USA",
+    "directions": [
+      {
+        "distance_miles": 0.8773151025481665,
+        "instruction": "Head north",
+        "kind": "start"
+      },
+      {
+        "distance_miles": 0.02249844623990056,
+        "instruction": "Keep left",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.19366065879428218,
+        "instruction": "Turn slight left onto Zilker Metro Loop",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.04257302672467371,
+        "instruction": "Turn slight right",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.2571783716594158,
+        "instruction": "Turn right onto Zilker Metro Loop",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.030267246737103792,
+        "instruction": "Turn slight left",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.18011187072715973,
+        "instruction": "Continue straight onto Ann & Roy Butler Hike and Bike Trail",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.03405842137973897,
+        "instruction": "Keep right",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.11336233685518957,
+        "instruction": "Keep right",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.05332504661280298,
+        "instruction": "Turn left",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.0027967681789931634,
+        "instruction": "Turn sharp left",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.0637041640770665,
+        "instruction": "Turn right",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.03809819763828465,
+        "instruction": "Keep left",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.018210068365444376,
+        "instruction": "Turn left",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.1124922311995028,
+        "instruction": "Turn left",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.025605966438781855,
+        "instruction": "Keep right onto Pfluger Pedestrian Bridge",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.004536979490366687,
+        "instruction": "Turn left onto Pfluger Pedestrian Bridge",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.01783716594157862,
+        "instruction": "Turn left onto Pfluger Pedestrian Bridge",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.010565568676196395,
+        "instruction": "Turn right",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.004972032318210068,
+        "instruction": "Turn right onto Ann & Roy Butler Hike and Bike Trail",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.020820385332504663,
+        "instruction": "Keep left",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.009944064636420136,
+        "instruction": "Turn sharp left",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.07806090739589806,
+        "instruction": "Turn sharp right",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.015537600994406464,
+        "instruction": "Turn left",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.011311373523927906,
+        "instruction": "Turn sharp right",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.044686140459912996,
+        "instruction": "Turn left",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.0046612802983219395,
+        "instruction": "Turn sharp right",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.022684897451833438,
+        "instruction": "Turn left",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.00584213797389683,
+        "instruction": "Keep right",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.008887507768800498,
+        "instruction": "Keep right",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.003356121814791796,
+        "instruction": "Turn right",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.0052827843380981974,
+        "instruction": "Turn left",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.021504039776258546,
+        "instruction": "Turn left",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.018769422001243007,
+        "instruction": "Turn left",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.018645121193287758,
+        "instruction": "Turn left",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.03710379117464264,
+        "instruction": "Turn right",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.004599129894344313,
+        "instruction": "Turn right onto Power Plant Drive",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.33455562461155997,
+        "instruction": "Turn left onto West Avenue",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.049782473586078305,
+        "instruction": "Turn right onto West 8th Street",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.01423244251087632,
+        "instruction": "Keep left onto West 8th Street",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.002486016159105034,
+        "instruction": "Enter the roundabout and take the 1st exit onto Rio Grande Street",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.11317588564325667,
+        "instruction": "Continue straight onto Rio Grande Street",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.014481044126786824,
+        "instruction": "Keep right onto Rio Grande Street",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.0014916096954630204,
+        "instruction": "Enter the roundabout and take the 1st exit onto West 10th Street",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.05823492852703543,
+        "instruction": "Continue straight onto West 10th Street",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.15954008701056557,
+        "instruction": "Turn left",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.4460534493474208,
+        "instruction": "Turn right",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.005593536357986327,
+        "instruction": "Turn right",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.15170913610938472,
+        "instruction": "Turn left onto Nueces Street",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.030267246737103792,
+        "instruction": "Turn right",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.004226227470478558,
+        "instruction": "Turn left onto San Antonio Street",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.030080795525170914,
+        "instruction": "Turn right onto West 21st Street",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.005220633934120572,
+        "instruction": "Turn left",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.025854568054692356,
+        "instruction": "Turn right",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.0008701056556867619,
+        "instruction": "Turn left",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.01758856432566812,
+        "instruction": "Turn right",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.06699813548788067,
+        "instruction": "Turn left",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.008452454940957116,
+        "instruction": "Turn right",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.004412678682411435,
+        "instruction": "Turn left",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.04953387197016781,
+        "instruction": "Turn right onto Inner Campus Drive",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.0037290242386575512,
+        "instruction": "Turn left",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.040335612181479186,
+        "instruction": "Turn right",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.00795525170913611,
+        "instruction": "Turn left onto Main Mall",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.05947793660658794,
+        "instruction": "Turn right onto Main Mall",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.0030453697949036672,
+        "instruction": "Turn left",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.03921690490988192,
+        "instruction": "Turn right",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.006650093225605966,
+        "instruction": "Turn right",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.020820385332504663,
+        "instruction": "Turn left",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.012367930391547544,
+        "instruction": "Turn left",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.0,
+        "instruction": "Arrive at your destination, on the right",
+        "kind": "end"
+      }
+    ],
+    "distance_miles": 4.22,
+    "estimated_minutes": 81,
+    "filename": "map_8.png",
+    "highlights": [
+      "Sammie's",
+      "Butler Shores at Town Lake",
+      "Taquero Mucho",
+      "Favorite Pizza",
+      "Irene's",
+      "The Grove",
+      "True Food Kitchen",
+      "Ember Kitchen",
+      "Oma's Kitchen"
+    ],
+    "id": "0e48ded1-9545-4761-a6ab-cb149b18b2d8",
+    "is_shared": true,
+    "like_count": 0,
+    "liked_by": [],
+    "map_style": "quiet",
+    "name": "Route Option",
+    "rating_count": 0,
+    "ratings": [],
+    "route_id": "route-e78fccdc",
+    "route_type": "walking",
+    "safety_score": 84,
+    "start": "Barton Springs Pool, Austin, TX, USA",
+    "summary": "Generally walkable with a few areas to watch.",
+    "tags": [],
+    "user_has_liked": false,
+    "user_id": "47e78831-62da-4f5a-86ca-c0635e56cdbc",
+    "user_rating": 0
+  },
+  {
+    "comments": "",
+    "created_at": "2026-06-26T16:31:45.240908+00:00",
+    "destination": "UT Tower, Austin, TX, USA",
+    "directions": [
+      {
+        "distance_miles": 0.8773151025481665,
+        "instruction": "Head north",
+        "kind": "start"
+      },
+      {
+        "distance_miles": 0.02249844623990056,
+        "instruction": "Keep left",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.19366065879428218,
+        "instruction": "Turn slight left onto Zilker Metro Loop",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.04257302672467371,
+        "instruction": "Turn slight right",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.2571783716594158,
+        "instruction": "Turn right onto Zilker Metro Loop",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.030267246737103792,
+        "instruction": "Turn slight left",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.18011187072715973,
+        "instruction": "Continue straight onto Ann & Roy Butler Hike and Bike Trail",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.03405842137973897,
+        "instruction": "Keep right",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.11336233685518957,
+        "instruction": "Keep right",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.05332504661280298,
+        "instruction": "Turn left",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.0027967681789931634,
+        "instruction": "Turn sharp left",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.0637041640770665,
+        "instruction": "Turn right",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.03809819763828465,
+        "instruction": "Keep left",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.018210068365444376,
+        "instruction": "Turn left",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.1124922311995028,
+        "instruction": "Turn left",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.025605966438781855,
+        "instruction": "Keep right onto Pfluger Pedestrian Bridge",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.004536979490366687,
+        "instruction": "Turn left onto Pfluger Pedestrian Bridge",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.01783716594157862,
+        "instruction": "Turn left onto Pfluger Pedestrian Bridge",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.010565568676196395,
+        "instruction": "Turn right",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.004972032318210068,
+        "instruction": "Turn right onto Ann & Roy Butler Hike and Bike Trail",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.020820385332504663,
+        "instruction": "Keep left",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.009944064636420136,
+        "instruction": "Turn sharp left",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.07806090739589806,
+        "instruction": "Turn sharp right",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.015537600994406464,
+        "instruction": "Turn left",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.011311373523927906,
+        "instruction": "Turn sharp right",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.044686140459912996,
+        "instruction": "Turn left",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.0046612802983219395,
+        "instruction": "Turn sharp right",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.022684897451833438,
+        "instruction": "Turn left",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.00584213797389683,
+        "instruction": "Keep right",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.008887507768800498,
+        "instruction": "Keep right",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.003356121814791796,
+        "instruction": "Turn right",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.0052827843380981974,
+        "instruction": "Turn left",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.021504039776258546,
+        "instruction": "Turn left",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.018769422001243007,
+        "instruction": "Turn left",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.018645121193287758,
+        "instruction": "Turn left",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.03710379117464264,
+        "instruction": "Turn right",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.004599129894344313,
+        "instruction": "Turn right onto Power Plant Drive",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.5339341205717837,
+        "instruction": "Turn left onto West Avenue",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.004226227470478558,
+        "instruction": "Turn right",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.08085767557489124,
+        "instruction": "Turn left",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.002050963331261653,
+        "instruction": "Turn right",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.013238036047234307,
+        "instruction": "Turn left",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.022063393412057177,
+        "instruction": "Turn right",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.03449347420758235,
+        "instruction": "Turn right",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.036357986326911125,
+        "instruction": "Turn left",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.008763206960845244,
+        "instruction": "Turn right",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.22510876320696083,
+        "instruction": "Turn left",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.0008701056556867619,
+        "instruction": "Turn right",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.073088875077688,
+        "instruction": "Turn left",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.0007458048477315102,
+        "instruction": "Turn left",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.05400870105655687,
+        "instruction": "Turn right",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.004972032318210068,
+        "instruction": "Turn sharp right",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.001367308887507769,
+        "instruction": "Turn left onto Rio Grande Street",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.010379117464263517,
+        "instruction": "Enter the roundabout and take the 3rd exit onto Rio Grande Street",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.04549409571162213,
+        "instruction": "Continue straight onto Rio Grande Street",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.025046612802983217,
+        "instruction": "Continue straight onto Rio Grande Street",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.0067743940335612185,
+        "instruction": "Turn right onto West Martin Luther King Jr Boulevard",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.10814170292106899,
+        "instruction": "Turn left",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.03418272218769422,
+        "instruction": "Turn right",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.07700435052827843,
+        "instruction": "Turn left",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.12877563704164077,
+        "instruction": "Turn right onto West 22nd Street",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.002921068986948415,
+        "instruction": "Turn left",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.0958980733374767,
+        "instruction": "Turn right",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.00795525170913611,
+        "instruction": "Turn left onto Main Mall",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.05947793660658794,
+        "instruction": "Turn right onto Main Mall",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.0030453697949036672,
+        "instruction": "Turn left",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.03921690490988192,
+        "instruction": "Turn right",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.006650093225605966,
+        "instruction": "Turn right",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.020820385332504663,
+        "instruction": "Turn left",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.012367930391547544,
+        "instruction": "Turn left",
+        "kind": "step"
+      },
+      {
+        "distance_miles": 0.0,
+        "instruction": "Arrive at your destination, on the right",
+        "kind": "end"
+      }
+    ],
+    "distance_miles": 4.22,
+    "estimated_minutes": 81,
+    "filename": "map_7.png",
+    "highlights": [
+      "Sammie's",
+      "Butler Shores at Town Lake",
+      "Taquero Mucho",
+      "Favorite Pizza",
+      "Irene's",
+      "The Grove",
+      "True Food Kitchen",
+      "Kesos Taco House",
+      "Ember Kitchen"
+    ],
+    "id": "ba57ceb3-db2b-4623-ba1c-6eda2e4a3123",
+    "is_shared": true,
+    "liked_by": [],
+    "map_style": "balanced",
+    "name": "Quickest",
+    "ratings": [],
+    "route_id": "quickest-283bb4a1",
+    "route_type": "walking",
+    "safety_score": 83,
     "start": "Barton Springs Pool, Austin, TX, USA",
     "summary": "Generally walkable with a few areas to watch.",
     "tags": [],
