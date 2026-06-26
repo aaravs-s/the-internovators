@@ -68,7 +68,8 @@ export default function RouteDetailPage() {
       const saved_routes = await response.json();
 
       saved_routes.forEach((saved_route: any) => {
-        if (saved_route.route_id === id) {
+        console.log(saved_route, id)
+        if (saved_route.route_id === id || saved_route.id === id) {
           setSaved(true);
           return true;
         }
