@@ -89,6 +89,15 @@ def save_route_generated(route_data: SavedRouteCreate, user_id: str) -> dict:
         "filename": route_data.filename,
         "directions": route_data.directions,
         "coordinates": route_data.coordinates,
+        "safety_breakdown": (
+            route_data.safety_breakdown.model_dump()
+            if route_data.safety_breakdown
+            else None
+        ),
+        "route_profile": route_data.route_profile,
+        "tradeoff_summary": route_data.tradeoff_summary,
+        "preference_score": route_data.preference_score,
+        "preference_summary": route_data.preference_summary,
         "comments": "",
         "tags": [],
         "is_shared": True,

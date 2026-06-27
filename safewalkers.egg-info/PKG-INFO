@@ -1,0 +1,11 @@
+Metadata-Version: 2.4
+Name: safewalkers
+Version: 0.1.0
+Summary: Austin walking route prototype built with FastAPI and Jinja.
+Requires-Python: >=3.10
+Requires-Dist: fastapi[standard]>=0.115.0
+Requires-Dist: mapbox-vector-tile>=2.1.0
+Requires-Dist: pyproj>=3.6.0
+Requires-Dist: requests>=2.32.0
+Requires-Dist: shapely>=2.0.0
+Requires-Dist: staticmap>=0.5.7

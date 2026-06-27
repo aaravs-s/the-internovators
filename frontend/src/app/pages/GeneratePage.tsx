@@ -1,8 +1,15 @@
-import { useEffect, useState, useMemo } from "react";
+import { useState, useMemo } from "react";
 import { useNavigate } from "react-router";
 
-import { imgRouteMap, homeSvg, loadingGif } from "@/app/assets";
-import { cardBase, SafetyBadge } from "@/app/components/ui";
+import { imgRouteMap, loadingGif } from "@/app/assets";
+import { cardBase } from "@/app/components/ui";
+
+type LocationSuggestion = {
+    label: string;
+    address: string;
+    lat: number | null;
+    lon: number | null;
+};
 
 function debounce(func: (...args: any[]) => void, delay: number) {
   let timeoutId: ReturnType<typeof setTimeout>;
@@ -20,33 +27,39 @@ export default function GeneratePage() {
     const navigate = useNavigate();
 
     const [start, setStart] = useState("");
-    const [startSuggestions, setStartSuggestions] = useState<string[]>([]);
+    const [startSuggestions, setStartSuggestions] = useState<LocationSuggestion[]>([]);
     const [destination, setDestination] = useState("");
-    const [destinationSuggestions, setDestinationSuggestions] = useState<string[]>([]);
+    const [destinationSuggestions, setDestinationSuggestions] = useState<LocationSuggestion[]>([]);
+    const [activeField, setActiveField] = useState<"start" | "destination" | null>(null);
     const [searching, setSearching] = useState(false);
 
     const [type, setType] = useState("walking");
+    const [preferencesDescription, setPreferencesDescription] = useState("");
 
     const fetchSuggestions = async (
         query: string,
-        setSuggestions: (s: string[]) => void
+        setSuggestions: (s: LocationSuggestion[]) => void
         ) => {
         if (query.length < 3) {
             setSuggestions([]);
             return;
         }
 
-        const response = await fetch(
-            `/api/routes/autocomplete?q=${encodeURIComponent(query)}`
-        );
+        try {
+            const response = await fetch(
+                `/api/routes/autocomplete?q=${encodeURIComponent(query)}`
+            );
 
-        const results = await response.json();
+            if (!response.ok) {
+                setSuggestions([]);
+                return;
+            }
 
-        setSuggestions(
-            results.features.map(
-                (item: any) => item.properties.label
-            )
-        );
+            const results = await response.json();
+            setSuggestions(results);
+        } catch {
+            setSuggestions([]);
+        }
     };
 
     const debouncedStartFetch = useMemo(
@@ -79,6 +92,7 @@ export default function GeneratePage() {
                 start,
                 destination,
                 route_type: type,
+                preferences_description: preferencesDescription,
             }),
         });
 
@@ -89,6 +103,50 @@ export default function GeneratePage() {
         });
     };
 
+    const selectStart = (suggestion: LocationSuggestion) => {
+        setStart(suggestion.label);
+        setStartSuggestions([]);
+        setActiveField(null);
+    };
+
+    const selectDestination = (suggestion: LocationSuggestion) => {
+        setDestination(suggestion.label);
+        setDestinationSuggestions([]);
+        setActiveField(null);
+    };
+
+    const SuggestionMenu = ({
+        suggestions,
+        onSelect,
+    }: {
+        suggestions: LocationSuggestion[];
+        onSelect: (suggestion: LocationSuggestion) => void;
+    }) => {
+        if (!suggestions.length) return null;
+
+        return (
+            <div className="absolute z-20 mt-[6px] w-full overflow-hidden rounded-[12px] border border-[rgba(255,255,255,0.1)] bg-[#151014] shadow-[0_18px_45px_rgba(0,0,0,0.35)]">
+                {suggestions.map((suggestion) => (
+                    <button
+                        key={`${suggestion.label}-${suggestion.lat}-${suggestion.lon}`}
+                        type="button"
+                        onMouseDown={(event) => event.preventDefault()}
+                        onClick={() => onSelect(suggestion)}
+                        className="block w-full cursor-pointer border-b border-[rgba(255,255,255,0.06)] px-[14px] py-[11px] text-left last:border-b-0 hover:bg-[rgba(255,255,255,0.06)]"
+                    >
+                        <span className="block text-[13px] font-semibold text-white">
+                            {suggestion.label}
+                        </span>
+                        {suggestion.address && suggestion.address !== suggestion.label && (
+                            <span className="mt-[2px] block text-[12px] text-[rgba(255,255,255,0.45)]">
+                                {suggestion.address}
+                            </span>
+                        )}
+                    </button>
+                ))}
+            </div>
+        );
+    };
 
     return (
         <>
@@ -105,7 +163,7 @@ export default function GeneratePage() {
                 {/* Search Form */}
                 <form onSubmit={handleSubmit} className={`${cardBase} p-[24px]`}>
                     <div className="flex flex-col gap-[18px]">
-                    <div>
+                    <div className="relative">
                         <label className="block text-[13px] text-[rgba(255,255,255,0.45)] mb-[6px]">
                         Start location
                         </label>
@@ -114,20 +172,21 @@ export default function GeneratePage() {
                             placeholder="UT Austin"
                             className="w-full h-[50px] px-[16px] rounded-[14px] bg-[rgba(255,255,255,0.05)] border border-[rgba(255,255,255,0.1)] text-white outline-none focus:border-[rgba(196,32,80,0.4)]"
                             value={start}
+                            autoComplete="off"
+                            onFocus={() => setActiveField("start")}
+                            onBlur={() => setTimeout(() => setActiveField(null), 120)}
                             onChange={(e) => {
                                 setStart(e.target.value);
+                                setActiveField("start");
                                 debouncedStartFetch(e.target.value);
                             }}
-                            list="start-suggestions"
                         />
+                        {activeField === "start" && (
+                            <SuggestionMenu suggestions={startSuggestions} onSelect={selectStart} />
+                        )}
                     </div>
-                    <datalist id="start-suggestions">
-                        {startSuggestions.map((s) => (
-                            <option key={s} value={s} />
-                        ))}
-                    </datalist>
 
-                    <div>
+                    <div className="relative">
                         <label className="block text-[13px] text-[rgba(255,255,255,0.45)] mb-[6px]">
                         Destination
                         </label>
@@ -136,18 +195,19 @@ export default function GeneratePage() {
                             placeholder="Austin Central Library"
                             className="w-full h-[50px] px-[16px] rounded-[14px] bg-[rgba(255,255,255,0.05)] border border-[rgba(255,255,255,0.1)] text-white outline-none focus:border-[rgba(196,32,80,0.4)]"
                             value={destination}
+                            autoComplete="off"
+                            onFocus={() => setActiveField("destination")}
+                            onBlur={() => setTimeout(() => setActiveField(null), 120)}
                             onChange={(e) => {
                                 setDestination(e.target.value);
+                                setActiveField("destination");
                                 debouncedDestinationFetch(e.target.value);
                             }}
-                            list="destination-suggestions"
                         />
+                        {activeField === "destination" && (
+                            <SuggestionMenu suggestions={destinationSuggestions} onSelect={selectDestination} />
+                        )}
                     </div>
-                    <datalist id="destination-suggestions">
-                        {destinationSuggestions.map((s) => (
-                            <option key={s} value={s} />
-                        ))}
-                    </datalist>
 
                     <div>
                         <p className="text-[13px] text-[rgba(255,255,255,0.45)] mb-[8px]">
@@ -162,6 +222,19 @@ export default function GeneratePage() {
                             <option value="walking">Walking</option>
                             <option value="biking">Biking</option>
                         </select>
+                    </div>
+
+                    <div>
+                        <label className="block text-[13px] text-[rgba(255,255,255,0.45)] mb-[6px]">
+                        Route preferences
+                        </label>
+                        <textarea
+                            value={preferencesDescription}
+                            onChange={(event) => setPreferencesDescription(event.target.value)}
+                            maxLength={600}
+                            placeholder="Example: I like quiet scenic walks near water and parks. I want to avoid crowded streets and feel safe walking at night."
+                            className="w-full min-h-[112px] resize-none px-[16px] py-[13px] rounded-[14px] bg-[rgba(255,255,255,0.05)] border border-[rgba(255,255,255,0.1)] text-white outline-none focus:border-[rgba(196,32,80,0.4)] placeholder:text-[rgba(255,255,255,0.25)]"
+                        />
                     </div>
 
                     <button

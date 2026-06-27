@@ -5,6 +5,30 @@ import { imgRouteMap, homeSvg } from "@/app/assets";
 import { cardBase, SafetyBadge } from "@/app/components/ui";
 import { useAuth } from "../../auth/AuthContext";
 
+function scoreLabel(score?: number) {
+    if (typeof score !== "number") return "N/A";
+    return `${Math.round(score)}`;
+}
+
+function ScoreChip({ label, score }: { label: string; score?: number }) {
+    return (
+        <span className="text-[10px] px-[7px] py-[3px] rounded-full bg-[rgba(255,255,255,0.07)] border border-[rgba(255,255,255,0.1)] text-[rgba(255,255,255,0.55)]">
+            {label} {scoreLabel(score)}
+        </span>
+    );
+}
+
+function profileLabel(profile?: string) {
+    const labels: Record<string, string> = {
+        quickest: "Quickest",
+        safest: "Safest",
+        scenic: "Scenic",
+        quiet: "Quiet",
+        balanced: "Balanced",
+    };
+    return labels[profile ?? ""] ?? "Route Option";
+}
+
 export default function RouteResultsPage() {
     const navigate = useNavigate();
     const { state } = useLocation();
@@ -93,18 +117,29 @@ export default function RouteResultsPage() {
                                 </button>
                             </div>
                             <div className="p-[14px]">
-                                <p className="font-['Inter',sans-serif] font-semibold text-[14px] text-white mb-[6px]">{route.name}</p>
+                                <div className="flex items-start justify-between gap-[10px] mb-[6px]">
+                                <div>
+                                <p className="font-['Inter',sans-serif] font-semibold text-[14px] text-white">{profileLabel(route.route_profile)}</p>
+                                {route.tradeoff_summary && (
+                                    <p className="text-[11px] text-[rgba(255,255,255,0.42)] mt-[2px]">{route.tradeoff_summary}</p>
+                                )}
+                                {route.preference_summary && (
+                                    <p className="text-[11px] text-[#c42050] mt-[2px]">{route.preference_summary}</p>
+                                )}
+                                </div>
+                                </div>
                                 <div className="flex items-center gap-[8px] mb-[10px]">
                                 <span className="text-[12px] text-[rgba(255,255,255,0.5)]">{route.distance_miles} mi</span>
                                 <div className="size-[3px] rounded-full bg-[rgba(255,255,255,0.2)]" />
                                 <span className="text-[12px] text-[rgba(255,255,255,0.5)]">{route.estimated_minutes} min</span>
                                 </div>
                                 <div className="flex items-center justify-between gap-[12px]">
-                                {/* <div className="flex gap-[4px] flex-wrap">
-                                    {route.tags.map((tag) => (
-                                    <span key={tag} className="text-[10px] px-[7px] py-[2px] rounded-full bg-[rgba(255,255,255,0.07)] border border-[rgba(255,255,255,0.1)] text-[rgba(255,255,255,0.4)]">{tag}</span>
-                                    ))}
-                                </div> */}
+                                <div className="flex gap-[4px] flex-wrap">
+                                    <ScoreChip label="Safety" score={route.safety_breakdown?.overall_score ?? route.safety_score} />
+                                    <ScoreChip label="Traffic" score={route.safety_breakdown?.traffic_score} />
+                                    <ScoreChip label="Crime" score={route.safety_breakdown?.crime_score} />
+                                    <ScoreChip label="Crowding" score={route.safety_breakdown?.crowding_score} />
+                                </div>
                                 <button onClick={() => navigate(`/results/${route.id}`, {state: { source: "generated" }})} className="cursor-pointer shrink-0">
                                     <span className="font-semibold text-[12px] text-[#0a84ff]">View →</span>
                                 </button>

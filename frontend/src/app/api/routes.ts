@@ -6,6 +6,21 @@ export interface RouteSummary {
   safety_score: number;
   tags: string[];
   image_url: string | null;
+  safety_breakdown: SafetyBreakdown | null;
+  route_profile: string;
+  tradeoff_summary: string;
+  preference_score: number;
+  preference_summary: string;
+}
+
+export interface SafetyBreakdown {
+  overall_score: number;
+  traffic_score: number;
+  incident_score: number;
+  crime_score: number;
+  water_proximity_score: number;
+  crowding_score: number;
+  signals: string[];
 }
 
 export interface DirectionStep {

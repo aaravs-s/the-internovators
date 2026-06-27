@@ -2,7 +2,7 @@ import os
 
 from core.config import settings
 from repositories import generated_routes_json, saved_routes_json
-from schemas.route import DirectionStepPublic, RouteDetailPublic, RouteSummaryPublic
+from schemas.route import DirectionStepPublic, RouteDetailPublic, RouteSummaryPublic, SafetyBreakdown
 
 
 def normalize_safety_score(score: float | int) -> float:
@@ -21,6 +21,13 @@ def route_image_url(route: dict) -> str | None:
     ):
         return f"/maps/{filename}"
     return None
+
+
+def route_safety_breakdown(route: dict) -> SafetyBreakdown | None:
+    breakdown = route.get("safety_breakdown")
+    if not isinstance(breakdown, dict):
+        return None
+    return SafetyBreakdown.model_validate(breakdown)
 
 
 def list_public_routes(
@@ -67,6 +74,11 @@ def _summary(route: dict) -> RouteSummaryPublic:
         safety_score=normalize_safety_score(route.get("safety_score", 0)),
         tags=list(route.get("tags", [])),
         image_url=route_image_url(route),
+        safety_breakdown=route_safety_breakdown(route),
+        route_profile=route.get("route_profile", "route"),
+        tradeoff_summary=route.get("tradeoff_summary", ""),
+        preference_score=route.get("preference_score", 0),
+        preference_summary=route.get("preference_summary", ""),
     )
 
 

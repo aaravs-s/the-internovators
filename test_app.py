@@ -6,6 +6,7 @@ from pathlib import Path
 from unittest.mock import patch
 
 from fastapi.testclient import TestClient
+from shapely.geometry import Polygon
 
 from core.config import load_env_file, settings
 from core.security import sign_user_id
@@ -13,7 +14,7 @@ from main import app, create_app
 from repositories import generated_routes_json, saved_routes_json
 from schemas.route import RouteOption, RouteSearchRequest, SavedRouteCreate
 from services.geocoding import normalize_place_name
-from services import route_planner
+from services import autocomplete, route_planner, safety_scoring
 
 
 ROOT = Path(__file__).resolve().parent
@@ -193,8 +194,353 @@ class SpaHostingTests(unittest.TestCase):
 
 
 class RoutePlanningTests(unittest.TestCase):
+    def test_incidents_lower_incident_score(self):
+        with patch.object(
+            safety_scoring,
+            "fetch_incidents",
+            return_value=[
+                {
+                    "properties": {
+                        "iconCategory": "Accident",
+                        "magnitudeOfDelay": 3,
+                        "delay": 600,
+                    }
+                }
+            ],
+        ):
+            score, signals = safety_scoring.calculate_incident_score(
+                {"coordinates": [[-97.742, 30.274], [-97.739, 30.286]]}
+            )
+
+        self.assertLess(score, 100)
+        self.assertIn("1 current traffic incident nearby", signals)
+
+    def test_crime_polygon_intersection_lowers_crime_score(self):
+        crime_polygon = Polygon(
+            [
+                (-97.7425, 30.2735),
+                (-97.7415, 30.2735),
+                (-97.7415, 30.2745),
+                (-97.7425, 30.2745),
+            ]
+        )
+
+        with patch.object(
+            safety_scoring, "load_crime_polygons", return_value=[crime_polygon]
+        ):
+            score, signals = safety_scoring.calculate_crime_score(
+                {"coordinates": [[-97.743, 30.274], [-97.741, 30.274]]}
+            )
+
+        self.assertLess(score, 100)
+        self.assertIn("crosses", signals[0])
+
+    def test_poi_context_improves_water_score_and_lowers_crowding_score(self):
+        pois = {
+            "park": {"name": "Shoal Creek Trail", "categories": ["park", "trail"]},
+            "water": {"name": "Lady Bird Lake", "categories": ["lake"]},
+            "bar": {"name": "Busy Bar", "categories": ["nightlife", "bar"]},
+            "bus": {"name": "Bus Stop", "categories": ["public transport stop"]},
+        }
+
+        with (
+            patch.object(safety_scoring, "TT_API_KEY", "tomtom-key"),
+            patch.object(safety_scoring, "collect_route_pois", return_value=(pois, False)),
+        ):
+            water_score, crowding_score, signals = safety_scoring.calculate_environment_scores(
+                [safety_scoring.LineString([[-97.743, 30.274], [-97.741, 30.274]]).interpolate(0)]
+            )
+
+        self.assertGreater(water_score, 55)
+        self.assertLess(crowding_score, 95)
+        self.assertTrue(any("park, trail" in signal for signal in signals))
+
+    def test_missing_tomtom_key_returns_partial_fallback_breakdown(self):
+        route = {"coordinates": [[-97.743, 30.274], [-97.741, 30.274]]}
+
+        with (
+            patch.object(safety_scoring, "TT_API_KEY", None),
+            patch.object(safety_scoring, "load_crime_polygons", return_value=[]),
+        ):
+            breakdown = safety_scoring.calculate_safety_breakdown(route)
+
+        self.assertEqual(breakdown["traffic_score"], 75)
+        self.assertEqual(breakdown["incident_score"], 80)
+        self.assertEqual(breakdown["water_proximity_score"], 70)
+        self.assertIn("Traffic data unavailable", breakdown["signals"])
+
+    def test_tomtom_autocomplete_returns_normalized_suggestions(self):
+        class FakeResponse:
+            def raise_for_status(self):
+                return None
+
+            def json(self):
+                return {
+                    "results": [
+                        {
+                            "poi": {"name": "Austin Central Library"},
+                            "address": {
+                                "freeformAddress": "710 W Cesar Chavez St, Austin, TX"
+                            },
+                            "position": {"lat": 30.2653, "lon": -97.7518},
+                        }
+                    ]
+                }
+
+        with (
+            patch.dict(os.environ, {"TT_API_KEY": "tomtom-key"}, clear=True),
+            patch.object(autocomplete.requests, "get", return_value=FakeResponse()),
+        ):
+            suggestions = autocomplete.autocomplete("central library")
+
+        self.assertEqual(
+            suggestions,
+            [
+                {
+                    "label": "Austin Central Library, 710 W Cesar Chavez St, Austin, TX",
+                    "address": "710 W Cesar Chavez St, Austin, TX",
+                    "lat": 30.2653,
+                    "lon": -97.7518,
+                }
+            ],
+        )
+
     def test_missing_provider_directions_fall_back_to_an_empty_list(self):
         self.assertEqual(route_planner.extract_directions({"properties": {}}), [])
+
+    def test_overlapping_route_candidates_are_deduplicated(self):
+        candidates = [
+            {
+                "route_profile": "quickest",
+                "coordinates": [[0, 0], [0.01, 0.01]],
+                "distance_miles": 1.0,
+                "estimated_minutes": 10,
+                "safety_score": 80,
+            },
+            {
+                "route_profile": "balanced",
+                "coordinates": [[0, 0], [0.0101, 0.0101]],
+                "distance_miles": 1.05,
+                "estimated_minutes": 11,
+                "safety_score": 82,
+            },
+            {
+                "route_profile": "scenic",
+                "coordinates": [[0, 0], [0.0, 0.01], [0.01, 0.01]],
+                "distance_miles": 1.2,
+                "estimated_minutes": 12,
+                "safety_score": 84,
+            },
+        ]
+
+        selected = route_planner.distinct_route_candidates(candidates)
+
+        self.assertEqual(
+            [route["route_profile"] for route in selected],
+            ["quickest", "scenic"],
+        )
+
+    def test_four_unique_route_candidates_are_returned_when_available(self):
+        candidates = [
+            {
+                "route_profile": "quickest",
+                "coordinates": [[0, 0], [0.01, 0]],
+                "distance_miles": 1.0,
+                "estimated_minutes": 10,
+                "safety_score": 80,
+            },
+            {
+                "route_profile": "safest",
+                "coordinates": [[0, 0], [0, 0.01], [0.01, 0.01]],
+                "distance_miles": 1.4,
+                "estimated_minutes": 14,
+                "safety_score": 90,
+            },
+            {
+                "route_profile": "scenic",
+                "coordinates": [[0, 0], [-0.01, 0], [-0.01, 0.01]],
+                "distance_miles": 1.5,
+                "estimated_minutes": 15,
+                "safety_score": 88,
+            },
+            {
+                "route_profile": "quiet",
+                "coordinates": [[0, 0], [0, -0.01], [0.01, -0.01]],
+                "distance_miles": 1.3,
+                "estimated_minutes": 13,
+                "safety_score": 86,
+            },
+        ]
+
+        selected = route_planner.distinct_route_candidates(candidates)
+
+        self.assertGreaterEqual(len(selected), 4)
+
+    def test_detour_over_limit_is_rejected_when_enough_routes_exist(self):
+        candidates = [
+            {
+                "route_profile": "quickest",
+                "coordinates": [[0, 0], [0.01, 0]],
+                "distance_miles": 1.0,
+                "estimated_minutes": 10,
+                "safety_score": 80,
+            },
+            {
+                "route_profile": "safest",
+                "coordinates": [[0, 0], [0.0, 0.01], [0.01, 0.01]],
+                "distance_miles": 1.2,
+                "estimated_minutes": 12,
+                "safety_score": 90,
+            },
+            {
+                "route_profile": "quiet",
+                "coordinates": [[0, 0], [0.0, -0.01], [0.01, -0.01]],
+                "distance_miles": 1.1,
+                "estimated_minutes": 11,
+                "safety_score": 88,
+            },
+            {
+                "route_profile": "balanced",
+                "coordinates": [[0, 0], [0.01, -0.005], [0.02, -0.005]],
+                "distance_miles": 1.15,
+                "estimated_minutes": 12,
+                "safety_score": 86,
+            },
+            {
+                "route_profile": "scenic",
+                "coordinates": [[0, 0], [-0.01, 0], [-0.01, 0.01]],
+                "distance_miles": 2.0,
+                "estimated_minutes": 25,
+                "safety_score": 95,
+            },
+        ]
+
+        selected = route_planner.distinct_route_candidates(candidates)
+
+        self.assertNotIn("scenic", {route["route_profile"] for route in selected})
+
+    def test_safest_ors_body_uses_more_avoid_polygons_than_balanced(self):
+        with (
+            patch.object(route_planner, "get_crime_polygons", return_value=[["crime"]]),
+            patch.object(route_planner, "get_incident_polygons", return_value=[["incident"]]),
+        ):
+            balanced = route_planner.build_ors_body([0, 0], [1, 1], "balanced")
+            safest = route_planner.build_ors_body([0, 0], [1, 1], "safest")
+
+        self.assertEqual(
+            balanced["options"]["avoid_polygons"]["coordinates"],
+            [["crime"]],
+        )
+        self.assertEqual(
+            safest["options"]["avoid_polygons"]["coordinates"],
+            [["crime"], ["incident"]],
+        )
+
+    def test_scenic_ors_body_uses_tomtom_waypoint_when_available(self):
+        with patch.object(
+            route_planner, "get_scenic_waypoint", return_value=[0.5, 0.5]
+        ):
+            body = route_planner.build_ors_body([0, 0], [1, 1], "scenic")
+
+        self.assertEqual(body["coordinates"], [[0, 0], [0.5, 0.5], [1, 1]])
+
+    def test_user_preferences_rank_routes_by_match_score(self):
+        search = RouteSearchRequest(
+            start="AA",
+            destination="BB",
+            preferences_description=(
+                "I want a quiet scenic walk near water and parks, not crowded."
+            ),
+        )
+        watery_quiet = {
+            "route_profile": "scenic",
+            "safety_score": 80,
+            "estimated_minutes": 16,
+            "safety_breakdown": {
+                "water_proximity_score": 95,
+                "crowding_score": 90,
+            },
+        }
+        direct_busy = {
+            "route_profile": "quickest",
+            "safety_score": 90,
+            "estimated_minutes": 10,
+            "safety_breakdown": {
+                "water_proximity_score": 40,
+                "crowding_score": 45,
+            },
+        }
+
+        watery_score, watery_summary = route_planner.route_preference_score(
+            watery_quiet, search
+        )
+        direct_score, _ = route_planner.route_preference_score(direct_busy, search)
+
+        self.assertGreater(watery_score, direct_score)
+        self.assertIn("water", watery_summary)
+        self.assertIn("low-crowd", watery_summary)
+
+    def test_user_preferences_avoid_water_rank_low_water_routes_higher(self):
+        search = RouteSearchRequest(
+            start="AA",
+            destination="BB",
+            preferences_description=(
+                "I don't want to walk near water. I prefer normal streets."
+            ),
+        )
+        water_heavy_route = {
+            "route_profile": "scenic",
+            "safety_score": 85,
+            "estimated_minutes": 12,
+            "safety_breakdown": {
+                "water_proximity_score": 95,
+                "crowding_score": 80,
+            },
+        }
+        dry_route = {
+            "route_profile": "balanced",
+            "safety_score": 80,
+            "estimated_minutes": 14,
+            "safety_breakdown": {
+                "water_proximity_score": 20,
+                "crowding_score": 75,
+            },
+        }
+
+        water_heavy_score, _ = route_planner.route_preference_score(
+            water_heavy_route, search
+        )
+        dry_score, dry_summary = route_planner.route_preference_score(
+            dry_route, search
+        )
+
+        self.assertGreater(dry_score, water_heavy_score)
+        self.assertIn("away from water", dry_summary)
+
+    def test_preference_description_infers_route_weights(self):
+        search = RouteSearchRequest(
+            start="AA",
+            destination="BB",
+            preferences_description="I care about safe quiet paths near a lake at night.",
+        )
+
+        weights = route_planner.inferred_preference_weights(search)
+
+        self.assertGreater(weights["water"], 0)
+        self.assertGreater(weights["crowds"], 0)
+        self.assertGreater(weights["safety"], 0)
+
+    def test_preference_description_infers_avoid_water_mode(self):
+        search = RouteSearchRequest(
+            start="AA",
+            destination="BB",
+            preferences_description="Please avoid lakes and don't take me near water.",
+        )
+
+        weights = route_planner.inferred_preference_weights(search)
+
+        self.assertGreater(weights["water"], 0)
+        self.assertEqual(weights["water_mode"], "avoid")
 
     def test_local_place_names_are_scoped_to_austin_tx(self):
         self.assertEqual(normalize_place_name("UT Austin"), "UT Austin, Austin, TX")
@@ -250,7 +596,19 @@ class RoutePlanningTests(unittest.TestCase):
             patch.object(route_planner, "TT_API_KEY", "tomtom-key"),
             patch.object(route_planner, "get_coordinates") as get_coordinates,
             patch.object(route_planner.requests, "get", return_value=FakeResponse()),
-            patch.object(route_planner, "calculate_safety_score", return_value=88),
+            patch.object(
+                route_planner,
+                "calculate_safety_breakdown",
+                return_value={
+                    "overall_score": 88,
+                    "traffic_score": 90,
+                    "incident_score": 100,
+                    "crime_score": 85,
+                    "water_proximity_score": 80,
+                    "crowding_score": 75,
+                    "signals": ["Test score"],
+                },
+            ),
             patch.object(route_planner, "generate_map_image", return_value="map_1.png"),
             patch.object(route_planner, "find_pois", return_value=[]),
         ):
@@ -268,9 +626,12 @@ class RoutePlanningTests(unittest.TestCase):
                 ):
                     stored_routes = generated_routes_json.store_generated_routes(routes)
 
-        self.assertEqual(len(routes), 1)
+        self.assertGreaterEqual(len(routes), 4)
         self.assertEqual(routes[0].name, "Quickest")
+        self.assertEqual(routes[0].route_profile, "quickest")
+        self.assertEqual(routes[0].tradeoff_summary, "Fastest available route")
         self.assertEqual(routes[0].filename, "map_1.png")
+        self.assertEqual(routes[0].safety_breakdown.overall_score, 88)
         self.assertEqual(
             routes[0].coordinates,
             [[-97.742, 30.274], [-97.739, 30.286]],
@@ -294,6 +655,19 @@ class RoutePlanningTests(unittest.TestCase):
             safety_score=91,
             summary="Strong route.",
             coordinates=[[-97.733, 30.286], [-97.745, 30.271]],
+            safety_breakdown={
+                "overall_score": 91,
+                "traffic_score": 88,
+                "incident_score": 100,
+                "crime_score": 90,
+                "water_proximity_score": 80,
+                "crowding_score": 75,
+                "signals": ["Stored breakdown"],
+            },
+            route_profile="safest",
+            tradeoff_summary="+3 min, safer corridor",
+            preference_score=87,
+            preference_summary="87% match for safety preferences",
         )
 
         with tempfile.TemporaryDirectory() as directory:
@@ -308,6 +682,15 @@ class RoutePlanningTests(unittest.TestCase):
         self.assertEqual(
             saved_route["coordinates"],
             [[-97.733, 30.286], [-97.745, 30.271]],
+        )
+        self.assertEqual(saved_route["safety_breakdown"]["overall_score"], 91)
+        self.assertEqual(saved_route["safety_breakdown"]["signals"], ["Stored breakdown"])
+        self.assertEqual(saved_route["route_profile"], "safest")
+        self.assertEqual(saved_route["tradeoff_summary"], "+3 min, safer corridor")
+        self.assertEqual(saved_route["preference_score"], 87)
+        self.assertEqual(
+            saved_route["preference_summary"],
+            "87% match for safety preferences",
         )
 
     def test_failed_ors_request_falls_back_to_tomtom_before_samples(self):

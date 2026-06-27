@@ -84,7 +84,7 @@ async def search_route_options(search: RouteSearchRequest) -> list[RouteOption]:
     #     "error": error,
     # }
 
-@router.get("/autocomplete", response_model=dict)
+@router.get("/autocomplete", response_model=list[dict])
 async def autocomplete_route(q: str = Query(...)):
     return autocomplete(q)
 

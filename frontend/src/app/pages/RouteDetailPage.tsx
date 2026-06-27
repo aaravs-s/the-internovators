@@ -5,7 +5,7 @@ import { getRoute, type RouteDetail } from "@/app/api/routes";
 import InteractiveRouteMap from "@/app/components/InteractiveRouteMap";
 import { cardBase, SafetyBadge, Tabs, StarRating, IconBookmark } from "@/app/components/ui";
 import { imgRouteMap } from "@/app/assets";
-import { safetyRadar, reviews } from "@/app/data";
+import { reviews } from "@/app/data";
 
 
 const timeOfDay = [
@@ -14,6 +14,36 @@ const timeOfDay = [
   { time: "6 PM – 10 PM", score: 7.9 },
   { time: "10 PM – 6 AM", score: 6.2 },
 ];
+
+function toPercentScore(score: number) {
+  return Math.round(score > 10 ? score : score * 10);
+}
+
+function fallbackBreakdown(score: number) {
+  const percentScore = toPercentScore(score);
+  return {
+    overall_score: percentScore,
+    traffic_score: percentScore,
+    incident_score: percentScore,
+    crime_score: percentScore,
+    water_proximity_score: percentScore,
+    crowding_score: percentScore,
+    signals: ["Detailed safety metrics are not available for this older route."],
+  };
+}
+
+function ScoreRow({ label, score }: { label: string; score: number }) {
+  const color = score >= 85 ? "#22c55e" : score >= 70 ? "#f59e0b" : "#ef4444";
+  return (
+    <div className="flex items-center gap-[12px]">
+      <span className="font-['Inter',sans-serif] font-normal text-[12px] text-[rgba(255,255,255,0.4)] w-[130px] shrink-0">{label}</span>
+      <div className="flex-1 h-[6px] rounded-full bg-[rgba(255,255,255,0.07)] overflow-hidden">
+        <div className="h-full rounded-full transition-all" style={{ width: `${score}%`, background: color }} />
+      </div>
+      <span className="font-['Inter',sans-serif] font-semibold text-[12px] w-[32px] text-right" style={{ color }}>{score}</span>
+    </div>
+  );
+}
 
 export default function RouteDetailPage() {
   const navigate   = useNavigate();
@@ -111,6 +141,14 @@ export default function RouteDetailPage() {
         ? `/maps/${route.filename}`
         : imgRouteMap
       : route.image_url ?? imgRouteMap;
+  const safetyBreakdown = route.safety_breakdown ?? fallbackBreakdown(route.safety_score);
+  const safetyRadarData = [
+    { subject: "Traffic", score: safetyBreakdown.traffic_score },
+    { subject: "Incidents", score: safetyBreakdown.incident_score },
+    { subject: "Crime", score: safetyBreakdown.crime_score },
+    { subject: "Water", score: safetyBreakdown.water_proximity_score },
+    { subject: "Crowding", score: safetyBreakdown.crowding_score },
+  ];
 
   return (
     <>
@@ -205,7 +243,7 @@ export default function RouteDetailPage() {
             <div className={`${cardBase} p-[20px] flex-1`}>
               <p className="font-['Inter',sans-serif] font-semibold text-[14px] text-white mb-[12px]">Safety Breakdown</p>
               <ResponsiveContainer width="100%" height={200}>
-                <RadarChart data={safetyRadar}>
+                <RadarChart data={safetyRadarData}>
                   <PolarGrid stroke="rgba(255,255,255,0.08)" />
                   <PolarAngleAxis dataKey="subject" tick={{ fill: "rgba(255,255,255,0.4)", fontSize: 11, fontFamily: "Inter" }} />
                   <Radar dataKey="score" stroke="#c42050" fill="#c42050" fillOpacity={0.15} strokeWidth={2} />
@@ -213,17 +251,18 @@ export default function RouteDetailPage() {
               </ResponsiveContainer>
             </div>
             <div className={`${cardBase} p-[20px] flex-1`}>
-              <p className="font-['Inter',sans-serif] font-semibold text-[14px] text-white mb-[16px]">Safety by Time of Day</p>
+              <p className="font-['Inter',sans-serif] font-semibold text-[14px] text-white mb-[16px]">Route Signals</p>
               <div className="flex flex-col gap-[12px]">
-                {timeOfDay.map((t) => (
-                  <div key={t.time} className="flex items-center gap-[12px]">
-                    <span className="font-['Inter',sans-serif] font-normal text-[12px] text-[rgba(255,255,255,0.4)] w-[130px] shrink-0">{t.time}</span>
-                    <div className="flex-1 h-[6px] rounded-full bg-[rgba(255,255,255,0.07)] overflow-hidden">
-                      <div className="h-full rounded-full transition-all" style={{ width: `${(t.score / 10) * 100}%`, background: t.score >= 9 ? "#22c55e" : t.score >= 7.5 ? "#f59e0b" : "#ef4444" }} />
-                    </div>
-                    <SafetyBadge score={t.score} />
-                  </div>
-                ))}
+                <ScoreRow label="Traffic" score={safetyBreakdown.traffic_score} />
+                <ScoreRow label="Incidents" score={safetyBreakdown.incident_score} />
+                <ScoreRow label="Crime" score={safetyBreakdown.crime_score} />
+                <ScoreRow label="Water / Scenic" score={safetyBreakdown.water_proximity_score} />
+                <ScoreRow label="Crowding" score={safetyBreakdown.crowding_score} />
+                <div className="pt-[4px] flex flex-col gap-[6px]">
+                  {safetyBreakdown.signals.map((signal) => (
+                    <p key={signal} className="text-[12px] leading-[18px] text-[rgba(255,255,255,0.48)]">{signal}</p>
+                  ))}
+                </div>
               </div>
             </div>
           </div>
