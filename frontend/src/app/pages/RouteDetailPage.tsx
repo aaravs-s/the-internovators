@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useParams, useLocation } from "react-router";
 import { RadarChart, Radar, PolarGrid, PolarAngleAxis, ResponsiveContainer } from "recharts";
-import { getRoute, type RouteDetail } from "@/app/api/routes";
+import { resolveRoute, type RouteDetail } from "@/app/api/routes";
 import InteractiveRouteMap from "@/app/components/InteractiveRouteMap";
 import { cardBase, SafetyBadge, Tabs, IconBookmark } from "@/app/components/ui";
-import { imgRouteMap } from "@/app/assets";
+import { imgRouteMap, loadingGif } from "@/app/assets";
 import RouteDiscussion from "@/app/components/RouteDiscussion";
 
 
@@ -49,6 +49,7 @@ export default function RouteDetailPage() {
   const navigate   = useNavigate();
   const location = useLocation();
   const source = location.state?.source ?? (location.pathname.startsWith("/route/") ? "saved" : "generated");
+  const navigationRoute = (location.state?.route ?? null) as RouteDetail | null;
   
   const { id }     = useParams<{ id: string }>();
   const [saved, setSaved]       = useState(false);
@@ -68,7 +69,7 @@ export default function RouteDetailPage() {
 
     setLoading(true);
     setError("");
-    getRoute(id, source)
+    resolveRoute(id, source, navigationRoute)
       .then((result) => {
         if (!cancelled) setRoute(result);
       })
@@ -83,7 +84,7 @@ export default function RouteDetailPage() {
       });
 
     return () => { cancelled = true; };
-  }, [id, source]);
+  }, [id, source, navigationRoute]);
 
   useEffect(() => {
     const loadSavedRoutes = async () => {
@@ -122,7 +123,17 @@ export default function RouteDetailPage() {
   };
 
   if (loading) {
-    return <div className="p-[32px] text-[rgba(255,255,255,0.5)]">Loading route…</div>;
+    return (
+      <div className="min-h-[70vh] p-[32px] flex items-center justify-center">
+        <div className={`${cardBase} w-full max-w-[460px] p-[32px] text-center`} role="status" aria-live="polite">
+          <img src={loadingGif} alt="" className="mx-auto size-[54px] object-contain" />
+          <h1 className="mt-[18px] text-[20px] font-semibold text-white">Preparing your route</h1>
+          <p className="mt-[8px] text-[13px] leading-[1.6] text-[rgba(255,255,255,0.5)]">
+            Loading the map, safety details, and directions. This can take a moment.
+          </p>
+        </div>
+      </div>
+    );
   }
   if (error || !route) {
     return (

@@ -168,6 +168,48 @@ class RouteApiTests(unittest.TestCase):
             [[-97.733, 30.286], [-97.745, 30.271]],
         )
 
+    def test_search_response_uses_the_normalized_stored_route(self):
+        generated_route = RouteOption(
+            id="normalized-route",
+            name="Normalized route",
+            start="UT Austin",
+            destination="Texas Capitol",
+            distance_miles=1.0,
+            estimated_minutes=20,
+            safety_score=90,
+            summary="Good route",
+            directions=[
+                {
+                    "instruction": "Head north",
+                    "distance": 1609,
+                    "type": 0,
+                }
+            ],
+            coordinates=[[-97.733, 30.286], [-97.745, 30.271]],
+        )
+        with tempfile.TemporaryDirectory() as directory:
+            generated_routes_file = Path(directory) / "generated_routes.json"
+            generated_routes_file.write_text("[]", encoding="utf-8")
+            with (
+                patch.object(settings, "generated_routes_file", generated_routes_file),
+                patch("api.routes.search_routes", return_value=[generated_route]),
+            ):
+                response = self.client.post(
+                    "/api/routes/search",
+                    json={
+                        "start": "UT Austin",
+                        "destination": "Texas Capitol",
+                        "route_type": "walking",
+                    },
+                )
+
+        self.assertEqual(response.status_code, 200)
+        direction = response.json()[0]["directions"][0]
+        self.assertIn("kind", direction)
+        self.assertIn("distance_miles", direction)
+        self.assertEqual(direction["kind"], "step")
+        self.assertAlmostEqual(direction["distance_miles"], 1.0, places=2)
+
 
 class CommunityApiTests(unittest.TestCase):
     def setUp(self):

@@ -1,7 +1,29 @@
 import assert from "node:assert/strict";
 import test from "node:test";
 
-import { getRoute, getRoutes } from "./routes.ts";
+import { getRoute, getRoutes, resolveRoute } from "./routes.ts";
+
+
+const generatedRoute = {
+  id: "generated-1",
+  name: "Scenic",
+  distance_miles: 1.5,
+  estimated_minutes: 30,
+  safety_score: 8.8,
+  tags: [],
+  image_url: null,
+  route_profile: "scenic",
+  tradeoff_summary: "Scenic route",
+  preference_score: 88,
+  preference_summary: "88% match",
+  safety_breakdown: null,
+  start: "UT Austin",
+  destination: "Texas Capitol",
+  summary: "Comfortable route",
+  highlights: [],
+  directions: [],
+  coordinates: [[-97.733, 30.286], [-97.745, 30.271]] as [number, number][],
+};
 
 
 test("getRoutes returns typed route summaries", async () => {
@@ -89,4 +111,47 @@ test("getRoute preserves route coordinates", async () => {
   const route = await getRoute("route-1", "generated", fetcher);
 
   assert.deepEqual(route.coordinates, [[-97.733, 30.286], [-97.745, 30.271]]);
+});
+
+
+test("resolveRoute uses the generated route already carried by navigation", async () => {
+  let requests = 0;
+  const fetcher: typeof fetch = async () => {
+    requests += 1;
+    return Response.json({ detail: "Route not found" }, { status: 404 });
+  };
+
+  const route = await resolveRoute(
+    "generated-1",
+    "generated",
+    generatedRoute,
+    fetcher,
+    [0],
+  );
+
+  assert.equal(route.id, "generated-1");
+  assert.equal(requests, 0);
+});
+
+
+test("resolveRoute retries transient generated-route 404 responses", async () => {
+  let requests = 0;
+  const fetcher: typeof fetch = async () => {
+    requests += 1;
+    if (requests < 3) {
+      return Response.json({ detail: "Route not found" }, { status: 404 });
+    }
+    return Response.json(generatedRoute);
+  };
+
+  const route = await resolveRoute(
+    "generated-1",
+    "generated",
+    null,
+    fetcher,
+    [0, 0, 0],
+  );
+
+  assert.equal(route.id, "generated-1");
+  assert.equal(requests, 3);
 });

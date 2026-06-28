@@ -73,9 +73,9 @@ async def search_route_options(search: RouteSearchRequest) -> list[RouteOption]:
         routes = []
         error = "Enter a valid start, destination, and route type."
 
-    generated_routes_json.store_generated_routes(routes)
+    stored_routes = generated_routes_json.store_generated_routes(routes)
 
-    return routes
+    return stored_routes
     # return {
     #     "routes": routes,
     #     "start": search.start,

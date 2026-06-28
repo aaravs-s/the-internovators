@@ -77,3 +77,39 @@ export function getRoute(
     return requestJson<RouteDetail>(`/api/routes/results/${encodeURIComponent(routeId)}`, fetcher);
   }
 }
+
+
+export async function resolveRoute(
+  routeId: string,
+  source: string,
+  navigationRoute: RouteDetail | null = null,
+  fetcher: typeof fetch = fetch,
+  retryDelays: number[] = [0, 500, 1000, 1500],
+): Promise<RouteDetail> {
+  if (source === "generated" && navigationRoute?.id === routeId) {
+    return navigationRoute;
+  }
+
+  let lastError: unknown;
+  for (const delay of retryDelays) {
+    if (delay > 0) {
+      await new Promise((resolve) => setTimeout(resolve, delay));
+    }
+
+    try {
+      return await getRoute(routeId, source, fetcher);
+    } catch (reason) {
+      lastError = reason;
+      const isTransientGeneratedRouteMiss =
+        source === "generated" &&
+        reason instanceof Error &&
+        reason.message === "Route not found";
+
+      if (!isTransientGeneratedRouteMiss) {
+        throw reason;
+      }
+    }
+  }
+
+  throw lastError;
+}

@@ -140,7 +140,7 @@ export default function RouteResultsPage() {
                                     <ScoreChip label="Crime" score={route.safety_breakdown?.crime_score} />
                                     <ScoreChip label="Crowding" score={route.safety_breakdown?.crowding_score} />
                                 </div>
-                                <button onClick={() => navigate(`/results/${route.id}`, {state: { source: "generated" }})} className="cursor-pointer shrink-0">
+                                <button onClick={() => navigate(`/results/${route.id}`, {state: { source: "generated", route }})} className="cursor-pointer shrink-0">
                                     <span className="font-semibold text-[12px] text-[#0a84ff]">View →</span>
                                 </button>
                                 </div>
