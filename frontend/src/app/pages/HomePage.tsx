@@ -1,13 +1,27 @@
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router";
 import { BarChart, Bar, Cell, XAxis, Tooltip, ResponsiveContainer } from "recharts";
-import { cardBase, SafetyBadge, RouteCard, IconCompass, IconBell, IconBookmark } from "@/app/components/ui";
+import { cardBase, SafetyBadge, RouteCard, IconCompass, IconBookmark } from "@/app/components/ui";
 import { imgProfile } from "@/app/assets";
 import { weekActivity } from "@/app/data";
+import { getCommunityProfile, type CommunityProfile } from "@/app/api/community";
+import { useAuth } from "../../auth/AuthContext";
 
 const primaryGradient = "linear-gradient(179.019deg, rgb(176,24,72) 8.2137%, rgb(122,15,46) 91.786%)";
 
 export default function HomePage() {
   const navigate = useNavigate();
+  const { user } = useAuth();
+  const [communityProfile, setCommunityProfile] = useState<CommunityProfile | null>(null);
+
+  useEffect(() => {
+    if (!user) return;
+    let cancelled = false;
+    getCommunityProfile(user.id)
+      .then((profile) => { if (!cancelled) setCommunityProfile(profile); })
+      .catch(() => { if (!cancelled) setCommunityProfile(null); });
+    return () => { cancelled = true; };
+  }, [user]);
 
   return (
     <>
@@ -24,10 +38,6 @@ export default function HomePage() {
               className="flex items-center gap-[8px] h-[40px] px-[16px] bg-[rgba(255,255,255,0.06)] border border-[rgba(255,255,255,0.1)] rounded-[12px] cursor-pointer hover:bg-[rgba(255,255,255,0.09)] transition-colors">
               <IconCompass color="rgba(255,255,255,0.6)" />
               <span className="font-['Inter',sans-serif] font-medium text-[13px] text-[rgba(255,255,255,0.6)]">Find Route</span>
-            </button>
-            <button onClick={() => navigate("/notifications")}
-              className="p-[10px] bg-[rgba(255,255,255,0.05)] border border-[rgba(255,255,255,0.08)] rounded-[12px] cursor-pointer">
-              <IconBell color="rgba(255,255,255,0.6)" badge={3} />
             </button>
             <button onClick={() => navigate("/profile")} className="size-[40px] rounded-full overflow-hidden border border-[rgba(255,255,255,0.15)] cursor-pointer shrink-0">
               <img alt="" className="w-full h-full object-cover" src={imgProfile} />
@@ -129,11 +139,11 @@ export default function HomePage() {
                 <img alt="" className="w-full h-full object-cover" src={imgProfile} />
               </div>
               <div className="flex-1">
-                <p className="font-['Inter',sans-serif] font-semibold text-[15px] text-white tracking-[-0.3px]">Your Name</p>
-                <p className="font-['Inter',sans-serif] font-normal text-[13px] text-[rgba(255,255,255,0.4)]">View &amp; edit profile</p>
+                <p className="font-['Inter',sans-serif] font-semibold text-[15px] text-white tracking-[-0.3px]">@{communityProfile?.username ?? user?.username ?? "walker"}</p>
+                <p className="font-['Inter',sans-serif] font-normal text-[13px] text-[rgba(255,255,255,0.4)]">View your community profile</p>
               </div>
               <div className="flex items-center gap-[20px]">
-                {[{ label: "Routes", val: "47" }, { label: "Saved", val: "12" }, { label: "Followers", val: "89" }].map((s) => (
+                {[{ label: "Shared", val: communityProfile?.shared_route_count ?? "–" }, { label: "Followers", val: communityProfile?.follower_count ?? "–" }, { label: "Following", val: communityProfile?.following_count ?? "–" }].map((s) => (
                   <div key={s.label} className="text-center">
                     <p className="font-['Inter',sans-serif] font-bold text-[16px] text-white">{s.val}</p>
                     <p className="font-['Inter',sans-serif] font-normal text-[11px] text-[rgba(255,255,255,0.35)]">{s.label}</p>

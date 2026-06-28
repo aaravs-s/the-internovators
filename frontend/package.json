@@ -6,7 +6,7 @@
   "scripts": {
     "build": "vite build",
     "dev": "vite",
-    "test": "node --test --test-isolation=none src/app/api/routes.test.ts"
+    "test": "node --test --test-isolation=none src/app/api/*.test.ts"
   },
   "dependencies": {
     "@emotion/react": "11.14.0",

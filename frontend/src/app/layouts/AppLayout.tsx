@@ -1,11 +1,8 @@
-import { useEffect, useState } from "react";
 import { Outlet, NavLink, useNavigate } from "react-router";
 
-import { DarkBackground, IconHome, IconBookmark, IconCompass, IconSocial, IconGear, IconBell } from "@/app/components/ui";
-import { imgSWLogo, imgProfile } from "@/app/assets";
+import { IconHome, IconBookmark, IconCompass, IconSocial, IconGear } from "@/app/components/ui";
+import { imgSWLogo } from "@/app/assets";
 import { useAuth } from "../../auth/AuthContext";
-
-const UNREAD = 3; // later this comes from global state / context
 
 type NavDef = { to: string; label: string; icon: (c: string) => React.ReactNode; badge?: number };
 
@@ -14,7 +11,7 @@ const navItems: NavDef[] = [
   { to: "/saved",    label: "Saved",    icon: (c) => <IconBookmark color={c} />, badge: 12 },
   { to: "/explore",  label: "Explore",  icon: (c) => <IconCompass  color={c} /> },
   { to: "/generate", label: "Generate", icon: (c) => <IconCompass color={c} /> },
-  { to: "/social",  label: "Social",  icon: (c) => <IconSocial   color={c} />, badge: 3 },
+  { to: "/social",  label: "Community",  icon: (c) => <IconSocial color={c} /> },
   { to: "/about",   label: "About",   icon: (c) => <IconHome     color={c} /> },
 ];
 
@@ -40,9 +37,6 @@ function Sidebar() {
         <div className="h-[54px] w-[81px]">
           <img alt="SafeWalkers" className="w-full h-full object-contain" src={imgSWLogo} />
         </div>
-        {/* <NavLink to="/notifications" className="cursor-pointer p-[6px] rounded-[10px] hover:bg-[rgba(255,255,255,0.05)] transition-colors">
-          <IconBell color="rgba(255,255,255,0.45)" badge={UNREAD} />
-        </NavLink> */}
       </div>
 
       {/* Section label */}
@@ -126,24 +120,6 @@ function Sidebar() {
           <span className="font-['Inter',sans-serif] font-medium text-[14px] text-[rgba(255,255,255,0.3)]">Sign out</span>
         </button>
       </div>
-    </div>
-  );
-}
-
-function AppHeader() {
-  const navigate = useNavigate();
-  return (
-    <div className="absolute top-[16px] right-[24px] flex items-center gap-[10px] z-10">
-      <NavLink to="/notifications"
-        className="p-[10px] bg-[rgba(255,255,255,0.05)] border border-[rgba(255,255,255,0.08)] rounded-[12px] cursor-pointer hover:bg-[rgba(255,255,255,0.08)] transition-colors"
-      >
-        <IconBell color="rgba(255,255,255,0.6)" badge={UNREAD} />
-      </NavLink>
-      <button onClick={() => navigate("/profile")}
-        className="size-[40px] rounded-full overflow-hidden border border-[rgba(255,255,255,0.15)] cursor-pointer shrink-0 hover:border-[rgba(255,255,255,0.3)] transition-colors"
-      >
-        <img alt="" className="w-full h-full object-cover" src={imgProfile} />
-      </button>
     </div>
   );
 }

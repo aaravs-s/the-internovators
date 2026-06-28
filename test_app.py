@@ -169,6 +169,253 @@ class RouteApiTests(unittest.TestCase):
         )
 
 
+class CommunityApiTests(unittest.TestCase):
+    def setUp(self):
+        self.directory = tempfile.TemporaryDirectory()
+        root = Path(self.directory.name)
+        self.users_file = root / "users.json"
+        self.saved_routes_file = root / "saved_routes.json"
+        self.follows_file = root / "follows.json"
+        self.route_comments_file = root / "route_comments.json"
+        self.users = [
+            {
+                "id": "walker-one",
+                "username": "walkerone",
+                "email": "one@example.com",
+                "password_hash": "secret-one",
+                "bio": "Morning walker",
+                "picture_url": "",
+                "is_verified": True,
+                "created_at": "2026-01-01T00:00:00+00:00",
+            },
+            {
+                "id": "walker-two",
+                "username": "walkertwo",
+                "email": "two@example.com",
+                "password_hash": "secret-two",
+                "bio": "Night walker",
+                "picture_url": "",
+                "is_verified": True,
+                "created_at": "2026-01-02T00:00:00+00:00",
+            },
+            {
+                "id": "walker-three",
+                "username": "thirdwalker",
+                "email": "three@example.com",
+                "password_hash": "secret-three",
+                "bio": "Trail walker",
+                "picture_url": "",
+                "is_verified": True,
+                "created_at": "2026-01-03T00:00:00+00:00",
+            },
+        ]
+        self.routes = [
+            {
+                "id": "shared-route",
+                "route_id": "shared-source",
+                "user_id": "walker-two",
+                "name": "Capitol Loop",
+                "start": "A",
+                "destination": "B",
+                "distance_miles": 2.4,
+                "estimated_minutes": 42,
+                "safety_score": 89,
+                "summary": "A bright downtown loop.",
+                "tags": ["lit"],
+                "is_shared": True,
+                "liked_by": [],
+                "ratings": [],
+                "created_at": "2026-02-01T00:00:00+00:00",
+            },
+            {
+                "id": "hidden-route",
+                "route_id": "hidden-source",
+                "user_id": "walker-two",
+                "name": "Private Loop",
+                "start": "A",
+                "destination": "C",
+                "distance_miles": 1.0,
+                "estimated_minutes": 20,
+                "safety_score": 75,
+                "summary": "Private.",
+                "tags": [],
+                "is_shared": False,
+                "liked_by": [],
+                "ratings": [],
+                "created_at": "2026-02-02T00:00:00+00:00",
+            },
+        ]
+        self.users_file.write_text(json.dumps(self.users), encoding="utf-8")
+        self.saved_routes_file.write_text(json.dumps(self.routes), encoding="utf-8")
+        self.follows_file.write_text("[]", encoding="utf-8")
+        self.route_comments_file.write_text("[]", encoding="utf-8")
+        self.patchers = [
+            patch.object(settings, "users_file", self.users_file),
+            patch.object(settings, "saved_routes_file", self.saved_routes_file),
+            patch.object(settings, "follows_file", self.follows_file, create=True),
+            patch.object(
+                settings,
+                "route_comments_file",
+                self.route_comments_file,
+                create=True,
+            ),
+        ]
+        for patcher in self.patchers:
+            patcher.start()
+        self.client = TestClient(app, raise_server_exceptions=False)
+
+    def tearDown(self):
+        for patcher in reversed(self.patchers):
+            patcher.stop()
+        self.directory.cleanup()
+
+    def authenticated_client(self, user_id: str) -> TestClient:
+        return TestClient(
+            app,
+            raise_server_exceptions=False,
+            cookies={settings.session_cookie_name: sign_user_id(user_id)},
+        )
+
+    def test_follow_is_idempotent_and_filters_activity_feed(self):
+        client = self.authenticated_client("walker-one")
+
+        first = client.put("/api/community/follows/walker-two")
+        second = client.put("/api/community/follows/walker-two")
+        feed = client.get("/api/community/feed?scope=following")
+
+        self.assertEqual(first.status_code, 200)
+        self.assertEqual(second.status_code, 200)
+        self.assertTrue(second.json()["is_following"])
+        self.assertEqual(len(json.loads(self.follows_file.read_text())), 1)
+        self.assertEqual(feed.status_code, 200)
+        self.assertEqual([route["id"] for route in feed.json()], ["shared-route"])
+        owner = feed.json()[0]["owner"]
+        self.assertEqual(owner["username"], "walkertwo")
+        self.assertNotIn("email", owner)
+        self.assertNotIn("password_hash", owner)
+
+    def test_self_follow_is_rejected_and_user_search_is_public_only(self):
+        client = self.authenticated_client("walker-one")
+
+        self_follow = client.put("/api/community/follows/walker-one")
+        search = client.get("/api/community/users?view=discover&query=night")
+
+        self.assertEqual(self_follow.status_code, 400)
+        self.assertEqual([user["id"] for user in search.json()], ["walker-two"])
+        self.assertNotIn("email", search.json()[0])
+
+    def test_like_put_and_delete_are_idempotent(self):
+        client = self.authenticated_client("walker-one")
+
+        client.put("/api/community/routes/shared-route/like")
+        liked_twice = client.put("/api/community/routes/shared-route/like")
+        client.delete("/api/community/routes/shared-route/like")
+        unliked_twice = client.delete("/api/community/routes/shared-route/like")
+
+        self.assertEqual(liked_twice.status_code, 200)
+        self.assertEqual(liked_twice.json()["like_count"], 1)
+        self.assertTrue(liked_twice.json()["is_liked"])
+        self.assertEqual(unliked_twice.status_code, 200)
+        self.assertEqual(unliked_twice.json()["like_count"], 0)
+        self.assertFalse(unliked_twice.json()["is_liked"])
+
+    def test_comments_support_one_reply_level_and_route_owner_deletion(self):
+        commenter = self.authenticated_client("walker-one")
+        replier = self.authenticated_client("walker-three")
+        owner = self.authenticated_client("walker-two")
+
+        created = commenter.post(
+            "/api/community/routes/shared-route/comments",
+            json={"body": "  Well lit after sunset.  "},
+        )
+        self.assertEqual(created.status_code, 201)
+        parent_id = created.json()["id"]
+        reply = replier.post(
+            "/api/community/routes/shared-route/comments",
+            json={"body": "Thanks for the tip!", "parent_id": parent_id},
+        )
+        nested = commenter.post(
+            "/api/community/routes/shared-route/comments",
+            json={"body": "Nested", "parent_id": reply.json()["id"]},
+        )
+        discussion = commenter.get(
+            "/api/community/routes/shared-route/comments"
+        )
+        deleted = owner.delete(f"/api/community/comments/{parent_id}")
+
+        self.assertEqual(created.json()["body"], "Well lit after sunset.")
+        self.assertEqual(reply.status_code, 201)
+        self.assertEqual(nested.status_code, 400)
+        self.assertEqual(len(discussion.json()), 1)
+        self.assertEqual(len(discussion.json()[0]["replies"]), 1)
+        self.assertEqual(deleted.status_code, 204)
+        self.assertEqual(json.loads(self.route_comments_file.read_text()), [])
+
+    def test_hidden_routes_reject_social_interactions(self):
+        client = self.authenticated_client("walker-one")
+
+        like = client.put("/api/community/routes/hidden-route/like")
+        comment = client.post(
+            "/api/community/routes/hidden-route/comments",
+            json={"body": "I should not see this."},
+        )
+        discussion = client.get("/api/community/routes/hidden-route/comments")
+
+        self.assertEqual(like.status_code, 404)
+        self.assertEqual(comment.status_code, 404)
+        self.assertEqual(discussion.status_code, 404)
+
+    def test_social_writes_require_authentication(self):
+        follow = self.client.put("/api/community/follows/walker-two")
+        like = self.client.put("/api/community/routes/shared-route/like")
+        comment = self.client.post(
+            "/api/community/routes/shared-route/comments",
+            json={"body": "Hello"},
+        )
+
+        self.assertEqual(follow.status_code, 401)
+        self.assertEqual(like.status_code, 401)
+        self.assertEqual(comment.status_code, 401)
+
+    def test_legacy_user_id_lists_use_the_canonical_first_owner(self):
+        routes = json.loads(self.saved_routes_file.read_text())
+        routes[0]["user_id"] = ["walker-two", "walker-three"]
+        self.saved_routes_file.write_text(json.dumps(routes), encoding="utf-8")
+        client = self.authenticated_client("walker-one")
+        client.put("/api/community/follows/walker-two")
+
+        feed = client.get("/api/community/feed?scope=following")
+        profile = client.get("/api/community/users/walker-two")
+
+        self.assertEqual(feed.status_code, 200)
+        self.assertEqual(feed.json()[0]["owner"]["id"], "walker-two")
+        self.assertEqual(profile.status_code, 200)
+        self.assertEqual(profile.json()["shared_route_count"], 1)
+
+    def test_comment_validation_and_delete_permissions(self):
+        author = self.authenticated_client("walker-one")
+        outsider = self.authenticated_client("walker-three")
+        blank = author.post(
+            "/api/community/routes/shared-route/comments",
+            json={"body": "   "},
+        )
+        created = author.post(
+            "/api/community/routes/shared-route/comments",
+            json={"body": "Useful context"},
+        )
+
+        forbidden = outsider.delete(
+            f"/api/community/comments/{created.json()['id']}"
+        )
+        still_present = author.get(
+            "/api/community/routes/shared-route/comments"
+        )
+
+        self.assertEqual(blank.status_code, 422)
+        self.assertEqual(forbidden.status_code, 403)
+        self.assertEqual(len(still_present.json()), 1)
+
+
 class SpaHostingTests(unittest.TestCase):
     def test_spa_deep_links_return_the_react_index(self):
         with tempfile.TemporaryDirectory() as directory:

@@ -3,9 +3,9 @@ import { useNavigate, useParams, useLocation } from "react-router";
 import { RadarChart, Radar, PolarGrid, PolarAngleAxis, ResponsiveContainer } from "recharts";
 import { getRoute, type RouteDetail } from "@/app/api/routes";
 import InteractiveRouteMap from "@/app/components/InteractiveRouteMap";
-import { cardBase, SafetyBadge, Tabs, StarRating, IconBookmark } from "@/app/components/ui";
+import { cardBase, SafetyBadge, Tabs, IconBookmark } from "@/app/components/ui";
 import { imgRouteMap } from "@/app/assets";
-import { reviews } from "@/app/data";
+import RouteDiscussion from "@/app/components/RouteDiscussion";
 
 
 const timeOfDay = [
@@ -48,7 +48,7 @@ function ScoreRow({ label, score }: { label: string; score: number }) {
 export default function RouteDetailPage() {
   const navigate   = useNavigate();
   const location = useLocation();
-  const source = location.state?.source;
+  const source = location.state?.source ?? (location.pathname.startsWith("/route/") ? "saved" : "generated");
   
   const { id }     = useParams<{ id: string }>();
   const [saved, setSaved]       = useState(false);
@@ -207,7 +207,7 @@ export default function RouteDetailPage() {
         </div>
 
         {/* Tabs */}
-        <Tabs tabs={["Overview", "Safety", "Reviews", "Directions"]} active={activeTab} onChange={setActiveTab} />
+        <Tabs tabs={["Overview", "Safety", ...(source === "generated" ? [] : ["Discussion"]), "Directions"]} active={activeTab} onChange={setActiveTab} />
 
         {activeTab === "Overview" && (
           <div className="flex gap-[14px]">
@@ -268,44 +268,7 @@ export default function RouteDetailPage() {
           </div>
         )}
 
-        {activeTab === "Reviews" && (
-          <div className="flex flex-col gap-[12px]">
-            <div className={`${cardBase} p-[20px] flex items-center gap-[24px]`}>
-              <div className="text-center">
-                <p className="font-['Inter',sans-serif] font-bold text-[48px] text-white tracking-[-1px] leading-none">4.7</p>
-                <StarRating value={5} />
-                <p className="font-['Inter',sans-serif] font-normal text-[12px] text-[rgba(255,255,255,0.4)] mt-[4px]">128 reviews</p>
-              </div>
-              <div className="flex-1 flex flex-col gap-[6px]">
-                {[5,4,3,2,1].map((s) => (
-                  <div key={s} className="flex items-center gap-[8px]">
-                    <span className="font-['Inter',sans-serif] font-normal text-[12px] text-[rgba(255,255,255,0.4)] w-[8px]">{s}</span>
-                    <div className="flex-1 h-[5px] rounded-full bg-[rgba(255,255,255,0.07)] overflow-hidden">
-                      <div className="h-full rounded-full bg-[#c42050]" style={{ width: `${[72,18,6,3,1][5-s]}%` }} />
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-            {reviews.map((r) => (
-              <div key={r.author} className={`${cardBase} p-[18px]`}>
-                <div className="flex items-center gap-[12px] mb-[10px]">
-                  <div className="size-[36px] rounded-full flex items-center justify-center shrink-0" style={{ background: "rgba(196,32,80,0.2)", border: "1px solid rgba(196,32,80,0.3)" }}>
-                    <span className="font-['Inter',sans-serif] font-bold text-[14px] text-[#c42050]">{r.initials}</span>
-                  </div>
-                  <div className="flex-1">
-                    <p className="font-['Inter',sans-serif] font-semibold text-[13px] text-white">{r.author}</p>
-                    <div className="flex items-center gap-[8px]">
-                      <StarRating value={r.rating} />
-                      <span className="font-['Inter',sans-serif] font-normal text-[11px] text-[rgba(255,255,255,0.3)]">{r.time}</span>
-                    </div>
-                  </div>
-                </div>
-                <p className="font-['Inter',sans-serif] font-normal text-[13px] text-[rgba(255,255,255,0.55)] leading-[20px]">{r.text}</p>
-              </div>
-            ))}
-          </div>
-        )}
+        {activeTab === "Discussion" && id && <div className={`${cardBase} p-[20px]`}><RouteDiscussion routeId={id} /></div>}
 
         {activeTab === "Directions" && (
           <div className={`${cardBase} overflow-hidden`}>

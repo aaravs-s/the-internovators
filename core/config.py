@@ -54,6 +54,8 @@ class Settings:
     saved_routes_file = data_dir / "saved_routes.json"
     generated_routes_file = data_dir / "generated_routes.json"
     sample_routes_file = data_dir / "sample_routes.json"
+    follows_file = data_dir / "follows.json"
+    route_comments_file = data_dir / "route_comments.json"
 
     def ensure_storage(self) -> None:
         self.data_dir.mkdir(parents=True, exist_ok=True)
@@ -64,6 +66,8 @@ class Settings:
             self.saved_routes_file,
             self.generated_routes_file,
             self.sample_routes_file,
+            self.follows_file,
+            self.route_comments_file,
         ]:
             if not path.exists():
                 source_path = self.source_data_dir / path.name

@@ -1,39 +1,25 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router";
 import { FormInput, PrimaryButton } from "@/app/components/ui";
+import { loginAndRefresh } from "@/app/api/auth";
+import { useAuth } from "../../auth/AuthContext";
 
 export default function LoginPage() {
   const navigate = useNavigate();
+  const { refreshUser } = useAuth();
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
 
-  const handleSubmit = async (e: React.SubmitEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setError("");
-
-    const res = await fetch("/api/auth/login", {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json",
-        },
-        credentials: "include",
-        body: JSON.stringify({
-            username,
-            password,
-        }),
-    });
-
-    const data = await res.json();
-    if (!res.ok) {
-        // const error = await res.json();
-        // console.error(error.detail);
-        setError(data.detail ?? "Login failed");
-        return;
+    try {
+      await loginAndRefresh(username, password, refreshUser);
+      navigate("/home");
+    } catch (reason) {
+      setError(reason instanceof Error ? reason.message : "Login failed");
     }
-
-    navigate("/home");
-
   };
 
   return (
@@ -43,7 +29,7 @@ export default function LoginPage() {
         <p className="font-['Inter',sans-serif] font-normal text-[14px] text-[rgba(255,255,255,0.4)]">Welcome back — your city awaits.</p>
       </div>
 
-      <form>
+      <form onSubmit={handleSubmit}>
         <FormInput label="Username" placeholder="Enter your username" value={username} onChange={setUsername} />
         <div className="mt-[16px]">
           <FormInput label="Password" placeholder="Enter your password" type="password" value={password} onChange={setPassword} />
@@ -63,7 +49,7 @@ export default function LoginPage() {
         )}
 
         <div className="mt-[20px]">
-          <PrimaryButton label="Sign In" onClick={ handleSubmit } wide />
+          <PrimaryButton label="Sign In" wide />
         </div>
       </form>
 
