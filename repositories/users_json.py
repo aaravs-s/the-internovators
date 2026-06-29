@@ -40,11 +40,13 @@ def get_user_by_email(email: str) -> dict | None:
 
 
 def create_user(user_data: UserCreate) -> dict:
+    
     users = list_users()
     if get_user_by_username(user_data.username):
         raise ValueError("That username is already taken.")
     if get_user_by_email(user_data.email):
         raise ValueError("That email is already registered.")
+    
 
     user = {
         "id": str(uuid4()),
@@ -56,6 +58,7 @@ def create_user(user_data: UserCreate) -> dict:
         "is_verified": False,
         "created_at": datetime.now(timezone.utc).isoformat(),
     }
+    
     users.append(user)
     write_list(settings.users_file, users)
     return user

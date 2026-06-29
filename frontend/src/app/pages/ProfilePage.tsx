@@ -28,7 +28,7 @@ export default function ProfilePage() {
   useEffect(() => {
     const loadSavedRoutes = async () => {
       try {
-        const response = await fetch(`/api/routes/get-user-saved?`, {
+        const response = await fetch(`/api/routes/get-user-saved`, {
           credentials: "include",
         });
 

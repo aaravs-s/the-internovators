@@ -55,5 +55,15 @@
     "password_hash": "pbkdf2_sha256$210000$c12ab41f2d5a61171ffae15808e94d75$7b5e5edb39f6bfa990f8b13c7c88093f35e0f83d2f5f98791b283b0552de4942",
     "picture_url": "",
     "username": "muhammad"
+  },
+  {
+    "bio": "My name is Bob.",
+    "created_at": "2026-06-29T16:51:28.607716+00:00",
+    "email": "bob@gmail.com",
+    "id": "0e131aaf-f59d-46e5-acc8-8c05a94bce6a",
+    "is_verified": false,
+    "password_hash": "pbkdf2_sha256$210000$e24da370c5a53b01fa072e5142e0712f$d821708744dfb91618853de8793a516611d47aaed8335300e46a979dee69e307",
+    "picture_url": "",
+    "username": "bob"
   }
 ]
