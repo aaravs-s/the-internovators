@@ -6,6 +6,21 @@ export interface RouteSummary {
   safety_score: number;
   tags: string[];
   image_url: string | null;
+  safety_breakdown: SafetyBreakdown | null;
+  route_profile: string;
+  tradeoff_summary: string;
+  preference_score: number;
+  preference_summary: string;
+}
+
+export interface SafetyBreakdown {
+  overall_score: number;
+  traffic_score: number;
+  incident_score: number;
+  crime_score: number;
+  water_proximity_score: number;
+  crowding_score: number;
+  signals: string[];
 }
 
 export interface DirectionStep {
@@ -14,12 +29,15 @@ export interface DirectionStep {
   kind: "start" | "step" | "end";
 }
 
+export type RouteCoordinate = [number, number];
+
 export interface RouteDetail extends RouteSummary {
   start: string;
   destination: string;
   summary: string;
   highlights: string[];
   directions: DirectionStep[];
+  coordinates: RouteCoordinate[];
 }
 
 
@@ -58,4 +76,40 @@ export function getRoute(
   } else {
     return requestJson<RouteDetail>(`/api/routes/results/${encodeURIComponent(routeId)}`, fetcher);
   }
+}
+
+
+export async function resolveRoute(
+  routeId: string,
+  source: string,
+  navigationRoute: RouteDetail | null = null,
+  fetcher: typeof fetch = fetch,
+  retryDelays: number[] = [0, 500, 1000, 1500],
+): Promise<RouteDetail> {
+  if (source === "generated" && navigationRoute?.id === routeId) {
+    return navigationRoute;
+  }
+
+  let lastError: unknown;
+  for (const delay of retryDelays) {
+    if (delay > 0) {
+      await new Promise((resolve) => setTimeout(resolve, delay));
+    }
+
+    try {
+      return await getRoute(routeId, source, fetcher);
+    } catch (reason) {
+      lastError = reason;
+      const isTransientGeneratedRouteMiss =
+        source === "generated" &&
+        reason instanceof Error &&
+        reason.message === "Route not found";
+
+      if (!isTransientGeneratedRouteMiss) {
+        throw reason;
+      }
+    }
+  }
+
+  throw lastError;
 }

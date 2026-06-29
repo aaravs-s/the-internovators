@@ -12,5 +12,8 @@ dependencies = [
   "staticmap>=0.5.7",
 ]
 
+[tool.setuptools]
+packages = ["api", "core", "repositories", "schemas", "services", "web"]
+
 [tool.ruff]
 line-length = 88

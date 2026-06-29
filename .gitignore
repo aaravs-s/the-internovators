@@ -4,6 +4,7 @@ __pycache__/
 setup-instructions.txt
 .env
 *.pyc
+*.egg-info/
 .DS_Store
 .vercel
 **/node_modules/

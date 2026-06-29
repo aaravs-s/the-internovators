@@ -4,12 +4,36 @@ import shutil
 import tempfile
 
 
+def load_env_file(path: Path) -> None:
+    if not path.exists():
+        return
+
+    for raw_line in path.read_text(encoding="utf-8").splitlines():
+        line = raw_line.strip()
+        if not line or line.startswith("#") or "=" not in line:
+            continue
+        key, value = line.split("=", 1)
+        key = key.strip()
+        value = value.strip().strip("\"'")
+        if key and key not in os.environ:
+            os.environ[key] = value
+
+    if "TT_API_KEY" not in os.environ and "TOMTOM_API_KEY" in os.environ:
+        os.environ["TT_API_KEY"] = os.environ["TOMTOM_API_KEY"]
+    if "TOMTOM_API_KEY" not in os.environ and "TT_API_KEY" in os.environ:
+        os.environ["TOMTOM_API_KEY"] = os.environ["TT_API_KEY"]
+
+
+ROOT_DIR = Path(__file__).resolve().parents[1]
+load_env_file(ROOT_DIR / ".env")
+
+
 class Settings:
     app_name = "SafeWalkers"
     session_cookie_name = "safewalkers_session"
     secret_key = os.getenv("SAFEWALKERS_SECRET_KEY", "dev-only-change-me")
 
-    root_dir = Path(__file__).resolve().parents[1]
+    root_dir = ROOT_DIR
     source_data_dir = root_dir / "data"
     data_dir = (
         Path(tempfile.gettempdir()) / "safewalkers-data"
@@ -30,6 +54,8 @@ class Settings:
     saved_routes_file = data_dir / "saved_routes.json"
     generated_routes_file = data_dir / "generated_routes.json"
     sample_routes_file = data_dir / "sample_routes.json"
+    follows_file = data_dir / "follows.json"
+    route_comments_file = data_dir / "route_comments.json"
 
     def ensure_storage(self) -> None:
         self.data_dir.mkdir(parents=True, exist_ok=True)
@@ -40,6 +66,8 @@ class Settings:
             self.saved_routes_file,
             self.generated_routes_file,
             self.sample_routes_file,
+            self.follows_file,
+            self.route_comments_file,
         ]:
             if not path.exists():
                 source_path = self.source_data_dir / path.name

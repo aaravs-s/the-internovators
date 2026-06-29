@@ -1,10 +1,11 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useParams, useLocation } from "react-router";
 import { RadarChart, Radar, PolarGrid, PolarAngleAxis, ResponsiveContainer } from "recharts";
-import { getRoute, type RouteDetail } from "@/app/api/routes";
-import { cardBase, SafetyBadge, Tabs, StarRating, IconBookmark } from "@/app/components/ui";
-import { imgRouteMap } from "@/app/assets";
-import { safetyRadar, reviews } from "@/app/data";
+import { resolveRoute, type RouteDetail } from "@/app/api/routes";
+import InteractiveRouteMap from "@/app/components/InteractiveRouteMap";
+import { cardBase, SafetyBadge, Tabs, IconBookmark } from "@/app/components/ui";
+import { imgRouteMap, loadingGif } from "@/app/assets";
+import RouteDiscussion from "@/app/components/RouteDiscussion";
 
 
 const timeOfDay = [
@@ -14,10 +15,41 @@ const timeOfDay = [
   { time: "10 PM – 6 AM", score: 6.2 },
 ];
 
+function toPercentScore(score: number) {
+  return Math.round(score > 10 ? score : score * 10);
+}
+
+function fallbackBreakdown(score: number) {
+  const percentScore = toPercentScore(score);
+  return {
+    overall_score: percentScore,
+    traffic_score: percentScore,
+    incident_score: percentScore,
+    crime_score: percentScore,
+    water_proximity_score: percentScore,
+    crowding_score: percentScore,
+    signals: ["Detailed safety metrics are not available for this older route."],
+  };
+}
+
+function ScoreRow({ label, score }: { label: string; score: number }) {
+  const color = score >= 85 ? "#22c55e" : score >= 70 ? "#f59e0b" : "#ef4444";
+  return (
+    <div className="flex items-center gap-[12px]">
+      <span className="font-['Inter',sans-serif] font-normal text-[12px] text-[rgba(255,255,255,0.4)] w-[130px] shrink-0">{label}</span>
+      <div className="flex-1 h-[6px] rounded-full bg-[rgba(255,255,255,0.07)] overflow-hidden">
+        <div className="h-full rounded-full transition-all" style={{ width: `${score}%`, background: color }} />
+      </div>
+      <span className="font-['Inter',sans-serif] font-semibold text-[12px] w-[32px] text-right" style={{ color }}>{score}</span>
+    </div>
+  );
+}
+
 export default function RouteDetailPage() {
   const navigate   = useNavigate();
   const location = useLocation();
-  const source = location.state?.source ?? "saved";
+  const source = location.state?.source ?? (location.pathname.startsWith("/route/") ? "saved" : "generated");
+  const navigationRoute = (location.state?.route ?? null) as RouteDetail | null;
   
   const { id }     = useParams<{ id: string }>();
   const [saved, setSaved]       = useState(false);
@@ -38,8 +70,8 @@ export default function RouteDetailPage() {
 
     setLoading(true);
     setError("");
-    getRoute(id, source)
-      .then((result: any) => {
+    resolveRoute(id, source, navigationRoute)
+      .then((result) => {
         if (!cancelled) setRoute(result);
       })
       .catch((reason: unknown) => {
@@ -53,7 +85,7 @@ export default function RouteDetailPage() {
       });
 
     return () => { cancelled = true; };
-  }, [id]);
+  }, [id, source, navigationRoute]);
 
   useEffect(() => {
     const loadSavedRoutes = async () => {
@@ -81,7 +113,7 @@ export default function RouteDetailPage() {
     };
 
     loadSavedRoutes();
-  }, []);
+  }, [id]);
 
   const saveRoute = async (routeId: string) => {
     setSaved(true);
@@ -103,7 +135,17 @@ export default function RouteDetailPage() {
   };
 
   if (loading) {
-    return <div className="p-[32px] text-[rgba(255,255,255,0.5)]">Loading route…</div>;
+    return (
+      <div className="min-h-[70vh] p-[32px] flex items-center justify-center">
+        <div className={`${cardBase} w-full max-w-[460px] p-[32px] text-center`} role="status" aria-live="polite">
+          <img src={loadingGif} alt="" className="mx-auto size-[54px] object-contain" />
+          <h1 className="mt-[18px] text-[20px] font-semibold text-white">Preparing your route</h1>
+          <p className="mt-[8px] text-[13px] leading-[1.6] text-[rgba(255,255,255,0.5)]">
+            Loading the map, safety details, and directions. This can take a moment.
+          </p>
+        </div>
+      </div>
+    );
   }
   if (error || !route) {
     return (
@@ -113,6 +155,23 @@ export default function RouteDetailPage() {
       </div>
     );
   }
+
+  const routeCoordinates = route.coordinates ?? [];
+  const hasInteractiveMap = routeCoordinates.length >= 2;
+  const fallbackMapImage =
+    source == "generated"
+      ? route.filename
+        ? `/maps/${route.filename}`
+        : imgRouteMap
+      : route.image_url ?? imgRouteMap;
+  const safetyBreakdown = route.safety_breakdown ?? fallbackBreakdown(route.safety_score);
+  const safetyRadarData = [
+    { subject: "Traffic", score: safetyBreakdown.traffic_score },
+    { subject: "Incidents", score: safetyBreakdown.incident_score },
+    { subject: "Crime", score: safetyBreakdown.crime_score },
+    { subject: "Water", score: safetyBreakdown.water_proximity_score },
+    { subject: "Crowding", score: safetyBreakdown.crowding_score },
+  ];
 
   return (
     <>
@@ -136,13 +195,15 @@ export default function RouteDetailPage() {
 
       <div className="px-[32px] py-[24px] flex flex-col gap-[20px] max-w-[900px]">
         {/* Map */}
-        <div className="rounded-[20px] overflow-hidden relative border border-[rgba(255,255,255,0.08)]">
-          <img alt={`Map of ${route.name}`} className="w-full h-full object-contain" 
-            src={ source == "generated" ?
-              (route.filename == null ? imgRouteMap : `/maps/${route.filename}`) : 
-              (route.image_url == null ? imgRouteMap : route.image_url) } 
-          />
-          <div className="absolute inset-0 bg-gradient-to-t from-[rgba(10,6,8,0.4)] to-transparent" />
+        <div className="rounded-[20px] overflow-hidden h-[220px] relative border border-[rgba(255,255,255,0.08)]">
+          {hasInteractiveMap ? (
+            <InteractiveRouteMap coordinates={routeCoordinates} routeName={route.name} />
+          ) : (
+            <>
+              <img alt={`Map of ${route.name}`} className="w-full h-full object-cover" src={fallbackMapImage} />
+              <div className="absolute inset-0 bg-gradient-to-t from-[rgba(10,6,8,0.4)] to-transparent" />
+            </>
+          )}
           <div className="absolute bottom-[16px] left-[16px] flex gap-[8px]">
             <SafetyBadge score={route.safety_score} />
             <span className="font-['Inter',sans-serif] font-medium text-[12px] px-[10px] py-[4px] rounded-[20px] bg-[rgba(10,6,8,0.6)] border border-[rgba(255,255,255,0.15)] text-white">Scenic Route</span>
@@ -175,7 +236,7 @@ export default function RouteDetailPage() {
         </div>
 
         {/* Tabs */}
-        <Tabs tabs={["Overview", "Safety", "Reviews", "Directions"]} active={activeTab} onChange={setActiveTab} />
+        <Tabs tabs={["Overview", "Safety", ...(source === "generated" ? [] : ["Discussion"]), "Directions"]} active={activeTab} onChange={setActiveTab} />
 
         {activeTab === "Overview" && (
           <div className="flex gap-[14px]">
@@ -211,7 +272,7 @@ export default function RouteDetailPage() {
             <div className={`${cardBase} p-[20px] flex-1`}>
               <p className="font-['Inter',sans-serif] font-semibold text-[14px] text-white mb-[12px]">Safety Breakdown</p>
               <ResponsiveContainer width="100%" height={200}>
-                <RadarChart data={safetyRadar}>
+                <RadarChart data={safetyRadarData}>
                   <PolarGrid stroke="rgba(255,255,255,0.08)" />
                   <PolarAngleAxis dataKey="subject" tick={{ fill: "rgba(255,255,255,0.4)", fontSize: 11, fontFamily: "Inter" }} />
                   <Radar dataKey="score" stroke="#c42050" fill="#c42050" fillOpacity={0.15} strokeWidth={2} />
@@ -219,60 +280,24 @@ export default function RouteDetailPage() {
               </ResponsiveContainer>
             </div>
             <div className={`${cardBase} p-[20px] flex-1`}>
-              <p className="font-['Inter',sans-serif] font-semibold text-[14px] text-white mb-[16px]">Safety by Time of Day</p>
+              <p className="font-['Inter',sans-serif] font-semibold text-[14px] text-white mb-[16px]">Route Signals</p>
               <div className="flex flex-col gap-[12px]">
-                {timeOfDay.map((t) => (
-                  <div key={t.time} className="flex items-center gap-[12px]">
-                    <span className="font-['Inter',sans-serif] font-normal text-[12px] text-[rgba(255,255,255,0.4)] w-[130px] shrink-0">{t.time}</span>
-                    <div className="flex-1 h-[6px] rounded-full bg-[rgba(255,255,255,0.07)] overflow-hidden">
-                      <div className="h-full rounded-full transition-all" style={{ width: `${(t.score / 10) * 100}%`, background: t.score >= 9 ? "#22c55e" : t.score >= 7.5 ? "#f59e0b" : "#ef4444" }} />
-                    </div>
-                    <SafetyBadge score={t.score} />
-                  </div>
-                ))}
+                <ScoreRow label="Traffic" score={safetyBreakdown.traffic_score} />
+                <ScoreRow label="Incidents" score={safetyBreakdown.incident_score} />
+                <ScoreRow label="Crime" score={safetyBreakdown.crime_score} />
+                <ScoreRow label="Water / Scenic" score={safetyBreakdown.water_proximity_score} />
+                <ScoreRow label="Crowding" score={safetyBreakdown.crowding_score} />
+                <div className="pt-[4px] flex flex-col gap-[6px]">
+                  {safetyBreakdown.signals.map((signal) => (
+                    <p key={signal} className="text-[12px] leading-[18px] text-[rgba(255,255,255,0.48)]">{signal}</p>
+                  ))}
+                </div>
               </div>
             </div>
           </div>
         )}
 
-        {activeTab === "Reviews" && (
-          <div className="flex flex-col gap-[12px]">
-            <div className={`${cardBase} p-[20px] flex items-center gap-[24px]`}>
-              <div className="text-center">
-                <p className="font-['Inter',sans-serif] font-bold text-[48px] text-white tracking-[-1px] leading-none">4.7</p>
-                <StarRating value={5} />
-                <p className="font-['Inter',sans-serif] font-normal text-[12px] text-[rgba(255,255,255,0.4)] mt-[4px]">128 reviews</p>
-              </div>
-              <div className="flex-1 flex flex-col gap-[6px]">
-                {[5,4,3,2,1].map((s) => (
-                  <div key={s} className="flex items-center gap-[8px]">
-                    <span className="font-['Inter',sans-serif] font-normal text-[12px] text-[rgba(255,255,255,0.4)] w-[8px]">{s}</span>
-                    <div className="flex-1 h-[5px] rounded-full bg-[rgba(255,255,255,0.07)] overflow-hidden">
-                      <div className="h-full rounded-full bg-[#c42050]" style={{ width: `${[72,18,6,3,1][5-s]}%` }} />
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-            {reviews.map((r) => (
-              <div key={r.author} className={`${cardBase} p-[18px]`}>
-                <div className="flex items-center gap-[12px] mb-[10px]">
-                  <div className="size-[36px] rounded-full flex items-center justify-center shrink-0" style={{ background: "rgba(196,32,80,0.2)", border: "1px solid rgba(196,32,80,0.3)" }}>
-                    <span className="font-['Inter',sans-serif] font-bold text-[14px] text-[#c42050]">{r.initials}</span>
-                  </div>
-                  <div className="flex-1">
-                    <p className="font-['Inter',sans-serif] font-semibold text-[13px] text-white">{r.author}</p>
-                    <div className="flex items-center gap-[8px]">
-                      <StarRating value={r.rating} />
-                      <span className="font-['Inter',sans-serif] font-normal text-[11px] text-[rgba(255,255,255,0.3)]">{r.time}</span>
-                    </div>
-                  </div>
-                </div>
-                <p className="font-['Inter',sans-serif] font-normal text-[13px] text-[rgba(255,255,255,0.55)] leading-[20px]">{r.text}</p>
-              </div>
-            ))}
-          </div>
-        )}
+        {activeTab === "Discussion" && id && <div className={`${cardBase} p-[20px]`}><RouteDiscussion routeId={id} /></div>}
 
         {activeTab === "Directions" && (
           <div className={`${cardBase} overflow-hidden`}>

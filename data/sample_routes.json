@@ -43,6 +43,21 @@
       "Good lighting on major blocks",
       "Includes several busier intersections"
     ]
+  },
+  {
+    "id": "scenic-waterfront",
+    "name": "Scenic Waterfront Walk",
+    "distance_miles": 1.9,
+    "estimated_minutes": 38,
+    "base_safety_score": 86,
+    "well_lit": true,
+    "sidewalk_heavy": true,
+    "busy_crossings": 1,
+    "tradeoff_summary": "Longer route near parks and water",
+    "highlights": [
+      "Favors green spaces and calmer waterfront blocks",
+      "Good option for scenic daytime walks",
+      "Adds distance to avoid busier street segments"
+    ]
   }
 ]
-

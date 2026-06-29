@@ -11,6 +11,13 @@ VALID_FOCUS_FILTERS = {"all", "top-rated", "scenic", "safest", "popular"}
 VALID_SORTS = {"recent", "community-rating", "safety-score", "most-liked", "shortest"}
 
 
+def canonical_owner_id(route: dict) -> str:
+    user_id = route.get("user_id", "")
+    if isinstance(user_id, list):
+        return user_id[0] if user_id else ""
+    return user_id
+
+
 def list_saved_routes() -> list[dict]:
     return [route_with_social_fields(route) for route in read_list(settings.saved_routes_file)]
 
@@ -88,6 +95,16 @@ def save_route_generated(route_data: SavedRouteCreate, user_id: str) -> dict:
         "map_style": route_data.map_style,
         "filename": route_data.filename,
         "directions": route_data.directions,
+        "coordinates": route_data.coordinates,
+        "safety_breakdown": (
+            route_data.safety_breakdown.model_dump()
+            if route_data.safety_breakdown
+            else None
+        ),
+        "route_profile": route_data.route_profile,
+        "tradeoff_summary": route_data.tradeoff_summary,
+        "preference_score": route_data.preference_score,
+        "preference_summary": route_data.preference_summary,
         "comments": "",
         "tags": [],
         "is_shared": True,
@@ -231,7 +248,7 @@ def toggle_like(saved_route_id: str, user_id: str) -> dict | None:
     for route in saved_routes:
         if (
             route["id"] != saved_route_id
-            or user_id in route["user_id"]
+            or canonical_owner_id(route) == user_id
             or not route.get("is_shared", True)
         ):
             continue
@@ -241,6 +258,27 @@ def toggle_like(saved_route_id: str, user_id: str) -> dict | None:
             liked_by.remove(user_id)
         else:
             liked_by.append(user_id)
+        route["liked_by"] = liked_by
+        _write_enriched_routes(saved_routes)
+        return route_with_social_fields(route, user_id)
+    return None
+
+
+def set_route_like(saved_route_id: str, user_id: str, is_liked: bool) -> dict | None:
+    saved_routes = list_saved_routes()
+    for route in saved_routes:
+        if (
+            route["id"] != saved_route_id
+            or canonical_owner_id(route) == user_id
+            or not route.get("is_shared", True)
+        ):
+            continue
+
+        liked_by = list(route.get("liked_by", []))
+        if is_liked and user_id not in liked_by:
+            liked_by.append(user_id)
+        elif not is_liked and user_id in liked_by:
+            liked_by.remove(user_id)
         route["liked_by"] = liked_by
         _write_enriched_routes(saved_routes)
         return route_with_social_fields(route, user_id)

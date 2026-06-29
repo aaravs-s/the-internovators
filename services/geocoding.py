@@ -1,6 +1,12 @@
 def normalize_place_name(place_name: str) -> str:
     cleaned = " ".join(place_name.strip().split())
-    if "austin" in cleaned.lower():
+    lowered = cleaned.lower()
+    if (
+        ", austin" in lowered
+        or "austin, tx" in lowered
+        or "austin tx" in lowered
+        or "texas" in lowered
+    ):
         return cleaned
     return f"{cleaned}, Austin, TX"
 
@@ -23,4 +29,3 @@ def suggest_places(query: str) -> list[str]:
         if query.lower() in destination.lower()
     ]
     return matches or [normalized]
-
