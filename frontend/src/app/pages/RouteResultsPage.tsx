@@ -39,19 +39,19 @@ export default function RouteResultsPage() {
     useEffect(() => {
         const loadSavedRoutes = async () => {
             try {
-            const response = await fetch("/api/routes/get-saved", {
-                credentials: "include",
-            });
+                const response = await fetch("/api/routes/get-saved", {
+                    credentials: "include",
+                });
 
-            if (!response.ok) {
-                throw new Error("Failed to load saved routes");
-            }
+                if (!response.ok) {
+                    throw new Error("Failed to load saved routes");
+                }
 
-            const saved_routes = await response.json();
+                const saved_routes = await response.json();
 
-            setSaved((_) => {
-                return new Set<string>(saved_routes.map((route) => route.route_id))
-            });
+                setSaved((_) => {
+                    return new Set<string>(saved_routes.map((route) => route.route_id))
+                });
             } catch (err) {
                 console.error(err);
             }

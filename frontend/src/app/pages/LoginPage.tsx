@@ -32,7 +32,7 @@ export default function LoginPage() {
         return;
     }
 
-    navigate("/home");
+    navigate("/explore");
 
   };
 

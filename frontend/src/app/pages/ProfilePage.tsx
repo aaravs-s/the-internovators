@@ -1,6 +1,5 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router";
-import { AreaChart, Area, XAxis, ResponsiveContainer, Tooltip } from "recharts";
 import { cardBase, SafetyBadge, Tabs, IconGear } from "@/app/components/ui";
 import { imgProfile, imgRouteMap } from "@/app/assets";
 import { monthlyActivity, socialUsers } from "@/app/data";
@@ -18,7 +17,7 @@ export default function ProfilePage() {
   const { user, user_loading, logout } = useAuth();
   const [bio, setBio] = useState("")
   const [saved, setSaved] = useState<Set<string>>(new Set());
-  const [followers, setFollowers] = useState<OtherUser[]>([{id: "a3b21833-64b5-47d3-839b-d2f5a380141c", username: "password"}]);
+  const [followers, setFollowers] = useState<OtherUser[]>([{id: "47e78831-62da-4f5a-86ca-c0635e56cdbc", username: "example"}]);
   const [following, setFollowing] = useState<OtherUser[]>([]);
 
 
@@ -29,19 +28,19 @@ export default function ProfilePage() {
   useEffect(() => {
     const loadSavedRoutes = async () => {
       try {
-      const response = await fetch("/api/routes/get-saved", {
-        credentials: "include",
-      });
+        const response = await fetch(`/api/routes/get-user-saved?`, {
+          credentials: "include",
+        });
 
-      if (!response.ok) {
-        throw new Error("Failed to load saved routes");
-      }
+        if (!response.ok) {
+          throw new Error("Failed to load saved routes");
+        }
 
-      const saved_routes = await response.json();
+        const saved_routes = await response.json();
 
-      setSaved((_) => {
-        return new Set<string>(saved_routes.map((saved_route) => saved_route.id))
-      });
+        setSaved((_) => {
+          return new Set<string>(saved_routes.map((saved_route) => saved_route.id))
+        });
       } catch (err) {
         console.error(err);
       }
@@ -151,6 +150,34 @@ export default function ProfilePage() {
               <div className={`${cardBase} flex items-center gap-[14px] p-[14px]`}>
                 <div className="flex-1">
                   <p className="font-['Inter',sans-serif] font-semibold text-[14px] text-white">You have no followers</p>
+                </div>
+              </div>
+            }
+          </div>
+        )}
+
+        {activeTab === "Following" && (
+          <div className="flex flex-col gap-[10px]">
+            {following.length > 0 ? 
+              following.map((u) => (
+                <div key={u.id} className={`${cardBase} flex items-center gap-[14px] p-[14px]`}>
+                  <div className="size-[44px] rounded-full bg-[rgba(255,255,255,0.1)] flex items-center justify-center shrink-0 border border-[rgba(255,255,255,0.1)]">
+                    <span className="font-['Inter',sans-serif] font-bold text-[16px] text-white opacity-60">{u.username[0].toUpperCase()}</span>
+                  </div>
+                  <div className="flex-1">
+                    <p className="font-['Inter',sans-serif] font-semibold text-[14px] text-white">{u.username}</p>
+                    {/* <p className="font-['Inter',sans-serif] font-normal text-[12px] text-[rgba(255,255,255,0.4)]">@{u.handle}</p> */}
+                  </div>
+                  <button onClick={() => navigate(`/social/${u.id}`)} className="cursor-pointer">
+                    <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                      <path d="M6 12L10 8L6 4" stroke="white" strokeLinecap="round" strokeLinejoin="round" strokeOpacity="0.25" strokeWidth="1.33333" />
+                    </svg>
+                  </button>
+                </div>
+              )) : 
+              <div className={`${cardBase} flex items-center gap-[14px] p-[14px]`}>
+                <div className="flex-1">
+                  <p className="font-['Inter',sans-serif] font-semibold text-[14px] text-white">You are not following anyone.</p>
                 </div>
               </div>
             }

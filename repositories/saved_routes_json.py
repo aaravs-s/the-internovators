@@ -74,7 +74,7 @@ def save_route_generated(route_data: SavedRouteCreate, user_id: str) -> dict:
 
     saved_route = {
         "id": str(uuid4()),
-        "user_id": user_id,
+        "user_id": [user_id],
         "route_id": route_data.id,
         "name": route_data.name,
         "start": route_data.start,

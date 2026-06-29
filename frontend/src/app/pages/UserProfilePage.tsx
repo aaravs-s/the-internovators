@@ -1,13 +1,88 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router";
 import { cardBase, SafetyBadge, RouteCard } from "@/app/components/ui";
 import { socialUsers } from "@/app/data";
 
+interface OtherUser {
+  id: string,
+  username: string
+}
+
+interface UserPublic {
+  id: string,
+  username: string,
+  bio: string,
+  join_year: string,
+  followers: OtherUser[],
+  following: OtherUser[]
+}
+
 export default function UserProfilePage() {
   const navigate = useNavigate();
   const { userId } = useParams();
-  const user = socialUsers.find((u) => u.id === Number(userId)) ?? socialUsers[0];
+  const [user, setUser] = useState<UserPublic>({ 
+    id: userId ?? "",
+    username: "",
+    bio: "",
+    join_year: "2026",
+    followers: [],
+    following: []
+  });
   const [following, setFollowing] = useState(false);
+  const [saved, setSaved] = useState<Set<string>>(new Set());
+
+  useEffect(() => {
+    const loadUser = async () => {
+      try {
+      const response = await fetch(`/api/auth/other-user?id=${userId}`, {
+        credentials: "include",
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to load user.");
+      }
+
+      const user_public = await response.json();
+
+      setUser({
+        id: userId ?? "",
+        username: user_public.username,
+        bio: user_public.bio,
+        join_year: user_public.created_at.split("-")[0],
+        followers: [],
+        following: []
+      });
+      } catch (err) {
+        console.error(err);
+      }
+    };
+
+    loadUser();
+  }, []);
+
+  useEffect(() => {
+    const loadSavedRoutes = async () => {
+      try {
+        const response = await fetch(`/api/routes/get-other-user-saved/${userId}`, {
+          credentials: "include",
+        });
+
+        if (!response.ok) {
+          throw new Error("Failed to load saved routes");
+        }
+
+        const saved_routes = await response.json();
+
+        setSaved((_) => {
+          return new Set<string>(saved_routes.map((saved_route) => saved_route.id))
+        });
+      } catch (err) {
+        console.error(err);
+      }
+    };
+
+    loadSavedRoutes();
+  }, []);
 
   return (
     <>
@@ -22,8 +97,8 @@ export default function UserProfilePage() {
             <span className="font-['Inter',sans-serif] font-medium text-[13px] text-[rgba(255,255,255,0.6)]">Back</span>
           </button>
           <div>
-            <p className="font-['Inter',sans-serif] font-bold text-[32px] text-white tracking-[-0.7px] leading-[40px]">{user.name}</p>
-            <p className="font-['Inter',sans-serif] font-normal text-[14px] text-[rgba(255,255,255,0.4)]">@{user.handle} · {user.routes} routes walked</p>
+            <p className="font-['Inter',sans-serif] font-bold text-[32px] text-white tracking-[-0.7px] leading-[40px]">{user.username}</p>
+            <p className="font-['Inter',sans-serif] font-normal text-[14px] text-[rgba(255,255,255,0.4)]">{saved.size} routes saved</p>
           </div>
         </div>
       </div>
@@ -33,19 +108,19 @@ export default function UserProfilePage() {
         <div className={`${cardBase} p-[24px]`}>
           <div className="flex items-center gap-[20px] mb-[14px]">
             <div className="size-[80px] rounded-full bg-[rgba(255,255,255,0.1)] flex items-center justify-center shrink-0 border border-[rgba(255,255,255,0.12)]">
-              <span className="font-['Inter',sans-serif] font-bold text-[30px] text-white opacity-50">{user.initials}</span>
+              <span className="font-['Inter',sans-serif] font-bold text-[30px] text-white opacity-50">{user.username.length > 0 ? user.username[0].toUpperCase() : ""}</span>
             </div>
             <div className="flex-1">
-              <p className="font-['Inter',sans-serif] font-bold text-[22px] text-white tracking-[-0.5px] mb-[4px]">{user.name}</p>
-              <p className="font-['Inter',sans-serif] font-normal text-[13px] text-[rgba(255,255,255,0.4)]">@{user.handle} · Joined March 2023</p>
+              <p className="font-['Inter',sans-serif] font-bold text-[22px] text-white tracking-[-0.5px] mb-[4px]">{user.username}</p>
+              <p className="font-['Inter',sans-serif] font-normal text-[13px] text-[rgba(255,255,255,0.4)]">Joined {user.join_year}</p>
             </div>
             <div className="flex gap-[10px]">
-              <button className="flex items-center gap-[8px] h-[40px] px-[16px] bg-[rgba(255,255,255,0.05)] border border-[rgba(255,255,255,0.1)] rounded-[12px] cursor-pointer hover:bg-[rgba(255,255,255,0.08)] transition-colors">
+              {/* <button className="flex items-center gap-[8px] h-[40px] px-[16px] bg-[rgba(255,255,255,0.05)] border border-[rgba(255,255,255,0.1)] rounded-[12px] cursor-pointer hover:bg-[rgba(255,255,255,0.08)] transition-colors">
                 <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
                   <path d="M8 2v12M2 8h12" stroke="rgba(255,255,255,0.5)" strokeLinecap="round" strokeWidth="1.5" />
                 </svg>
                 <span className="font-['Inter',sans-serif] font-medium text-[13px] text-[rgba(255,255,255,0.6)]">Message</span>
-              </button>
+              </button> */}
               <button onClick={() => setFollowing(!following)}
                 className={`px-[20px] py-[8px] rounded-[12px] cursor-pointer border transition-colors ${following ? "bg-[rgba(196,32,80,0.15)] border-[rgba(196,32,80,0.35)]" : "border-[rgba(255,255,255,0.15)] bg-[rgba(255,255,255,0.07)] hover:bg-[rgba(255,255,255,0.1)]"}`}>
                 <span className={`font-['Inter',sans-serif] font-semibold text-[14px] ${following ? "text-[#c42050]" : "text-white"}`}>{following ? "Following" : "Follow"}</span>
@@ -53,27 +128,18 @@ export default function UserProfilePage() {
             </div>
           </div>
           <p className="font-['Inter',sans-serif] font-normal text-[14px] text-[rgba(255,255,255,0.55)] leading-[22px]">
-            Exploring the city on foot. Safety first, always. Urban walker and route reviewer.
+            {user.bio}
           </p>
         </div>
 
         {/* Stats */}
-        <div className="grid grid-cols-4 gap-[12px]">
-          {[{ label: "Routes", value: String(user.routes) }, { label: "Saved", value: "31" }, { label: "Followers", value: "214" }, { label: "Following", value: "87" }].map((s) => (
+        <div className="grid grid-cols-3 gap-[12px]">
+          {[{ label: "Saved", value: saved.size }, { label: "Followers", value: user.followers.length }, { label: "Following", value: user.following.length }].map((s) => (
             <div key={s.label} className={`${cardBase} px-[20px] py-[16px] text-center`}>
               <p className="font-['Inter',sans-serif] font-bold text-[26px] text-white tracking-[-0.6px]">{s.value}</p>
               <p className="font-['Inter',sans-serif] font-normal text-[12px] text-[rgba(255,255,255,0.4)] mt-[2px]">{s.label}</p>
             </div>
           ))}
-        </div>
-
-        {/* Routes */}
-        <div>
-          <p className="font-['Inter',sans-serif] font-semibold text-[15px] text-white mb-[14px]">Recent Routes</p>
-          <div className="flex gap-[14px]">
-            <RouteCard label="Midtown Express" distance="5.1 mi" duration="18 min" safety={8.9} onClick={() => navigate("/route/1")} />
-            <RouteCard label="Park Stroll"     distance="2.4 mi" duration="30 min" safety={9.4} onClick={() => navigate("/route/2")} />
-          </div>
         </div>
       </div>
     </>

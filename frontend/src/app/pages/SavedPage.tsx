@@ -48,17 +48,17 @@ export default function SavedPage() {
   useEffect(() => {
     const loadSavedRoutes = async () => {
       try {
-      const response = await fetch("/api/routes/get-user-saved", {
-        credentials: "include",
-      });
+        const response = await fetch("/api/routes/get-user-saved", {
+          credentials: "include",
+        });
 
-      if (!response.ok) {
-        throw new Error("Failed to load saved routes");
-      }
+        if (!response.ok) {
+          throw new Error("Failed to load saved routes");
+        }
 
-      const saved_routes = await response.json();
+        const saved_routes = await response.json();
 
-      setSaved(saved_routes);
+        setSaved(saved_routes);
       } catch (err) {
         console.error(err);
       }
@@ -132,7 +132,7 @@ export default function SavedPage() {
           ))}
           {visible.length === 0 && (
             <div className="text-center py-[48px]">
-              <p className="font-['Inter',sans-serif] font-normal text-[14px] text-[rgba(255,255,255,0.3)]">No routes match this filter.</p>
+              <p className="font-['Inter',sans-serif] font-normal text-[14px] text-[rgba(255,255,255,0.3)]">{saved.length > 0 ? "No routes match this filter." : "You have no saved routes."}</p>
             </div>
           )}
         </div>

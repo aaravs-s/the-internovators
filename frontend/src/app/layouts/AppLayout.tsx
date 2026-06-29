@@ -11,7 +11,7 @@ type NavDef = { to: string; label: string; icon: (c: string) => React.ReactNode;
 
 const navItems: NavDef[] = [
   // { to: "/home",     label: "Home",     icon: (c) => <IconHome     color={c} /> },
-  { to: "/explore",  label: "Home",  icon: (c) => <IconHome  color={c} /> },
+  { to: "/explore",  label: "Explore",  icon: (c) => <IconHome  color={c} /> },
   { to: "/saved",    label: "Saved",    icon: (c) => <IconBookmark color={c} /> },
   { to: "/generate", label: "Generate", icon: (c) => <IconCompass color={c} /> },
   { to: "/social",  label: "Social",  icon: (c) => <IconSocial   color={c} /> },

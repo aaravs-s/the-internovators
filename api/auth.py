@@ -48,3 +48,8 @@ async def me(request: Request):
         "bio": user.bio,
         "created_at": user.created_at.split("-")[0]
     }
+
+@router.get("/other-user")
+async def other_user(id: str, request: Request):
+    user = users_json.get_user_by_id(id)
+    return user
