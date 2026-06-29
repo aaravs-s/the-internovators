@@ -3,12 +3,12 @@ import { DarkBackground, AuthLeftPanel } from "@/app/components/ui";
 
 export default function AuthLayout() {
   return (
-    <div className="bg-[#0a0608] relative size-full">
+    <div className="bg-[#0a0608] min-h-screen flex">
       {/* <DarkBackground /> */}
-      <AuthLeftPanel />
+      <div className="w-1/2"><AuthLeftPanel /></div>
       {/* Right panel — each auth page fills this slot */}
-      <div className="absolute flex flex-col h-[944px] items-center justify-center left-[774.5px] px-[48px] top-0 w-[774.5px]">
-        <div className="w-[384px]">
+      <div className="flex-1 flex items-center justify-center px-12">
+        <div className="w-full max-w-[384px]">
           <Outlet />
         </div>
       </div>
