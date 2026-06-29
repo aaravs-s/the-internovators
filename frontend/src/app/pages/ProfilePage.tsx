@@ -14,7 +14,7 @@ export default function ProfilePage() {
   const navigate = useNavigate();
   const [editing, setEditing]     = useState(false);
   const [activeTab, setActiveTab] = useState("Followers");
-  const { user, user_loading, logout } = useAuth();
+  const { user, user_loading, refreshUser, logout } = useAuth();
   const [bio, setBio] = useState("")
   const [saved, setSaved] = useState<Set<string>>(new Set());
   const [followers, setFollowers] = useState<OtherUser[]>([{id: "47e78831-62da-4f5a-86ca-c0635e56cdbc", username: "example"}]);

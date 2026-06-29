@@ -21,7 +21,7 @@ const navItems: NavDef[] = [
 function Sidebar() {
   const navigate = useNavigate();
 
-  const { user, user_loading, logout } = useAuth();
+  const { user, user_loading, refreshUser, logout } = useAuth();
 
 
   if (user_loading) {

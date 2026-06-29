@@ -1,12 +1,14 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router";
 import { FormInput, PrimaryButton } from "@/app/components/ui";
+import { useAuth } from "../../auth/AuthContext";
 
 export default function LoginPage() {
   const navigate = useNavigate();
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+  const { user, user_loading, refreshUser, logout } = useAuth();
 
   const handleSubmit = async (e: React.SubmitEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -31,6 +33,8 @@ export default function LoginPage() {
         setError(data.detail ?? "Login failed");
         return;
     }
+
+    refreshUser();
 
     navigate("/explore");
 
