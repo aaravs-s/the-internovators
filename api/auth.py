@@ -10,14 +10,29 @@ router = APIRouter(prefix="/auth", tags=["auth"])
 
 
 @router.post("/signup", response_model=UserPublic)
-async def signup(user_data: UserCreate) -> UserPublic:
+async def signup(user_data: UserCreate, response: Response) -> UserPublic:
     try:
         user = users_json.create_user(user_data)
     except ValueError as error:
         raise HTTPException(status_code=400, detail=str(error)) from error
 
-    return UserPublic(id=user["id"], username=user["username"], email=user["email"])
+    response.set_cookie(
+        settings.session_cookie_name,
+        sign_user_id(user["id"]),
+        httponly=True,
+        samesite="lax",
+        max_age=60 * 60 * 24 * 14,
+    )
 
+    return UserPublic(
+        id=user["id"],
+        username=user["username"],
+        email=user["email"],
+        bio=user["bio"],
+        picture_url=user["picture_url"],
+        is_verified=user["is_verified"],
+        created_at=user["created_at"]
+    )
 
 @router.post("/login")
 async def login(credentials: UserLogin, response: Response) -> dict[str, str]:
@@ -48,8 +63,3 @@ async def me(request: Request):
         "bio": user.bio,
         "created_at": user.created_at.split("-")[0]
     }
-
-@router.get("/other-user")
-async def other_user(id: str, request: Request):
-    user = users_json.get_user_by_id(id)
-    return user

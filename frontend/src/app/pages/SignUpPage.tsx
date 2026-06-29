@@ -1,18 +1,53 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router";
 import { FormInput, PrimaryButton } from "@/app/components/ui";
+import { useAuth } from "../../auth/AuthContext";
 
 export default function SignUpPage() {
   const navigate = useNavigate();
-  const [name, setName]       = useState("");
-  const [username, setUser]   = useState("");
-  const [email, setEmail]     = useState("");
-  const [password, setPass]   = useState("");
-  const [agree, setAgree]     = useState(false);
+  const [username, setUser]     = useState("");
+  const [email, setEmail]       = useState("");
+  const [password, setPass]     = useState("");
+  const [passConf, setPassConf] = useState("");
+  const [error, setError]       = useState("");
+  const { refreshUser } = useAuth();
 
   const strength = password.length >= 12 ? 4 : password.length >= 8 ? 3 : password.length >= 5 ? 2 : password.length > 0 ? 1 : 0;
   const strengthLabel = ["", "Weak", "Fair", "Good", "Strong"][strength];
   const strengthColor = ["", "#ef4444", "#f59e0b", "#f59e0b", "#22c55e"][strength];
+
+  const createAccount = async () => {
+    setError("");
+    if (username === "" || email === "" || password === "" || passConf === "") {
+      setError("Please fill out all fields.");
+      return;
+    } else if (password.length < 8) {
+      setError("Password must be at least 8 characters long.");
+      return;
+    } else if (password !== passConf) {
+      setError("Passwords do not match.");
+      return;
+    }
+
+    try {
+      const response = await fetch("/api/auth/signup", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        credentials: "include",
+        body: JSON.stringify({ email, username, password }),
+      });
+      const data = await response.json();
+      if (!response.ok) {
+        setError(data.detail ?? "Signup failed.");
+        return;
+      }
+
+      await refreshUser();
+      navigate("/explore");
+    } catch {
+      setError("Unable to create your account. Please try again.");
+    }
+  };
 
   return (
     <div className="flex flex-col">
@@ -20,10 +55,10 @@ export default function SignUpPage() {
       <p className="font-['Inter',sans-serif] font-normal text-[14px] text-[rgba(255,255,255,0.4)] mb-[22px]">Join SafeWalkers and walk smarter.</p>
 
       <div className="flex flex-col gap-[14px]">
-        <FormInput label="Full Name"       placeholder="Enter your full name"        value={name}     onChange={setName} />
-        <FormInput label="Username"        placeholder="Choose a username"            value={username} onChange={setUser} />
-        <FormInput label="Email Address"   placeholder="Enter your email"            value={email}    onChange={setEmail} />
-        <FormInput label="Password"        placeholder="Create a password (8+ chars)" type="password" value={password} onChange={setPass} />
+        <FormInput label="Username"          placeholder="Choose a username"            value={username} onChange={setUser} />
+        <FormInput label="Email Address"     placeholder="Enter your email"            value={email}    onChange={setEmail} />
+        <FormInput label="Password"          placeholder="Create a password (8+ chars)" type="password" value={password} onChange={setPass} />
+        <FormInput label="Confirm Password"  placeholder="Enter your password again" type="password" value={passConf} onChange={setPassConf} />
       </div>
 
       {/* Password strength meter */}
@@ -39,22 +74,15 @@ export default function SignUpPage() {
         </div>
       )}
 
-      {/* Terms */}
-      <button onClick={() => setAgree(!agree)} className="flex items-center gap-[10px] mt-[16px] cursor-pointer text-left">
-        <div className={`size-[18px] rounded-[5px] border flex items-center justify-center shrink-0 transition-colors ${agree ? "border-[#c42050] bg-[rgba(196,32,80,0.2)]" : "border-[rgba(255,255,255,0.2)]"}`}>
-          {agree && (
-            <svg width="10" height="10" viewBox="0 0 10 10" fill="none">
-              <path d="M1.5 5L4 7.5L8.5 2.5" stroke="#c42050" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-            </svg>
-          )}
-        </div>
-        <span className="font-['Inter',sans-serif] font-normal text-[12px] text-[rgba(255,255,255,0.4)] leading-[18px]">
-          I agree to the <span className="text-[#0a84ff]">Terms of Service</span> and <span className="text-[#0a84ff]">Privacy Policy</span>
+      {/* Error */}
+      {error &&
+        <span className="font-['Inter',sans-serif] font-normal text-[12px] text-[#c42050] leading-[18px] mt-3">
+          {error}
         </span>
-      </button>
+      }
 
       <div className="mt-[18px]">
-        <PrimaryButton label="Create Account" onClick={() => navigate("/home")} wide />
+        <PrimaryButton label="Create Account" onClick={createAccount} wide />
       </div>
 
       <div className="mt-[16px] flex items-center gap-[6px]">

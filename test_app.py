@@ -64,6 +64,38 @@ class EnvironmentConfigTests(unittest.TestCase):
                 self.assertEqual(os.environ["SAFEWALKERS_SECRET_KEY"], "shell-secret")
 
 
+class AuthApiTests(unittest.TestCase):
+    def test_signup_authenticates_without_exposing_the_user_directory(self):
+        with tempfile.TemporaryDirectory() as directory:
+            users_file = Path(directory) / "users.json"
+            users_file.write_text("[]", encoding="utf-8")
+            with patch.object(settings, "users_file", users_file):
+                client = TestClient(app, raise_server_exceptions=False)
+                response = client.post(
+                    "/api/auth/signup",
+                    json={
+                        "username": "new-walker",
+                        "email": "walker@example.com",
+                        "password": "secure-password",
+                    },
+                )
+
+                self.assertEqual(response.status_code, 200)
+                self.assertIn(settings.session_cookie_name, response.cookies)
+                self.assertEqual(client.get("/api/auth/me").status_code, 200)
+                self.assertEqual(
+                    client.get("/api/auth/get-other-users").status_code,
+                    404,
+                )
+                self.assertEqual(
+                    client.get(
+                        "/api/auth/other-user",
+                        params={"id": response.json()["id"]},
+                    ).status_code,
+                    404,
+                )
+
+
 class RouteApiTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
