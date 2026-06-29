@@ -6,16 +6,49 @@ import { imgProfile, imgRouteMap } from "@/app/assets";
 import { monthlyActivity, socialUsers } from "@/app/data";
 import { useAuth } from "../../auth/AuthContext";
 
+interface OtherUser {
+  id: string,
+  username: string
+}
+
 export default function ProfilePage() {
   const navigate = useNavigate();
   const [editing, setEditing]     = useState(false);
-  const [activeTab, setActiveTab] = useState("Activity");
+  const [activeTab, setActiveTab] = useState("Followers");
   const { user, user_loading, logout } = useAuth();
   const [bio, setBio] = useState("")
+  const [saved, setSaved] = useState<Set<string>>(new Set());
+  const [followers, setFollowers] = useState<OtherUser[]>([{id: "a3b21833-64b5-47d3-839b-d2f5a380141c", username: "password"}]);
+  const [following, setFollowing] = useState<OtherUser[]>([]);
+
 
   useEffect(() => {
     setBio(user?.bio ?? "")
   }, [user]);
+
+  useEffect(() => {
+    const loadSavedRoutes = async () => {
+      try {
+      const response = await fetch("/api/routes/get-saved", {
+        credentials: "include",
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to load saved routes");
+      }
+
+      const saved_routes = await response.json();
+
+      setSaved((_) => {
+        return new Set<string>(saved_routes.map((saved_route) => saved_route.id))
+      });
+      } catch (err) {
+        console.error(err);
+      }
+    };
+
+    loadSavedRoutes();
+  }, []);
 
   const saveBio = async () => {
     const params = new URLSearchParams({
@@ -85,8 +118,8 @@ export default function ProfilePage() {
         </div>
 
         {/* Stats */}
-        <div className="grid grid-cols-4 gap-[12px]">
-          {[{ label: "Routes Walked", value: "47" }, { label: "Saved Routes", value: "12" }, { label: "Followers", value: "89" }, { label: "Following", value: "34" }].map((s) => (
+        <div className="grid grid-cols-3 gap-[12px]">
+          {[{ label: "Saved Routes", value: `${saved.size}` }, { label: "Followers", value: `${followers.length}` }, { label: "Following", value: `${following.length}` }].map((s) => (
             <div key={s.label} className={`${cardBase} px-[20px] py-[16px] text-center`}>
               <p className="font-['Inter',sans-serif] font-bold text-[26px] text-white tracking-[-0.6px]">{s.value}</p>
               <p className="font-['Inter',sans-serif] font-normal text-[12px] text-[rgba(255,255,255,0.4)] mt-[2px]">{s.label}</p>
@@ -94,66 +127,33 @@ export default function ProfilePage() {
           ))}
         </div>
 
-        <Tabs tabs={["Activity", "Routes", "Followers"]} active={activeTab} onChange={setActiveTab} />
-
-        {activeTab === "Activity" && (
-          <div className={`${cardBase} p-[20px]`}>
-            <p className="font-['Inter',sans-serif] font-semibold text-[14px] text-white mb-[16px]">Walking activity — last 30 days</p>
-            <ResponsiveContainer width="100%" height={120}>
-              <AreaChart data={monthlyActivity}>
-                <defs>
-                  <linearGradient id="areaGrad" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="0%" stopColor="rgb(196,32,80)" stopOpacity={0.3} />
-                    <stop offset="100%" stopColor="rgb(196,32,80)" stopOpacity={0} />
-                  </linearGradient>
-                </defs>
-                <XAxis dataKey="day" tick={{ fill: "rgba(255,255,255,0.25)", fontSize: 10, fontFamily: "Inter" }} axisLine={false} tickLine={false} interval={6} />
-                <Tooltip contentStyle={{ background: "rgba(20,10,15,0.95)", border: "1px solid rgba(255,255,255,0.1)", borderRadius: "10px", color: "white", fontSize: "12px" }} />
-                <Area type="monotone" dataKey="km" stroke="#c42050" strokeWidth={2} fill="url(#areaGrad)" />
-              </AreaChart>
-            </ResponsiveContainer>
-          </div>
-        )}
-
-        {activeTab === "Routes" && (
-          <div className="flex flex-col gap-[10px]">
-            {[
-              { label: "Downtown Loop",  distance: "8.7 mi", duration: "25 min", safety: 9.2 },
-              { label: "Riverside Walk", distance: "3.2 mi", duration: "42 min", safety: 8.4 },
-              { label: "Park Ring",      distance: "4.1 mi", duration: "28 min", safety: 9.1 },
-            ].map((r) => (
-              <button key={r.label} onClick={() => navigate("/route/1")} className={`${cardBase} text-left cursor-pointer flex items-center gap-[14px] p-[14px] hover:border-[rgba(255,255,255,0.15)] transition-colors`}>
-                <div className="size-[52px] rounded-[10px] overflow-hidden shrink-0">
-                  <img alt="" className="w-full h-full object-cover" src={imgRouteMap} />
-                </div>
-                <div className="flex-1">
-                  <p className="font-['Inter',sans-serif] font-semibold text-[14px] text-white mb-[2px]">{r.label}</p>
-                  <p className="font-['Inter',sans-serif] font-normal text-[12px] text-[rgba(255,255,255,0.4)]">{r.distance} · {r.duration}</p>
-                </div>
-                <SafetyBadge score={r.safety} />
-              </button>
-            ))}
-          </div>
-        )}
+        <Tabs tabs={["Followers", "Following"]} active={activeTab} onChange={setActiveTab} />
 
         {activeTab === "Followers" && (
           <div className="flex flex-col gap-[10px]">
-            {socialUsers.slice(0, 4).map((u) => (
-              <div key={u.id} className={`${cardBase} flex items-center gap-[14px] p-[14px]`}>
-                <div className="size-[44px] rounded-full bg-[rgba(255,255,255,0.1)] flex items-center justify-center shrink-0 border border-[rgba(255,255,255,0.1)]">
-                  <span className="font-['Inter',sans-serif] font-bold text-[16px] text-white opacity-60">{u.initials}</span>
+            {followers.length > 0 ? 
+              followers.map((u) => (
+                <div key={u.id} className={`${cardBase} flex items-center gap-[14px] p-[14px]`}>
+                  <div className="size-[44px] rounded-full bg-[rgba(255,255,255,0.1)] flex items-center justify-center shrink-0 border border-[rgba(255,255,255,0.1)]">
+                    <span className="font-['Inter',sans-serif] font-bold text-[16px] text-white opacity-60">{u.username[0].toUpperCase()}</span>
+                  </div>
+                  <div className="flex-1">
+                    <p className="font-['Inter',sans-serif] font-semibold text-[14px] text-white">{u.username}</p>
+                    {/* <p className="font-['Inter',sans-serif] font-normal text-[12px] text-[rgba(255,255,255,0.4)]">@{u.handle}</p> */}
+                  </div>
+                  <button onClick={() => navigate(`/social/${u.id}`)} className="cursor-pointer">
+                    <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                      <path d="M6 12L10 8L6 4" stroke="white" strokeLinecap="round" strokeLinejoin="round" strokeOpacity="0.25" strokeWidth="1.33333" />
+                    </svg>
+                  </button>
                 </div>
+              )) : 
+              <div className={`${cardBase} flex items-center gap-[14px] p-[14px]`}>
                 <div className="flex-1">
-                  <p className="font-['Inter',sans-serif] font-semibold text-[14px] text-white">{u.name}</p>
-                  <p className="font-['Inter',sans-serif] font-normal text-[12px] text-[rgba(255,255,255,0.4)]">@{u.handle}</p>
+                  <p className="font-['Inter',sans-serif] font-semibold text-[14px] text-white">You have no followers</p>
                 </div>
-                <button onClick={() => navigate(`/social/${u.id}`)} className="cursor-pointer">
-                  <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-                    <path d="M6 12L10 8L6 4" stroke="white" strokeLinecap="round" strokeLinejoin="round" strokeOpacity="0.25" strokeWidth="1.33333" />
-                  </svg>
-                </button>
               </div>
-            ))}
+            }
           </div>
         )}
       </div>
