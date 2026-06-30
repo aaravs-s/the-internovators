@@ -1,1 +1,18 @@
-[]
+[
+  {
+    "author_id": "0e131aaf-f59d-46e5-acc8-8c05a94bce6a",
+    "body": "Nice scenery but kind of loud",
+    "created_at": "2026-06-30T14:49:40.398768+00:00",
+    "id": "bf47b7fb-8999-4e23-a0e9-ec3014868281",
+    "parent_id": null,
+    "route_id": "cb6a8df0-caf1-429a-a319-934d6841ca49"
+  },
+  {
+    "author_id": "a3b21833-64b5-47d3-839b-d2f5a380141c",
+    "body": "Disagree",
+    "created_at": "2026-06-30T14:51:59.820512+00:00",
+    "id": "1a6a6a0b-143a-40bc-a552-a09693b33f49",
+    "parent_id": "bf47b7fb-8999-4e23-a0e9-ec3014868281",
+    "route_id": "cb6a8df0-caf1-429a-a319-934d6841ca49"
+  }
+]

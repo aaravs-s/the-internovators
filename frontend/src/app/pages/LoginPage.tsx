@@ -14,9 +14,13 @@ export default function LoginPage() {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setError("");
+    if (username === "" || password === "") {
+      setError("Please fill out all fields.");
+      return;
+    }
     try {
       await loginAndRefresh(username, password, refreshUser);
-      navigate("/home");
+      navigate("/explore");
     } catch (reason) {
       setError(reason instanceof Error ? reason.message : "Login failed");
     }
