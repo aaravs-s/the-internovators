@@ -1,4 +1,4 @@
-# SafeWalkers 
+# SafeWalkers  
 
 SafeWalkers helps Austin residents, commuters, and visitors find safer and more
 enjoyable walking routes to their destinations.
