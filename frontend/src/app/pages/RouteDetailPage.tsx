@@ -32,8 +32,13 @@ function fallbackBreakdown(score: number) {
   };
 }
 
-function ScoreRow({ label, score }: { label: string; score: number }) {
-  const color = score >= 85 ? "#22c55e" : score >= 70 ? "#f59e0b" : "#ef4444";
+function ScoreRow({ label, score, inverted=false }: { label: string; score: number, inverted?: boolean }) {
+  var color;
+  if (inverted) {
+    color = score <= 50 ? "#22c55e" : score >= 75 ? "#f59e0b" : "#060404";
+  } else {
+    color = score >= 85 ? "#22c55e" : score >= 70 ? "#f59e0b" : "rgba(255,255,255,0.4)";
+  }
   return (
     <div className="flex items-center gap-[12px]">
       <span className="font-['Inter',sans-serif] font-normal text-[12px] text-[rgba(255,255,255,0.4)] w-[130px] shrink-0">{label}</span>
@@ -282,11 +287,11 @@ export default function RouteDetailPage() {
             <div className={`${cardBase} p-[20px] flex-1`}>
               <p className="font-['Inter',sans-serif] font-semibold text-[14px] text-white mb-[16px]">Route Signals</p>
               <div className="flex flex-col gap-[12px]">
-                <ScoreRow label="Traffic" score={safetyBreakdown.traffic_score} />
+                <ScoreRow label="Traffic" score={safetyBreakdown.traffic_score} inverted />
                 <ScoreRow label="Incidents" score={safetyBreakdown.incident_score} />
                 <ScoreRow label="Crime" score={safetyBreakdown.crime_score} />
                 <ScoreRow label="Water / Scenic" score={safetyBreakdown.water_proximity_score} />
-                <ScoreRow label="Crowding" score={safetyBreakdown.crowding_score} />
+                <ScoreRow label="Crowding" score={safetyBreakdown.crowding_score} inverted />
                 <div className="pt-[4px] flex flex-col gap-[6px]">
                   {safetyBreakdown.signals.map((signal) => (
                     <p key={signal} className="text-[12px] leading-[18px] text-[rgba(255,255,255,0.48)]">{signal}</p>
