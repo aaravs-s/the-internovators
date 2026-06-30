@@ -1,5 +1,5 @@
 from repositories import follows_json, route_comments_json, saved_routes_json, users_json
-from services.route_catalog import normalize_safety_score, route_image_url
+from services.route_catalog import enrich_route_map_data, normalize_safety_score, route_image_url
 
 
 def canonical_owner_id(route: dict) -> str:
@@ -50,6 +50,7 @@ def list_community_users(viewer_id: str, view: str, query: str = "") -> list[dic
 
 
 def community_route(route: dict, viewer_id: str) -> dict:
+    route = enrich_route_map_data(route)
     owner_id = canonical_owner_id(route)
     owner = users_json.get_user_by_id(owner_id)
     enriched = saved_routes_json.route_with_social_fields(route, viewer_id)
@@ -62,6 +63,8 @@ def community_route(route: dict, viewer_id: str) -> dict:
         "safety_score": normalize_safety_score(route.get("safety_score", 0)),
         "tags": list(route.get("tags", [])),
         "image_url": route_image_url(route),
+        "coordinates": list(route.get("coordinates", [])),
+        "is_demo": bool(route.get("is_demo", False)),
         "created_at": route.get("created_at", ""),
         "owner": public_user(owner, viewer_id),
         "like_count": enriched["like_count"],

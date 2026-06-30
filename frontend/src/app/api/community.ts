@@ -19,6 +19,8 @@ export interface CommunityRoute {
   safety_score: number;
   tags: string[];
   image_url: string | null;
+  coordinates: [number, number][];
+  is_demo: boolean;
   created_at: string;
   owner: CommunityUser;
   like_count: number;

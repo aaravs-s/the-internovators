@@ -492,7 +492,6 @@ def finalize_route_options(
         route["safety_breakdown"] = safety_breakdown
         score = safety_breakdown["overall_score"]
         preference_score, preference_summary = route_preference_score(route, search)
-        map_image_filename = generate_map_image(route["coordinates"])
         route_highlights = find_pois(route) if include_pois else []
         route_options.append(
             RouteOption(
@@ -507,7 +506,7 @@ def finalize_route_options(
                 highlights=route_highlights,
                 route_type=route_type,
                 map_style=route["map_style"],
-                filename=map_image_filename,
+                filename="",
                 directions=route.get("directions", []),
                 coordinates=route["coordinates"],
                 safety_breakdown=safety_breakdown,
@@ -577,35 +576,48 @@ def profile_waypoint(profile: str, start_coordinates, dest_coordinates):
 
 
 def get_coordinates (address):
-    response = requests.get(
-        f"https://api.tomtom.com/search/2/search/{quote(address)}.json",
-        params={
-            "key": TT_API_KEY
-        }
-    )
+    if TT_API_KEY:
+        try:
+            response = requests.get(
+                f"https://api.tomtom.com/search/2/search/{quote(address)}.json",
+                params={"key": TT_API_KEY},
+                timeout=8,
+            )
+            response.raise_for_status()
+            results = response.json().get("results", [])
+            if results:
+                search_name = address.split(",")[0].lower()
+                best_option_idx = 0
+                for index, option in enumerate(results):
+                    poi_name = option.get("poi", {}).get("name", "").lower()
+                    freeform = option.get("address", {}).get("freeformAddress", "").lower()
+                    if search_name in {poi_name, freeform}:
+                        best_option_idx = index
+                        break
+                    if search_name in poi_name or search_name in freeform:
+                        best_option_idx = index
+                position = results[best_option_idx]["position"]
+                return [position["lon"], position["lat"]]
+        except (KeyError, requests.RequestException, ValueError):
+            pass
 
-    data = response.json()
+    if ORS_API_KEY:
+        response = requests.get(
+            "https://api.openrouteservice.org/geocode/search",
+            params={
+                "api_key": ORS_API_KEY,
+                "text": address,
+                "boundary.country": "USA",
+                "size": 1,
+            },
+            timeout=8,
+        )
+        response.raise_for_status()
+        features = response.json().get("features", [])
+        if features:
+            return list(features[0]["geometry"]["coordinates"])
 
-    # tomtom api doesn't always return the best result first, so look if exact address/place name shows up in results
-    best_option_idx = -1
-    i = 0
-    for option in data["results"]:
-        if option["type"] == "POI":
-            if address.split(",")[0].lower() == option["poi"]["name"].lower() or address.split(",")[0].lower() == option["address"]["freeformAddress"].lower():
-                best_option_idx = i
-                break
-            elif best_option_idx == -1 and (address.split(",")[0].lower() in option["poi"]["name"].lower() or address.split(",")[0].lower() in option["address"]["freeformAddress"].lower()):
-                best_option_idx = i
-        i += 1
-    if best_option_idx == -1:
-        best_option_idx = 0
-
-    data = response.json()
-
-    lat = data["results"][best_option_idx]["position"]["lat"]
-    lon = data["results"][best_option_idx]["position"]["lon"]
-    # ORS does longitude, latitude for some reason
-    return [lon, lat]
+    raise ValueError(f"Unable to geocode {address}")
 
 def get_crime_polygons ():
     polygons = []
@@ -760,31 +772,39 @@ def ors_profile_candidates(
     return candidates
 
 def build_sample_routes(search: RouteSearchRequest) -> list[RouteOption]:
-    start = normalize_place_name(search.start)
-    destination = normalize_place_name(search.destination)
     samples = read_list(settings.sample_routes_file)
     route_options: list[RouteOption] = []
 
     for index, route in enumerate(samples):
         profile = ["balanced", "quiet", "quickest", "scenic"][index % 4]
-        safety_breakdown = calculate_safety_breakdown(route)
-        score = safety_breakdown["overall_score"]
+        score = int(route.get("base_safety_score", 75))
+        safety_breakdown = {
+            "overall_score": score,
+            "traffic_score": score,
+            "incident_score": score,
+            "crime_score": score,
+            "water_proximity_score": score,
+            "crowding_score": score,
+            "signals": ["Fixed demo route with fallback safety estimates"],
+        }
         multiplier = 0.6 if search.route_type == "biking" else 1
         route_option = RouteOption(
             id=route["id"],
             name=route["name"],
-            start=start,
-            destination=destination,
+            start=route["start"],
+            destination=route["destination"],
             distance_miles=route["distance_miles"],
             estimated_minutes=max(5, int(route["estimated_minutes"] * multiplier)),
             safety_score=score,
             summary=describe_score(score),
             highlights=route.get("highlights", []),
-            route_type=search.route_type,
+            route_type=route.get("route_type", "walking"),
             map_style=PROFILE_STYLES.get(profile, "balanced"),
+            coordinates=route.get("coordinates", []),
             safety_breakdown=safety_breakdown,
             route_profile=profile,
             tradeoff_summary=route.get("tradeoff_summary", "Sample fallback route"),
+            is_demo=True,
         )
         route_options.append(route_option)
         route_dict = route_option.model_dump()
@@ -963,52 +983,52 @@ def search_routes(search: RouteSearchRequest) -> list[RouteOption]:
     # UT Tower, Austin, TX, USA
     # Texas State Capitol, Austin, TX, USA
 
-    if not TT_API_KEY:
-        return build_sample_routes(search)
-
-    if not ORS_API_KEY:
+    if not ORS_API_KEY and TT_API_KEY:
         try:
             routes = build_tomtom_routes(search)
             return routes or build_sample_routes(search)
         except (KeyError, requests.RequestException, ValueError):
             return build_sample_routes(search)
 
-    start = normalize_place_name(search.start)
-    destination = normalize_place_name(search.destination)
+    if ORS_API_KEY:
+        start = normalize_place_name(search.start)
+        destination = normalize_place_name(search.destination)
 
-    try:
-        start_coordinates = get_coordinates(start)
-        dest_coordinates = get_coordinates(destination)
-        activity_type = ROUTE_ACTIVITY_TYPES.get(search.route_type, "foot-walking")
+        try:
+            start_coordinates = get_coordinates(start)
+            dest_coordinates = get_coordinates(destination)
+            activity_type = ROUTE_ACTIVITY_TYPES.get(search.route_type, "foot-walking")
 
-        generated_routes = []
-        for profile in PROFILE_PRIORITY:
-            try:
-                generated_routes.extend(
-                    ors_profile_candidates(
-                        profile,
-                        start_coordinates,
-                        dest_coordinates,
-                        activity_type,
+            generated_routes = []
+            for profile in PROFILE_PRIORITY:
+                try:
+                    generated_routes.extend(
+                        ors_profile_candidates(
+                            profile,
+                            start_coordinates,
+                            dest_coordinates,
+                            activity_type,
+                        )
                     )
-                )
-            except (KeyError, requests.RequestException, ValueError):
-                continue
+                except (KeyError, requests.RequestException, ValueError):
+                    continue
 
-        route_options = finalize_route_options(
-            generated_routes,
-            start,
-            destination,
-            search.route_type,
-            include_pois=True,
-            search=search,
-        )
-        if route_options:
-            return route_options
-        raise ValueError("No ORS route candidates generated")
-    except (KeyError, requests.RequestException, ValueError):
-        try:
-            routes = build_tomtom_routes(search)
-            return routes or build_sample_routes(search)
+            route_options = finalize_route_options(
+                generated_routes,
+                start,
+                destination,
+                search.route_type,
+                include_pois=True,
+                search=search,
+            )
+            if route_options:
+                return route_options
+            raise ValueError("No ORS route candidates generated")
         except (KeyError, requests.RequestException, ValueError):
-            return build_sample_routes(search)
+            try:
+                routes = build_tomtom_routes(search) if TT_API_KEY else []
+                return routes or build_sample_routes(search)
+            except (KeyError, requests.RequestException, ValueError):
+                return build_sample_routes(search)
+
+    return build_sample_routes(search)

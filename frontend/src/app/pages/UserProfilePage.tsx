@@ -4,6 +4,7 @@ import { useNavigate, useParams } from "react-router";
 import { getCommunityProfile, setFollowing, type CommunityProfile } from "@/app/api/community";
 import { cardBase, SafetyBadge } from "@/app/components/ui";
 import { imgRouteMap } from "@/app/assets";
+import RouteMap from "@/app/components/InteractiveRouteMap";
 
 
 export default function UserProfilePage() {
@@ -63,7 +64,7 @@ export default function UserProfilePage() {
         <section className="grid grid-cols-3 gap-[12px]">
           {[{ label: "Shared routes", value: profile.shared_route_count }, { label: "Followers", value: profile.follower_count }, { label: "Following", value: profile.following_count }].map((stat) => <div key={stat.label} className={`${cardBase} p-[16px] text-center`}><p className="text-[25px] font-bold text-white">{stat.value}</p><p className="text-[11px] text-[rgba(255,255,255,0.4)]">{stat.label}</p></div>)}
         </section>
-        <section><h2 className="mb-[12px] text-[15px] font-semibold text-white">Shared routes</h2>{profile.shared_routes.length === 0 ? <div className={`${cardBase} p-[24px] text-center text-[13px] text-[rgba(255,255,255,0.4)]`}>No shared routes yet.</div> : <div className="grid grid-cols-2 gap-[14px]">{profile.shared_routes.map((route) => <button key={route.id} onClick={() => navigate(`/route/${route.id}`, { state: { source: "saved" } })} className={`${cardBase} overflow-hidden text-left`}><img alt={`Map of ${route.name}`} src={route.image_url ?? imgRouteMap} className="h-[120px] w-full object-cover" /><div className="p-[14px]"><div className="flex items-start justify-between gap-[10px]"><div><p className="font-semibold text-white">{route.name}</p><p className="mt-[2px] text-[11px] text-[rgba(255,255,255,0.4)]">{route.distance_miles} mi · {route.estimated_minutes} min</p></div><SafetyBadge score={route.safety_score} /></div><p className="mt-[8px] text-[11px] text-[rgba(255,255,255,0.35)]">{route.like_count} likes · {route.comment_count} messages</p></div></button>)}</div>}</section>
+        <section><h2 className="mb-[12px] text-[15px] font-semibold text-white">Shared routes</h2>{profile.shared_routes.length === 0 ? <div className={`${cardBase} p-[24px] text-center text-[13px] text-[rgba(255,255,255,0.4)]`}>No shared routes yet.</div> : <div className="grid grid-cols-2 gap-[14px]">{profile.shared_routes.map((route) => <button key={route.id} onClick={() => navigate(`/route/${route.id}`, { state: { source: "saved" } })} className={`${cardBase} overflow-hidden text-left`}><div className="h-[120px] w-full"><RouteMap coordinates={route.coordinates} fallbackImage={route.image_url ?? imgRouteMap} mode="preview" routeName={route.name} /></div><div className="p-[14px]"><div className="flex items-start justify-between gap-[10px]"><div><p className="font-semibold text-white">{route.name}</p><p className="mt-[2px] text-[11px] text-[rgba(255,255,255,0.4)]">{route.distance_miles} mi · {route.estimated_minutes} min</p></div><SafetyBadge score={route.safety_score} /></div><p className="mt-[8px] text-[11px] text-[rgba(255,255,255,0.35)]">{route.like_count} likes · {route.comment_count} messages</p></div></button>)}</div>}</section>
       </main>
     </>
   );

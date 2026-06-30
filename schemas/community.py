@@ -28,6 +28,8 @@ class CommunityRoutePublic(BaseModel):
     safety_score: float
     tags: list[str] = Field(default_factory=list)
     image_url: str | None = None
+    coordinates: list[list[float]] = Field(default_factory=list)
+    is_demo: bool = False
     created_at: str = ""
     owner: CommunityUserPublic
     like_count: int = 0

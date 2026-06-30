@@ -1,7 +1,9 @@
 import assert from "node:assert/strict";
 import test from "node:test";
 
-import { getRoute, getRoutes, resolveRoute } from "./routes.ts";
+import * as routesApi from "./routes.ts";
+
+const { getRoute, getRoutes, resolveRoute } = routesApi;
 
 
 const generatedRoute = {
@@ -23,7 +25,43 @@ const generatedRoute = {
   highlights: [],
   directions: [],
   coordinates: [[-97.733, 30.286], [-97.745, 30.271]] as [number, number][],
+  is_demo: false,
 };
+
+
+test("route map display prefers geometry and falls back to images", () => {
+  const routeMapDisplay = (routesApi as typeof routesApi & {
+    routeMapDisplay?: (route: {
+      coordinates?: [number, number][];
+      image_url?: string | null;
+      filename?: string;
+    }) => { kind: string; coordinates?: [number, number][]; src?: string };
+  }).routeMapDisplay;
+
+  assert.equal(typeof routeMapDisplay, "function");
+  assert.deepEqual(
+    routeMapDisplay?.({
+      coordinates: [[-97.733, 30.286], [-97.745, 30.271]],
+      image_url: "/maps/legacy.png",
+    }),
+    {
+      kind: "map",
+      coordinates: [[-97.733, 30.286], [-97.745, 30.271]],
+    },
+  );
+  assert.deepEqual(
+    routeMapDisplay?.({ coordinates: [], filename: "legacy.png" }),
+    { kind: "image", src: "/maps/legacy.png" },
+  );
+  assert.deepEqual(
+    routeMapDisplay?.({
+      coordinates: [],
+      filename: "legacy.png",
+      image_url: "/generic.png",
+    }),
+    { kind: "image", src: "/maps/legacy.png" },
+  );
+});
 
 
 test("getRoutes returns typed route summaries", async () => {

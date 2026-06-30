@@ -44,6 +44,7 @@ class RouteOption(BaseModel):
     tradeoff_summary: str = ""
     preference_score: int = 0
     preference_summary: str = ""
+    is_demo: bool = False
 
 
 class SavedRouteCreate(BaseModel):
@@ -66,6 +67,7 @@ class SavedRouteCreate(BaseModel):
     tradeoff_summary: str = ""
     preference_score: int = 0
     preference_summary: str = ""
+    is_demo: bool = False
 
 
 class RouteSummaryPublic(BaseModel):
@@ -81,6 +83,8 @@ class RouteSummaryPublic(BaseModel):
     tradeoff_summary: str = ""
     preference_score: int = 0
     preference_summary: str = ""
+    coordinates: list[list[float]] = Field(default_factory=list)
+    is_demo: bool = False
 
 
 class DirectionStepPublic(BaseModel):
@@ -95,7 +99,6 @@ class RouteDetailPublic(RouteSummaryPublic):
     summary: str = ""
     highlights: list[str] = Field(default_factory=list)
     directions: list[DirectionStepPublic] = Field(default_factory=list)
-    coordinates: list[list[float]] = Field(default_factory=list)
 
 
 class SavedRouteNotesUpdate(BaseModel):

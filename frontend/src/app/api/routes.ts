@@ -11,6 +11,8 @@ export interface RouteSummary {
   tradeoff_summary: string;
   preference_score: number;
   preference_summary: string;
+  coordinates: RouteCoordinate[];
+  is_demo: boolean;
 }
 
 export interface SafetyBreakdown {
@@ -30,6 +32,44 @@ export interface DirectionStep {
 }
 
 export type RouteCoordinate = [number, number];
+
+type RouteMapRecord = {
+  coordinates?: RouteCoordinate[];
+  image_url?: string | null;
+  filename?: string | null;
+};
+
+export type RouteMapDisplay =
+  | { kind: "map"; coordinates: RouteCoordinate[] }
+  | { kind: "image"; src: string }
+  | { kind: "unavailable" };
+
+function isValidCoordinate(point: unknown): point is RouteCoordinate {
+  if (!Array.isArray(point) || point.length !== 2) return false;
+  const [longitude, latitude] = point;
+  return (
+    Number.isFinite(longitude) &&
+    Number.isFinite(latitude) &&
+    longitude >= -180 &&
+    longitude <= 180 &&
+    latitude >= -90 &&
+    latitude <= 90
+  );
+}
+
+export function routeMapDisplay(route: RouteMapRecord): RouteMapDisplay {
+  const coordinates = (route.coordinates ?? []).filter(isValidCoordinate);
+  if (coordinates.length >= 2) {
+    return { kind: "map", coordinates };
+  }
+  if (route.filename) {
+    return { kind: "image", src: `/maps/${route.filename}` };
+  }
+  if (route.image_url) {
+    return { kind: "image", src: route.image_url };
+  }
+  return { kind: "unavailable" };
+}
 
 export interface RouteDetail extends RouteSummary {
   start: string;

@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router";
 import { cardBase, SafetyBadge, IconBookmark } from "@/app/components/ui";
 import { imgRouteMap } from "@/app/assets";
+import RouteMap from "@/app/components/InteractiveRouteMap";
 
 const filters = ["All", "Short", "Long", "Highly Rated"];
 
@@ -37,7 +38,9 @@ interface SavedRoute {
   tags: string[],
   user_has_liked: boolean,
   user_id: string[],
-  user_rating: number
+  user_rating: number,
+  coordinates: [number, number][],
+  is_demo: boolean
 }
 
 export default function SavedPage() {
@@ -102,7 +105,13 @@ export default function SavedPage() {
               className={`${cardBase} text-left w-full cursor-pointer hover:border-[rgba(255,255,255,0.15)] transition-colors relative`}>
               <div className="flex items-center gap-[16px] p-[16px]">
                 <div className="size-[64px] rounded-[12px] overflow-hidden shrink-0">
-                  <img alt="" className="w-full h-full object-cover" src={route.filename == "" || route.filename == null ? imgRouteMap : `/maps/${route.filename}`} />
+                  <RouteMap
+                    coordinates={route.coordinates}
+                    fallbackImage={imgRouteMap}
+                    filename={route.filename}
+                    mode="preview"
+                    routeName={route.name}
+                  />
                 </div>
                 <div className="flex-1">
                   <div className="flex items-center gap-[8px] mb-[4px]">

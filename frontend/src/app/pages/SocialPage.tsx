@@ -10,6 +10,7 @@ import {
   type CommunityUser,
 } from "@/app/api/community";
 import RouteDiscussion from "@/app/components/RouteDiscussion";
+import RouteMap from "@/app/components/InteractiveRouteMap";
 import { cardBase, SafetyBadge, Tabs } from "@/app/components/ui";
 import { imgRouteMap } from "@/app/assets";
 
@@ -140,7 +141,9 @@ export default function SocialPage() {
               <SafetyBadge score={route.safety_score} />
             </div>
             <button onClick={() => navigate(`/route/${route.id}`, { state: { source: "saved" } })} className="mt-[14px] block w-full text-left">
-              <img alt={`Map of ${route.name}`} src={route.image_url ?? imgRouteMap} className="h-[160px] w-full object-cover" />
+              <div className="h-[160px] w-full">
+                <RouteMap coordinates={route.coordinates} fallbackImage={route.image_url ?? imgRouteMap} mode="preview" routeName={route.name} />
+              </div>
               <div className="px-[18px] pt-[14px]">
                 <h2 className="font-bold text-[18px] text-white">{route.name}</h2>
                 <p className="mt-[3px] text-[12px] text-[rgba(255,255,255,0.43)]">{route.distance_miles} mi · {route.estimated_minutes} min</p>

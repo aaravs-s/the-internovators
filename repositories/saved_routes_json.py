@@ -105,6 +105,7 @@ def save_route_generated(route_data: SavedRouteCreate, user_id: str) -> dict:
         "tradeoff_summary": route_data.tradeoff_summary,
         "preference_score": route_data.preference_score,
         "preference_summary": route_data.preference_summary,
+        "is_demo": route_data.is_demo,
         "comments": "",
         "tags": [],
         "is_shared": True,

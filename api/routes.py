@@ -119,9 +119,9 @@ async def save_shared_route(request: Request, route_id: str) -> RouteDetailPubli
     user = get_current_user(request)
     return saved_routes_json.save_route_shared(route_id, user.id)
 
-@router.get("/results/{route_id}", response_model=dict)
+@router.get("/results/{route_id}", response_model=RouteDetailPublic)
 async def generated_route_detail(request: Request, route_id: str) -> RouteDetailPublic:
-    route = generated_routes_json.get_generated_route(route_id)
+    route = get_public_route(route_id)
     if route is None:
         raise HTTPException(status_code=404, detail="Route not found")
     return route

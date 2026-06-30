@@ -2,6 +2,7 @@ import os
 
 from core.config import settings
 from repositories import generated_routes_json, saved_routes_json
+from repositories.json_store import read_list
 from schemas.route import DirectionStepPublic, RouteDetailPublic, RouteSummaryPublic, SafetyBreakdown
 
 
@@ -22,6 +23,31 @@ def route_image_url(route: dict) -> str | None:
     ):
         return f"/maps/{filename}"
     return None
+
+
+def enrich_route_map_data(route: dict) -> dict:
+    enriched = dict(route)
+    if len(enriched.get("coordinates", [])) >= 2:
+        enriched["is_demo"] = bool(enriched.get("is_demo", False))
+        return enriched
+
+    source_id = enriched.get("route_id") or enriched.get("id")
+    sample = next(
+        (
+            candidate
+            for candidate in read_list(settings.sample_routes_file)
+            if candidate.get("id") == source_id
+        ),
+        None,
+    )
+    if sample:
+        enriched["coordinates"] = list(sample.get("coordinates", []))
+        enriched["start"] = sample.get("start", enriched.get("start", ""))
+        enriched["destination"] = sample.get(
+            "destination", enriched.get("destination", "")
+        )
+        enriched["is_demo"] = True
+    return enriched
 
 
 def route_safety_breakdown(route: dict) -> SafetyBreakdown | None:
@@ -67,6 +93,7 @@ def get_public_route(
 
 
 def _summary(route: dict) -> RouteSummaryPublic:
+    route = enrich_route_map_data(route)
     return RouteSummaryPublic(
         id=route["id"],
         name=route["name"],
@@ -80,10 +107,13 @@ def _summary(route: dict) -> RouteSummaryPublic:
         tradeoff_summary=route.get("tradeoff_summary", ""),
         preference_score=route.get("preference_score", 0),
         preference_summary=route.get("preference_summary", ""),
+        coordinates=list(route.get("coordinates", [])),
+        is_demo=bool(route.get("is_demo", False)),
     )
 
 
 def _detail(route: dict) -> RouteDetailPublic:
+    route = enrich_route_map_data(route)
     summary = _summary(route)
     return RouteDetailPublic(
         **summary.model_dump(),
@@ -92,7 +122,6 @@ def _detail(route: dict) -> RouteDetailPublic:
         summary=route.get("summary", ""),
         highlights=list(route.get("highlights", [])),
         directions=_direction_steps(route),
-        coordinates=list(route.get("coordinates", [])),
     )
 
 

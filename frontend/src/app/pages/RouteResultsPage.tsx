@@ -4,6 +4,7 @@ import { useNavigate, useLocation } from "react-router";
 import { imgRouteMap, homeSvg } from "@/app/assets";
 import { cardBase, SafetyBadge } from "@/app/components/ui";
 import { useAuth } from "../../auth/AuthContext";
+import RouteMap from "@/app/components/InteractiveRouteMap";
 
 function scoreLabel(score?: number) {
     if (typeof score !== "number") return "N/A";
@@ -97,15 +98,29 @@ export default function RouteResultsPage() {
         </div>
 
         <div className="px-[32px] py-[24px] flex flex-col gap-[20px]">
+            {routes.some((route) => route.is_demo) && (
+                <div className="rounded-[14px] border border-[rgba(245,158,11,0.3)] bg-[rgba(245,158,11,0.1)] px-[16px] py-[12px] text-[13px] text-[#fbbf24]">
+                    Live routing is temporarily unavailable. These are fixed Austin demo routes between UT Tower and Austin Central Library.
+                </div>
+            )}
             <div className="grid grid-cols-2 gap-[20px]">
 
                 {(routes.length > 0) ? (
                     routes.map((route) => (
                         <div key={route.id} className={`${cardBase} overflow-hidden`}>
-                            <div className="w-full overflow-hidden relative">
-                                <img alt={`Map preview for ${route.name}`} className="w-full h-full object-contain" src={ route.filename === "" ? imgRouteMap : `/maps/${route.filename}` } />
+                            <div className="w-full h-[220px] overflow-hidden relative">
+                                <RouteMap
+                                    coordinates={route.coordinates}
+                                    fallbackImage={imgRouteMap}
+                                    filename={route.filename}
+                                    mode="preview"
+                                    routeName={route.name}
+                                />
                                 <div className="absolute inset-0 bg-gradient-to-t from-[rgba(10,6,8,0.7)] to-transparent" />
                                 <div className="absolute bottom-[10px] left-[14px]"><SafetyBadge score={route.safety_score} /></div>
+                                {route.is_demo && (
+                                    <span className="absolute left-[14px] top-[12px] rounded-full border border-[rgba(245,158,11,0.35)] bg-[rgba(10,6,8,0.75)] px-[8px] py-[3px] text-[10px] font-semibold uppercase tracking-[0.5px] text-[#fbbf24]">Demo</span>
+                                )}
                                 <button onClick={() => toggle(route.id)} aria-label={saved.has(route.id) ? "Unsave route" : "Save route"}
                                 disabled={saved.has(route.id)}
                                 className={`absolute top-[10px] right-[10px] size-[30px] rounded-full bg-[rgba(10,6,8,0.6)] border border-[rgba(255,255,255,0.1)] flex items-center justify-center cursor-${saved.has(route.id) ? "default" : "pointer"} hover:border-[rgba(196,32,80,0.4)] transition-colors`}>

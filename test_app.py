@@ -117,6 +117,8 @@ class RouteApiTests(unittest.TestCase):
                         "distance_miles": 1.0,
                         "estimated_minutes": 20,
                         "safety_score": 88,
+                        "coordinates": [[-97.742, 30.274], [-97.739, 30.286]],
+                        "is_demo": True,
                         "is_shared": True,
                         "liked_by": [],
                         "ratings": [],
@@ -163,6 +165,12 @@ class RouteApiTests(unittest.TestCase):
         self.assertIn(COMMUNITY_ROUTE_ID, route_ids)
         self.assertIn(DIRECTIONS_ROUTE_ID, route_ids)
         self.assertTrue(all(0 <= route["safety_score"] <= 100 for route in routes))
+        demo_route = next(route for route in routes if route["id"] == COMMUNITY_ROUTE_ID)
+        self.assertEqual(
+            demo_route.get("coordinates"),
+            [[-97.742, 30.274], [-97.739, 30.286]],
+        )
+        self.assertTrue(demo_route.get("is_demo", False))
 
     def test_direction_route_returns_typed_steps(self):
         response = self.client.get(f"/api/routes/{DIRECTIONS_ROUTE_ID}")
@@ -246,10 +254,18 @@ class RouteApiTests(unittest.TestCase):
             )
             with patch.object(settings, "generated_routes_file", generated_routes_file):
                 response = self.client.get("/api/routes/coordinate-route")
+                results_response = self.client.get(
+                    "/api/routes/results/coordinate-route"
+                )
 
         self.assertEqual(response.status_code, 200)
+        self.assertEqual(results_response.status_code, 200)
         self.assertEqual(
             response.json()["coordinates"],
+            [[-97.733, 30.286], [-97.745, 30.271]],
+        )
+        self.assertEqual(
+            results_response.json()["coordinates"],
             [[-97.733, 30.286], [-97.745, 30.271]],
         )
 
@@ -347,6 +363,8 @@ class CommunityApiTests(unittest.TestCase):
                 "distance_miles": 2.4,
                 "estimated_minutes": 42,
                 "safety_score": 89,
+                "coordinates": [[-97.742, 30.274], [-97.739, 30.286]],
+                "is_demo": True,
                 "summary": "A bright downtown loop.",
                 "tags": ["lit"],
                 "is_shared": True,
@@ -420,6 +438,11 @@ class CommunityApiTests(unittest.TestCase):
         self.assertEqual(owner["username"], "walkertwo")
         self.assertNotIn("email", owner)
         self.assertNotIn("password_hash", owner)
+        self.assertEqual(
+            feed.json()[0].get("coordinates"),
+            [[-97.742, 30.274], [-97.739, 30.286]],
+        )
+        self.assertTrue(feed.json()[0].get("is_demo", False))
 
     def test_self_follow_is_rejected_and_user_search_is_public_only(self):
         client = self.authenticated_client("walker-one")
@@ -568,6 +591,95 @@ class SpaHostingTests(unittest.TestCase):
 
 
 class RoutePlanningTests(unittest.TestCase):
+    def test_sample_routes_have_fixed_real_geometry_and_demo_metadata(self):
+        with patch.object(
+            route_planner,
+            "calculate_safety_breakdown",
+            return_value={
+                "overall_score": 1,
+                "traffic_score": 1,
+                "incident_score": 1,
+                "crime_score": 1,
+                "water_proximity_score": 1,
+                "crowding_score": 1,
+                "signals": [],
+            },
+        ) as calculate_safety_breakdown:
+            routes = route_planner.build_sample_routes(
+                RouteSearchRequest(
+                    start="Somewhere else",
+                    destination="Another place",
+                    route_type="walking",
+                )
+            )
+
+        calculate_safety_breakdown.assert_not_called()
+
+        self.assertEqual(len(routes), 4)
+        self.assertEqual({route.start for route in routes}, {"UT Tower, Austin, TX"})
+        self.assertEqual(
+            {route.destination for route in routes},
+            {"Austin Central Library, Austin, TX"},
+        )
+        self.assertTrue(all(getattr(route, "is_demo", False) for route in routes))
+        self.assertTrue(all(len(route.coordinates) >= 2 for route in routes))
+        self.assertEqual(
+            len({tuple(map(tuple, route.coordinates)) for route in routes}),
+            4,
+        )
+
+    def test_ors_key_without_tomtom_key_uses_live_routes_before_samples(self):
+        ors_route = RouteOption(
+            id="ors-route",
+            name="ORS route",
+            start="Texas Capitol, Austin, TX",
+            destination="UT Tower, Austin, TX",
+            distance_miles=1.2,
+            estimated_minutes=24,
+            safety_score=87,
+            summary="Live ORS route.",
+            coordinates=[[-97.742, 30.274], [-97.739, 30.286]],
+        )
+        search = RouteSearchRequest(
+            start="Texas Capitol",
+            destination="UT Tower",
+            route_type="walking",
+        )
+
+        with (
+            patch.object(route_planner, "TT_API_KEY", None),
+            patch.object(route_planner, "ORS_API_KEY", "ors-key"),
+            patch.object(
+                route_planner,
+                "get_coordinates",
+                side_effect=[[-97.742, 30.274], [-97.739, 30.286]],
+            ) as get_coordinates,
+            patch.object(route_planner, "get_crime_polygons", return_value=[]),
+            patch.object(route_planner, "get_incident_polygons", return_value=[]),
+            patch.object(
+                route_planner,
+                "ors_profile_candidates",
+                return_value=[
+                    {
+                        "coordinates": [[-97.742, 30.274], [-97.739, 30.286]],
+                        "distance_miles": 1.2,
+                        "estimated_minutes": 24,
+                        "route_profile": "quickest",
+                        "directions": [],
+                    }
+                ],
+            ),
+            patch.object(
+                route_planner,
+                "finalize_route_options",
+                return_value=[ors_route],
+            ),
+        ):
+            routes = route_planner.search_routes(search)
+
+        self.assertEqual(routes, [ors_route])
+        self.assertEqual(get_coordinates.call_count, 2)
+
     def test_incidents_lower_incident_score(self):
         with patch.object(
             safety_scoring,
@@ -1004,7 +1116,7 @@ class RoutePlanningTests(unittest.TestCase):
         self.assertEqual(routes[0].name, "Quickest")
         self.assertEqual(routes[0].route_profile, "quickest")
         self.assertEqual(routes[0].tradeoff_summary, "Fastest available route")
-        self.assertEqual(routes[0].filename, "map_1.png")
+        self.assertEqual(routes[0].filename, "")
         self.assertEqual(routes[0].safety_breakdown.overall_score, 88)
         self.assertEqual(
             routes[0].coordinates,
@@ -1042,6 +1154,7 @@ class RoutePlanningTests(unittest.TestCase):
             tradeoff_summary="+3 min, safer corridor",
             preference_score=87,
             preference_summary="87% match for safety preferences",
+            is_demo=True,
         )
 
         with tempfile.TemporaryDirectory() as directory:
@@ -1066,6 +1179,7 @@ class RoutePlanningTests(unittest.TestCase):
             saved_route["preference_summary"],
             "87% match for safety preferences",
         )
+        self.assertTrue(saved_route.get("is_demo", False))
 
     def test_failed_ors_request_falls_back_to_tomtom_before_samples(self):
         tomtom_route = RouteOption(

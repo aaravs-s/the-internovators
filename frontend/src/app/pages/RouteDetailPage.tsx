@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useNavigate, useParams, useLocation } from "react-router";
 import { RadarChart, Radar, PolarGrid, PolarAngleAxis, ResponsiveContainer } from "recharts";
 import { resolveRoute, type RouteDetail } from "@/app/api/routes";
-import InteractiveRouteMap from "@/app/components/InteractiveRouteMap";
+import RouteMap from "@/app/components/InteractiveRouteMap";
 import { cardBase, SafetyBadge, Tabs, IconBookmark } from "@/app/components/ui";
 import { imgRouteMap, loadingGif } from "@/app/assets";
 import RouteDiscussion from "@/app/components/RouteDiscussion";
@@ -157,7 +157,6 @@ export default function RouteDetailPage() {
   }
 
   const routeCoordinates = route.coordinates ?? [];
-  const hasInteractiveMap = routeCoordinates.length >= 2;
   const fallbackMapImage =
     source == "generated"
       ? route.filename
@@ -196,17 +195,18 @@ export default function RouteDetailPage() {
       <div className="px-[32px] py-[24px] flex flex-col gap-[20px] max-w-[900px]">
         {/* Map */}
         <div className="rounded-[20px] overflow-hidden h-[220px] relative border border-[rgba(255,255,255,0.08)]">
-          {hasInteractiveMap ? (
-            <InteractiveRouteMap coordinates={routeCoordinates} routeName={route.name} />
-          ) : (
-            <>
-              <img alt={`Map of ${route.name}`} className="w-full h-full object-cover" src={fallbackMapImage} />
-              <div className="absolute inset-0 bg-gradient-to-t from-[rgba(10,6,8,0.4)] to-transparent" />
-            </>
-          )}
+          <RouteMap
+            coordinates={routeCoordinates}
+            fallbackImage={fallbackMapImage}
+            mode="interactive"
+            routeName={route.name}
+          />
           <div className="absolute bottom-[16px] left-[16px] flex gap-[8px]">
             <SafetyBadge score={route.safety_score} />
             <span className="font-['Inter',sans-serif] font-medium text-[12px] px-[10px] py-[4px] rounded-[20px] bg-[rgba(10,6,8,0.6)] border border-[rgba(255,255,255,0.15)] text-white">Scenic Route</span>
+            {route.is_demo && (
+              <span className="font-['Inter',sans-serif] font-semibold text-[10px] uppercase tracking-[0.5px] px-[9px] py-[4px] rounded-[20px] bg-[rgba(245,158,11,0.16)] border border-[rgba(245,158,11,0.35)] text-[#fbbf24]">Demo route</span>
+            )}
           </div>
         </div>
 

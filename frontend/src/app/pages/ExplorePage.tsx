@@ -4,6 +4,7 @@ import { useNavigate } from "react-router";
 import { getRoutes, type RouteSummary } from "@/app/api/routes";
 import { imgRouteMap, homeSvg } from "@/app/assets";
 import { cardBase, SafetyBadge } from "@/app/components/ui";
+import RouteMap from "@/app/components/InteractiveRouteMap";
 
 const chips = ["All", "Short", "Long", "Highly Rated", "Nearby"];
 
@@ -144,8 +145,13 @@ export default function ExplorePage() {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-[14px]">
           {visible.map((route) => (
             <div key={route.id} className={`${cardBase} overflow-hidden`}>
-              <div className="w-full overflow-hidden relative">
-                <img alt={`Map preview for ${route.name}`} className="w-full h-full object-contain" src={route.image_url ?? imgRouteMap} />
+              <div className="w-full h-[220px] overflow-hidden relative">
+                <RouteMap
+                  coordinates={route.coordinates}
+                  fallbackImage={route.image_url ?? imgRouteMap}
+                  mode="preview"
+                  routeName={route.name}
+                />
                 <div className="absolute inset-0 bg-gradient-to-t from-[rgba(10,6,8,0.7)] to-transparent" />
                 <div className="absolute bottom-[10px] left-[14px]"><SafetyBadge score={route.safety_score} /></div>
                 <button onClick={() => toggle(route.id)} aria-label={saved.has(route.id) ? "Unsave route" : "Save route"}

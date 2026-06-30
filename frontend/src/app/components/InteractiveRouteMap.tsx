@@ -2,11 +2,17 @@ import { useEffect, useMemo, useRef } from "react";
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
 
-import type { RouteCoordinate } from "@/app/api/routes";
+import {
+  routeMapDisplay,
+  type RouteCoordinate,
+} from "@/app/api/routes";
 
-type InteractiveRouteMapProps = {
-  coordinates: RouteCoordinate[];
+type RouteMapProps = {
+  coordinates?: RouteCoordinate[];
   routeName: string;
+  mode?: "preview" | "interactive";
+  fallbackImage?: string | null;
+  filename?: string | null;
 };
 
 function markerIcon(label: string, color: string) {
@@ -18,25 +24,26 @@ function markerIcon(label: string, color: string) {
   });
 }
 
-export default function InteractiveRouteMap({
-  coordinates,
+export default function RouteMap({
+  coordinates = [],
   routeName,
-}: InteractiveRouteMapProps) {
+  mode = "interactive",
+  fallbackImage = null,
+  filename = null,
+}: RouteMapProps) {
   const containerRef = useRef<HTMLDivElement | null>(null);
   const mapRef = useRef<L.Map | null>(null);
+  const display = useMemo(
+    () => routeMapDisplay({ coordinates, image_url: fallbackImage, filename }),
+    [coordinates, fallbackImage, filename],
+  );
   const leafletPoints = useMemo<L.LatLngTuple[]>(
     () =>
-      coordinates
-        .filter(
-          (point): point is RouteCoordinate =>
-            Array.isArray(point) &&
-            point.length === 2 &&
-            Number.isFinite(point[0]) &&
-            Number.isFinite(point[1]),
-        )
+      (display.kind === "map" ? display.coordinates : [])
         .map(([longitude, latitude]) => [latitude, longitude]),
-    [coordinates],
+    [display],
   );
+  const isInteractive = mode === "interactive";
 
   useEffect(() => {
     if (!containerRef.current || leafletPoints.length === 0) {
@@ -44,9 +51,14 @@ export default function InteractiveRouteMap({
     }
 
     const map = L.map(containerRef.current, {
-      zoomControl: true,
-      scrollWheelZoom: true,
-      attributionControl: true,
+      zoomControl: isInteractive,
+      scrollWheelZoom: isInteractive,
+      attributionControl: isInteractive,
+      dragging: isInteractive,
+      touchZoom: isInteractive,
+      doubleClickZoom: isInteractive,
+      boxZoom: isInteractive,
+      keyboard: isInteractive,
     });
     mapRef.current = map;
 
@@ -63,11 +75,17 @@ export default function InteractiveRouteMap({
       lineJoin: "round",
     }).addTo(map);
 
-    L.marker(leafletPoints[0], { icon: markerIcon("A", "#22c55e") })
+    L.marker(leafletPoints[0], {
+      icon: markerIcon("A", "#22c55e"),
+      interactive: isInteractive,
+      keyboard: isInteractive,
+    })
       .addTo(map)
       .bindPopup("Start");
     L.marker(leafletPoints[leafletPoints.length - 1], {
       icon: markerIcon("B", "#c42050"),
+      interactive: isInteractive,
+      keyboard: isInteractive,
     })
       .addTo(map)
       .bindPopup("Destination");
@@ -87,16 +105,40 @@ export default function InteractiveRouteMap({
       map.remove();
       mapRef.current = null;
     };
-  }, [leafletPoints]);
+  }, [isInteractive, leafletPoints]);
+
+  if (display.kind !== "map") {
+    const src = display.kind === "image" ? display.src : fallbackImage;
+    return (
+      <div className="relative h-full w-full bg-[#121013]">
+        {src ? (
+          <img
+            alt={`Map of ${routeName}`}
+            className="h-full w-full object-cover"
+            src={src}
+          />
+        ) : (
+          <div className="flex h-full w-full items-center justify-center text-[12px] text-[rgba(255,255,255,0.4)]">
+            Map preview unavailable
+          </div>
+        )}
+      </div>
+    );
+  }
 
   return (
     <div className="relative h-full w-full bg-[#121013]">
       <div
         ref={containerRef}
-        role="region"
-        aria-label={`Interactive map of ${routeName}`}
-        className="h-full w-full"
+        role={isInteractive ? "region" : "img"}
+        aria-label={`${isInteractive ? "Interactive map" : "Map preview"} of ${routeName}`}
+        className={`h-full w-full ${isInteractive ? "" : "pointer-events-none"}`}
       />
+      {!isInteractive && (
+        <span className="pointer-events-none absolute bottom-[4px] right-[6px] rounded bg-[rgba(0,0,0,0.55)] px-[4px] py-[2px] text-[8px] text-[rgba(255,255,255,0.65)]">
+          © OpenStreetMap contributors
+        </span>
+      )}
     </div>
   );
 }
