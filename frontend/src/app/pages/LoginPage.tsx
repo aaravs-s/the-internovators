@@ -30,7 +30,7 @@ export default function LoginPage() {
     <div className="flex flex-col gap-[0]">
       <div className="mb-[28px]">
         <p className="font-['Inter',sans-serif] font-bold text-[28px] text-white tracking-[-0.7px] mb-[6px]">Sign in</p>
-        <p className="font-['Inter',sans-serif] font-normal text-[14px] text-[rgba(255,255,255,0.4)]">Welcome back — your city awaits.</p>
+        <p className="font-['Inter',sans-serif] font-normal text-[14px] text-[var(--text-note-subtitle)]">Welcome back — your city awaits.</p>
       </div>
 
       <form onSubmit={handleSubmit}>
@@ -40,7 +40,7 @@ export default function LoginPage() {
         </div>
 
         <div className="mt-[12px]">
-          <Link to="/forgot-password" className="font-['Inter',sans-serif] font-semibold text-[14px] text-[#0a84ff]">
+          <Link to="/forgot-password" className="font-['Inter',sans-serif] font-semibold text-[14px] text-[var(--back-text-color)]">
             Forgot Password?
           </Link>
         </div>
@@ -59,24 +59,24 @@ export default function LoginPage() {
 
       {/* Divider */}
       <div className="flex items-center gap-[12px] mt-[20px]">
-        <div className="flex-1 h-px bg-[rgba(255,255,255,0.08)]" />
-        <span className="font-['Inter',sans-serif] font-normal text-[12px] text-[rgba(255,255,255,0.25)]">or continue with</span>
-        <div className="flex-1 h-px bg-[rgba(255,255,255,0.08)]" />
+        <div className="flex-1 h-px bg-[var(--card-bg-secondary-hover)]" />
+        <span className="font-['Inter',sans-serif] font-normal text-[12px] text-[var(--placeholder-text)]">or continue with</span>
+        <div className="flex-1 h-px bg-[var(--card-bg-secondary-hover)]" />
       </div>
 
       {/* Social auth */}
       <div className="flex gap-[10px] mt-[16px]">
         {["Google", "Apple"].map((p) => (
           <button key={p} onClick={() => navigate("/home")}
-            className="flex-1 h-[44px] bg-[rgba(255,255,255,0.07)] border border-[rgba(255,255,255,0.1)] rounded-[12px] flex items-center justify-center gap-[8px] cursor-pointer hover:bg-[rgba(255,255,255,0.1)] transition-colors">
-            <span className="font-['Inter',sans-serif] font-medium text-[14px] text-[rgba(255,255,255,0.6)]">{p}</span>
+            className="flex-1 h-[44px] bg-[var(--option-bg-hover)] border border-[var(--select-border)] rounded-[12px] flex items-center justify-center gap-[8px] cursor-pointer hover:bg-[var(--select-border)] transition-colors">
+            <span className="font-['Inter',sans-serif] font-medium text-[14px] text-[var(--text-body)]">{p}</span>
           </button>
         ))}
       </div>
 
       <div className="mt-[20px] flex items-center gap-[6px]">
-        <span className="font-['Inter',sans-serif] font-normal text-[13px] text-[rgba(255,255,255,0.32)]">{"Don't have an account?"}</span>
-        <Link to="/signup" className="font-['Inter',sans-serif] font-semibold text-[14px] text-[rgba(255,255,255,0.7)]">Sign Up</Link>
+        <span className="font-['Inter',sans-serif] font-normal text-[13px] text-[var(--grey-muted)]">{"Don't have an account?"}</span>
+        <Link to="/signup" className="font-['Inter',sans-serif] font-semibold text-[14px] text-[var(--text-body)]">Sign Up</Link>
       </div>
     </div>
   );

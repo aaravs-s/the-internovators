@@ -35,14 +35,14 @@ function fallbackBreakdown(score: number) {
 function ScoreRow({ label, score, inverted=false }: { label: string; score: number, inverted?: boolean }) {
   var color;
   if (inverted) {
-    color = score <= 50 ? "#22c55e" : score >= 75 ? "#f59e0b" : "#060404";
+    color = score <= 50 ? "var(--green)" : score >= 75 ? "var(--orange)" : "var(--text-note-subtitle)";
   } else {
-    color = score >= 85 ? "#22c55e" : score >= 70 ? "#f59e0b" : "rgba(255,255,255,0.4)";
+    color = score >= 85 ? "var(--green)" : score >= 70 ? "var(--orange)" : "var(--text-note-subtitle)";
   }
   return (
     <div className="flex items-center gap-[12px]">
-      <span className="font-['Inter',sans-serif] font-normal text-[12px] text-[rgba(255,255,255,0.4)] w-[130px] shrink-0">{label}</span>
-      <div className="flex-1 h-[6px] rounded-full bg-[rgba(255,255,255,0.07)] overflow-hidden">
+      <span className="font-['Inter',sans-serif] font-normal text-[12px] text-[var(--text-note-subtitle)] w-[130px] shrink-0">{label}</span>
+      <div className="flex-1 h-[6px] rounded-full bg-[var(--option-bg-hover)] overflow-hidden">
         <div className="h-full rounded-full transition-all" style={{ width: `${score}%`, background: color }} />
       </div>
       <span className="font-['Inter',sans-serif] font-semibold text-[12px] w-[32px] text-right" style={{ color }}>{score}</span>
@@ -145,7 +145,7 @@ export default function RouteDetailPage() {
         <div className={`${cardBase} w-full max-w-[460px] p-[32px] text-center`} role="status" aria-live="polite">
           <img src={loadingGif} alt="" className="mx-auto size-[54px] object-contain" />
           <h1 className="mt-[18px] text-[20px] font-semibold text-white">Preparing your route</h1>
-          <p className="mt-[8px] text-[13px] leading-[1.6] text-[rgba(255,255,255,0.5)]">
+          <p className="mt-[8px] text-[13px] leading-[1.6] text-[var(--small-text-grey)]">
             Loading the map, safety details, and directions. This can take a moment.
           </p>
         </div>
@@ -155,8 +155,8 @@ export default function RouteDetailPage() {
   if (error || !route) {
     return (
       <div className="p-[32px] flex flex-col gap-[16px]">
-        <p role="alert" className="text-[#fca5a5]">{error || "Route not found"}</p>
-        <button onClick={() => navigate("/explore")} className="text-left text-[#0a84ff] cursor-pointer">Back to Explore</button>
+        <p role="alert" className="text-[var(--error-text-color)]">{error || "Route not found"}</p>
+        <button onClick={() => navigate("/explore")} className="text-left text-[var(--back-text-color)] cursor-pointer">Back to Explore</button>
       </div>
     );
   }
@@ -181,25 +181,25 @@ export default function RouteDetailPage() {
     <>
       {/* Header */}
       <div className="relative shrink-0 w-full">
-        <div aria-hidden className="absolute border-[rgba(255,255,255,0.05)] border-b border-solid inset-0 pointer-events-none" />
+        <div aria-hidden className="absolute border-[var(--section-divide-border)] border-b border-solid inset-0 pointer-events-none" />
         <div className="flex items-center gap-[12px] pb-[17px] pt-[28px] px-[32px]">
           <button onClick={() => navigate(-1)}
-            className="flex items-center gap-[6px] h-[40px] px-[14px] bg-[rgba(255,255,255,0.06)] border border-[rgba(255,255,255,0.1)] rounded-[12px] cursor-pointer hover:bg-[rgba(255,255,255,0.09)] transition-colors">
+            className="flex items-center gap-[6px] h-[40px] px-[14px] bg-[var(--card-background-secondary)] border border-[var(--select-border)] rounded-[12px] cursor-pointer hover:bg-[var(--select-border)] transition-colors">
             <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-              <path d="M10 4L6 8L10 12" stroke="rgba(255,255,255,0.5)" strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" />
+              <path d="M10 4L6 8L10 12" stroke="var(--small-text-grey)" strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" />
             </svg>
-            <span className="font-['Inter',sans-serif] font-medium text-[13px] text-[rgba(255,255,255,0.6)]">Back</span>
+            <span className="font-['Inter',sans-serif] font-medium text-[13px] text-[var(--text-body)]">Back</span>
           </button>
           <div>
             <p className="font-['Inter',sans-serif] font-bold text-[32px] text-white tracking-[-0.7px] leading-[40px]">{route.name}</p>
-            <p className="font-['Inter',sans-serif] font-normal text-[14px] text-[rgba(255,255,255,0.4)]">{route.distance_miles} mi · Safety score {route.safety_score}</p>
+            <p className="font-['Inter',sans-serif] font-normal text-[14px] text-[var(--text-note-subtitle)]">{route.distance_miles} mi · Safety score {route.safety_score}</p>
           </div>
         </div>
       </div>
 
       <div className="px-[32px] py-[24px] flex flex-col gap-[20px] max-w-[900px]">
         {/* Map */}
-        <div className="rounded-[20px] overflow-hidden h-[220px] relative border border-[rgba(255,255,255,0.08)]">
+        <div className="rounded-[20px] overflow-hidden h-[220px] relative border border-[var(--card-bg-secondary-hover)]">
           <RouteMap
             coordinates={routeCoordinates}
             fallbackImage={fallbackMapImage}
@@ -208,9 +208,9 @@ export default function RouteDetailPage() {
           />
           <div className="absolute bottom-[16px] left-[16px] flex gap-[8px]">
             <SafetyBadge score={route.safety_score} />
-            <span className="font-['Inter',sans-serif] font-medium text-[12px] px-[10px] py-[4px] rounded-[20px] bg-[rgba(10,6,8,0.6)] border border-[rgba(255,255,255,0.15)] text-white">Scenic Route</span>
+            <span className="font-['Inter',sans-serif] font-medium text-[12px] px-[10px] py-[4px] rounded-[20px] bg-[var(--save-btn-bg)] border border-[var(--grey-light-border-hover)] text-white">Scenic Route</span>
             {route.is_demo && (
-              <span className="font-['Inter',sans-serif] font-semibold text-[10px] uppercase tracking-[0.5px] px-[9px] py-[4px] rounded-[20px] bg-[rgba(245,158,11,0.16)] border border-[rgba(245,158,11,0.35)] text-[#fbbf24]">Demo route</span>
+              <span className="font-['Inter',sans-serif] font-semibold text-[10px] uppercase tracking-[0.5px] px-[9px] py-[4px] rounded-[20px] bg-[var(--demo-color)] border border-[var(--demo-color-light)] text-[var(--yellow)]">Demo route</span>
             )}
           </div>
         </div>
@@ -219,22 +219,22 @@ export default function RouteDetailPage() {
         <div className="flex gap-[12px]">
           <button onClick={() => saveRoute(id!)}
             disabled={saved}
-            className={`flex items-center gap-[8px] h-[52px] px-[24px] rounded-[16px] border transition-colors ${saved ? "bg-[rgba(196,32,80,0.15)] border-[rgba(196,32,80,0.35)] cursor-default" : "bg-[rgba(255,255,255,0.05)] border-[rgba(255,255,255,0.1)] hover:border-[rgba(255,255,255,0.2)] cursor-pointer"}`}>
-            <IconBookmark color={saved ? "#c42050" : "rgba(255,255,255,0.4)"} />
-            <span className={`font-['Inter',sans-serif] font-semibold text-[15px] ${saved ? "text-[#c42050]" : "text-[rgba(255,255,255,0.55)]"}`}>{saved ? "Saved" : "Save"}</span>
+            className={`flex items-center gap-[8px] h-[52px] px-[24px] rounded-[16px] border transition-colors ${saved ? "bg-[var(--primary-selected-bg)] border-[var(--primary-selected-border)] cursor-default" : "bg-[var(--section-divide-border)] border-[var(--select-border)] hover:border-[var(--card-border-focus)] cursor-pointer"}`}>
+            <IconBookmark color={saved ? "var(--primary)" : "var(--text-note-subtitle)"} />
+            <span className={`font-['Inter',sans-serif] font-semibold text-[15px] ${saved ? "text-[var(--primary)]" : "text-[var(--text-body)]"}`}>{saved ? "Saved" : "Save"}</span>
           </button>
           {(source === "saved") ? (
             <button 
-              className="flex items-center gap-[8px] h-[52px] px-[20px] rounded-[16px] border border-[rgba(255,255,255,0.1)] bg-[rgba(255,255,255,0.05)] cursor-pointer hover:border-[rgba(255,255,255,0.2)] transition-colors"
+              className="flex items-center gap-[8px] h-[52px] px-[20px] rounded-[16px] border border-[var(--select-border)] bg-[var(--section-divide-border)] cursor-pointer hover:border-[var(--card-border-focus)] transition-colors"
               onClick={copyLink}
             >
               <svg width="18" height="18" viewBox="0 0 20 20" fill="none">
-                <circle cx="14" cy="5" r="2.5" stroke="rgba(255,255,255,0.4)" strokeWidth="1.5"/>
-                <circle cx="14" cy="15" r="2.5" stroke="rgba(255,255,255,0.4)" strokeWidth="1.5"/>
-                <circle cx="5" cy="10" r="2.5" stroke="rgba(255,255,255,0.4)" strokeWidth="1.5"/>
-                <path d="M11.5 6.5l-5 2M11.5 13.5l-5-2" stroke="rgba(255,255,255,0.4)" strokeWidth="1.5" strokeLinecap="round"/>
+                <circle cx="14" cy="5" r="2.5" stroke="var(--text-note-subtitle)" strokeWidth="1.5"/>
+                <circle cx="14" cy="15" r="2.5" stroke="var(--text-note-subtitle)" strokeWidth="1.5"/>
+                <circle cx="5" cy="10" r="2.5" stroke="var(--text-note-subtitle)" strokeWidth="1.5"/>
+                <path d="M11.5 6.5l-5 2M11.5 13.5l-5-2" stroke="var(--text-note-subtitle)" strokeWidth="1.5" strokeLinecap="round"/>
               </svg>
-              <span className="font-['Inter',sans-serif] font-semibold text-[15px] text-[rgba(255,255,255,0.55)]">{linkCopied ? "Link copied!" : "Share"}</span>
+              <span className="font-['Inter',sans-serif] font-semibold text-[15px] text-[var(--text-body)]">{linkCopied ? "Link copied!" : "Share"}</span>
             </button>
           ) : (<></>)}
 
@@ -251,7 +251,7 @@ export default function RouteDetailPage() {
               { label: "Difficulty", value: route.distance_miles < 3 ? "Easy" : (route.distance_miles > 8 ? "Hard" : "Medium") },
             ].map((s) => (
               <div key={s.label} className={`${cardBase} px-[20px] py-[16px] flex-1`}>
-                <p className="font-['Inter',sans-serif] font-normal text-[11px] text-[rgba(255,255,255,0.4)] uppercase tracking-[0.6px] mb-[4px]">{s.label}</p>
+                <p className="font-['Inter',sans-serif] font-normal text-[11px] text-[var(--text-note-subtitle)] uppercase tracking-[0.6px] mb-[4px]">{s.label}</p>
                 <p className="font-['Inter',sans-serif] font-bold text-[20px] text-white tracking-[-0.4px]">{s.value}</p>
               </div>
             ))}
@@ -261,11 +261,11 @@ export default function RouteDetailPage() {
         {activeTab === "Overview" && (
           <div className={`${cardBase} p-[20px]`}>
             <p className="font-semibold text-[14px] text-white mb-[8px]">About this route</p>
-            <p className="text-[13px] leading-[20px] text-[rgba(255,255,255,0.55)]">{route.summary || `${route.start} to ${route.destination}`}</p>
+            <p className="text-[13px] leading-[20px] text-[var(--text-body)]">{route.summary || `${route.start} to ${route.destination}`}</p>
             {route.highlights.length > 0 && (
               <div className="flex flex-wrap gap-[6px] mt-[12px]">
                 {route.highlights.map((highlight) => (
-                  <span key={highlight} className="text-[11px] px-[8px] py-[3px] rounded-full bg-[rgba(255,255,255,0.07)] text-[rgba(255,255,255,0.5)]">{highlight}</span>
+                  <span key={highlight} className="text-[11px] px-[8px] py-[3px] rounded-full bg-[var(--option-bg-hover)] text-[var(--small-text-grey)]">{highlight}</span>
                 ))}
               </div>
             )}
@@ -278,9 +278,9 @@ export default function RouteDetailPage() {
               <p className="font-['Inter',sans-serif] font-semibold text-[14px] text-white mb-[12px]">Safety Breakdown</p>
               <ResponsiveContainer width="100%" height={200}>
                 <RadarChart data={safetyRadarData}>
-                  <PolarGrid stroke="rgba(255,255,255,0.08)" />
-                  <PolarAngleAxis dataKey="subject" tick={{ fill: "rgba(255,255,255,0.4)", fontSize: 11, fontFamily: "Inter" }} />
-                  <Radar dataKey="score" stroke="#c42050" fill="#c42050" fillOpacity={0.15} strokeWidth={2} />
+                  <PolarGrid stroke="var(--card-bg-secondary-hover)" />
+                  <PolarAngleAxis dataKey="subject" tick={{ fill: "var(--text-note-subtitle)", fontSize: 11, fontFamily: "Inter" }} />
+                  <Radar dataKey="score" stroke="var(--primary)" fill="var(--primary)" fillOpacity={0.15} strokeWidth={2} />
                 </RadarChart>
               </ResponsiveContainer>
             </div>
@@ -294,7 +294,7 @@ export default function RouteDetailPage() {
                 <ScoreRow label="Crowding" score={safetyBreakdown.crowding_score} inverted />
                 <div className="pt-[4px] flex flex-col gap-[6px]">
                   {safetyBreakdown.signals.map((signal) => (
-                    <p key={signal} className="text-[12px] leading-[18px] text-[rgba(255,255,255,0.48)]">{signal}</p>
+                    <p key={signal} className="text-[12px] leading-[18px] text-[var(--small-text-grey)]">{signal}</p>
                   ))}
                 </div>
               </div>
@@ -307,15 +307,15 @@ export default function RouteDetailPage() {
         {activeTab === "Directions" && (
           <div className={`${cardBase} overflow-hidden`}>
             {route.directions.length === 0 && (
-              <p className="px-[20px] py-[24px] text-[13px] text-[rgba(255,255,255,0.45)]">Turn-by-turn directions are not available for this saved route.</p>
+              <p className="px-[20px] py-[24px] text-[13px] text-[var(--text-body)]">Turn-by-turn directions are not available for this saved route.</p>
             )}
             {route.directions.map((step, index) => (
-              <div key={`${step.kind}-${index}`} className={`flex items-center gap-[16px] px-[20px] py-[14px] ${index < route.directions.length - 1 ? "border-b border-[rgba(255,255,255,0.06)]" : ""}`}>
-                <div className={`size-[10px] rounded-full shrink-0 ${step.kind === "start" ? "bg-[#22c55e]" : step.kind === "end" ? "bg-[#c42050]" : "bg-[rgba(255,255,255,0.25)]"}`} />
+              <div key={`${step.kind}-${index}`} className={`flex items-center gap-[16px] px-[20px] py-[14px] ${index < route.directions.length - 1 ? "border-b border-[var(--card-background-secondary)]" : ""}`}>
+                <div className={`size-[10px] rounded-full shrink-0 ${step.kind === "start" ? "bg-[var(--green)]" : step.kind === "end" ? "bg-[var(--primary)]" : "bg-[var(--placeholder-text)]"}`} />
                 <div className="flex-1">
                   <p className="font-['Inter',sans-serif] font-medium text-[13px] text-white">{step.instruction}</p>
                 </div>
-                <span className="font-['Inter',sans-serif] font-normal text-[11px] text-[rgba(255,255,255,0.25)]">{step.distance_miles} mi</span>
+                <span className="font-['Inter',sans-serif] font-normal text-[11px] text-[var(--placeholder-text)]">{step.distance_miles} mi</span>
               </div>
             ))}
           </div>

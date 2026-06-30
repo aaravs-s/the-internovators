@@ -1582,11 +1582,13 @@
     "user_has_liked": false,
     "user_id": [
       "a3b21833-64b5-47d3-839b-d2f5a380141c",
-      "47e78831-62da-4f5a-86ca-c0635e56cdbc"
+      "47e78831-62da-4f5a-86ca-c0635e56cdbc",
+      "0e131aaf-f59d-46e5-acc8-8c05a94bce6a"
     ],
     "user_rating": 0
   },
   {
+    "average_rating": 0,
     "comments": "",
     "coordinates": [
       [
@@ -3127,11 +3129,13 @@
     "id": "cb6a8df0-caf1-429a-a319-934d6841ca49",
     "is_demo": false,
     "is_shared": true,
+    "like_count": 0,
     "liked_by": [],
     "map_style": "balanced",
     "name": "Safest",
     "preference_score": 55,
     "preference_summary": "55% match for lively preferences",
+    "rating_count": 0,
     "ratings": [],
     "route_id": "safest-0ee34ac7",
     "route_profile": "safest",
@@ -3156,8 +3160,10 @@
     "summary": "Usable route, but review the safety notes before walking.",
     "tags": [],
     "tradeoff_summary": "+4 min, safer corridor",
+    "user_has_liked": false,
     "user_id": [
       "0e131aaf-f59d-46e5-acc8-8c05a94bce6a"
-    ]
+    ],
+    "user_rating": 0
   }
 ]

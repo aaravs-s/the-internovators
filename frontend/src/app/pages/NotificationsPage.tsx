@@ -5,10 +5,10 @@ import { notifications as initial } from "@/app/data";
 
 const typeColor: Record<string, string> = {
   safety:      "#ef4444",
-  social:      "#0a84ff",
-  route:       "#22c55e",
-  achievement: "#f59e0b",
-  system:      "rgba(255,255,255,0.35)",
+  social:      "var(--back-text-color)",
+  route:       "var(--green)",
+  achievement: "var(--orange)",
+  system:      "var(--grey-muted)",
 };
 
 function NotifIcon({ type, color }: { type: string; color: string }) {
@@ -57,15 +57,15 @@ export default function NotificationsPage() {
   return (
     <>
       <div className="relative shrink-0 w-full">
-        <div aria-hidden className="absolute border-[rgba(255,255,255,0.05)] border-b border-solid inset-0 pointer-events-none" />
+        <div aria-hidden className="absolute border-[var(--section-divide-border)] border-b border-solid inset-0 pointer-events-none" />
         <div className="flex items-center justify-between pb-[17px] pt-[28px] px-[32px]">
           <div>
             <p className="font-['Inter',sans-serif] font-bold text-[38px] text-white tracking-[-0.8px]">Notifications</p>
-            <p className="font-['Inter',sans-serif] font-normal text-[14px] text-[rgba(255,255,255,0.4)]">{unread} unread</p>
+            <p className="font-['Inter',sans-serif] font-normal text-[14px] text-[var(--text-note-subtitle)]">{unread} unread</p>
           </div>
           {unread > 0 && (
-            <button onClick={markAll} className="px-[14px] py-[8px] bg-[rgba(255,255,255,0.06)] border border-[rgba(255,255,255,0.1)] rounded-[12px] cursor-pointer hover:bg-[rgba(255,255,255,0.09)] transition-colors">
-              <span className="font-['Inter',sans-serif] font-medium text-[13px] text-[rgba(255,255,255,0.5)]">Mark all read</span>
+            <button onClick={markAll} className="px-[14px] py-[8px] bg-[var(--card-background-secondary)] border border-[var(--select-border)] rounded-[12px] cursor-pointer hover:bg-[var(--select-border)] transition-colors">
+              <span className="font-['Inter',sans-serif] font-medium text-[13px] text-[var(--small-text-grey)]">Mark all read</span>
             </button>
           )}
         </div>
@@ -76,7 +76,7 @@ export default function NotificationsPage() {
           const color = typeColor[n.type];
           return (
             <button key={n.id} onClick={() => markRead(n.id)}
-              className={`${cardBase} text-left w-full cursor-pointer flex items-start gap-[14px] p-[16px] relative hover:border-[rgba(255,255,255,0.15)] transition-colors ${!n.read ? "bg-[rgba(255,255,255,0.07)]" : ""}`}>
+              className={`${cardBase} text-left w-full cursor-pointer flex items-start gap-[14px] p-[16px] relative hover:border-[var(--grey-light-border-hover)] transition-colors ${!n.read ? "bg-[var(--option-bg-hover)]" : ""}`}>
               <div className="size-[40px] rounded-[12px] flex items-center justify-center shrink-0"
                 style={{ background: `${color}18`, border: `1px solid ${color}30` }}>
                 <NotifIcon type={n.type} color={color} />
@@ -84,11 +84,11 @@ export default function NotificationsPage() {
               <div className="flex-1">
                 <div className="flex items-start justify-between gap-[8px]">
                   <p className="font-['Inter',sans-serif] font-semibold text-[13px] text-white">{n.title}</p>
-                  <span className="font-['Inter',sans-serif] font-normal text-[11px] text-[rgba(255,255,255,0.3)] whitespace-nowrap">{n.time}</span>
+                  <span className="font-['Inter',sans-serif] font-normal text-[11px] text-[var(--grey-muted)] whitespace-nowrap">{n.time}</span>
                 </div>
-                <p className="font-['Inter',sans-serif] font-normal text-[12px] text-[rgba(255,255,255,0.45)] leading-[18px] mt-[2px]">{n.body}</p>
+                <p className="font-['Inter',sans-serif] font-normal text-[12px] text-[var(--text-body)] leading-[18px] mt-[2px]">{n.body}</p>
               </div>
-              {!n.read && <div className="size-[8px] rounded-full bg-[#c42050] mt-[6px] shrink-0" />}
+              {!n.read && <div className="size-[8px] rounded-full bg-[var(--primary)] mt-[6px] shrink-0" />}
             </button>
           );
         })}

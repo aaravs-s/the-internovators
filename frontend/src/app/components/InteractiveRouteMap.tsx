@@ -18,7 +18,7 @@ type RouteMapProps = {
 function markerIcon(label: string, color: string) {
   return L.divIcon({
     className: "",
-    html: `<div style="width:30px;height:30px;border-radius:50%;background:${color};border:3px solid rgba(255,255,255,0.92);box-shadow:0 10px 22px rgba(0,0,0,0.35);display:flex;align-items:center;justify-content:center;color:white;font:700 11px Inter, sans-serif;">${label}</div>`,
+    html: `<div style="width:30px;height:30px;border-radius:50%;background:${color};border:3px solid var(--map-marker-border);box-shadow:0 10px 22px var(--shadow-color);display:flex;align-items:center;justify-content:center;color:white;font:700 11px Inter, sans-serif;">${label}</div>`,
     iconSize: [30, 30],
     iconAnchor: [15, 15],
   });
@@ -68,7 +68,7 @@ export default function RouteMap({
     }).addTo(map);
 
     L.polyline(leafletPoints, {
-      color: "#c42050",
+      color: "var(--primary)",
       weight: 5,
       opacity: 0.95,
       lineCap: "round",
@@ -76,14 +76,14 @@ export default function RouteMap({
     }).addTo(map);
 
     L.marker(leafletPoints[0], {
-      icon: markerIcon("A", "#22c55e"),
+      icon: markerIcon("A", "var(--green)"),
       interactive: isInteractive,
       keyboard: isInteractive,
     })
       .addTo(map)
       .bindPopup("Start");
     L.marker(leafletPoints[leafletPoints.length - 1], {
-      icon: markerIcon("B", "#c42050"),
+      icon: markerIcon("B", "var(--primary)"),
       interactive: isInteractive,
       keyboard: isInteractive,
     })
@@ -118,7 +118,7 @@ export default function RouteMap({
             src={src}
           />
         ) : (
-          <div className="flex h-full w-full items-center justify-center text-[12px] text-[rgba(255,255,255,0.4)]">
+          <div className="flex h-full w-full items-center justify-center text-[12px] text-[var(--text-note-subtitle)]">
             Map preview unavailable
           </div>
         )}
@@ -135,7 +135,7 @@ export default function RouteMap({
         className={`h-full w-full ${isInteractive ? "" : "pointer-events-none"}`}
       />
       {!isInteractive && (
-        <span className="pointer-events-none absolute bottom-[4px] right-[6px] rounded bg-[rgba(0,0,0,0.55)] px-[4px] py-[2px] text-[8px] text-[rgba(255,255,255,0.65)]">
+        <span className="pointer-events-none absolute bottom-[4px] right-[6px] rounded bg-[rgba(0,0,0,0.55)] px-[4px] py-[2px] text-[8px] text-[var(--text-body)]">
           © OpenStreetMap contributors
         </span>
       )}

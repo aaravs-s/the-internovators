@@ -56,7 +56,7 @@ function Paragraph() {
   return (
     <div className="relative shrink-0 w-[281.813px]" data-name="Paragraph">
       <div className="bg-clip-padding border-0 border-[transparent] border-solid content-stretch flex flex-col items-center pt-[16px] relative size-full">
-        <div className="[word-break:break-word] font-['Inter:Regular',sans-serif] font-normal leading-[0] not-italic relative shrink-0 text-[16px] text-[rgba(255,255,255,0.4)] text-center w-[282px]">
+        <div className="[word-break:break-word] font-['Inter:Regular',sans-serif] font-normal leading-[0] not-italic relative shrink-0 text-[16px] text-[var(--text-note-subtitle)] text-center w-[282px]">
           <p className="leading-[26px] mb-0">Your trusted companion for safe</p>
           <p className="leading-[26px]">pedestrian routes.</p>
         </div>
@@ -118,7 +118,7 @@ function Label() {
   return (
     <div className="relative shrink-0 w-full" data-name="Label">
       <div className="bg-clip-padding border-0 border-[transparent] border-solid content-stretch flex flex-col items-start relative size-full">
-        <p className="[word-break:break-word] font-['Inter:Semi_Bold',sans-serif] font-semibold leading-[19.5px] not-italic relative shrink-0 text-[13px] text-[rgba(255,255,255,0.85)] tracking-[0.065px] whitespace-nowrap">Username</p>
+        <p className="[word-break:break-word] font-['Inter:Semi_Bold',sans-serif] font-semibold leading-[19.5px] not-italic relative shrink-0 text-[13px] text-[var(--map-marker-border)] tracking-[0.065px] whitespace-nowrap">Username</p>
       </div>
     </div>
   );
@@ -127,15 +127,15 @@ function Label() {
 function TextInput() {
   return (
     <div className="absolute content-stretch flex flex-col h-[48px] items-start justify-center left-px overflow-clip px-[17px] top-px w-[382px]" data-name="Text Input">
-      <p className="[word-break:break-word] font-['Inter:Regular',sans-serif] font-normal leading-[normal] not-italic relative shrink-0 text-[15px] text-[rgba(255,255,255,0.28)] tracking-[-0.15px] w-full">Enter your username</p>
+      <p className="[word-break:break-word] font-['Inter:Regular',sans-serif] font-normal leading-[normal] not-italic relative shrink-0 text-[15px] text-[var(--grey-muted)] tracking-[-0.15px] w-full">Enter your username</p>
     </div>
   );
 }
 
 function Container8() {
   return (
-    <div className="bg-[rgba(255,255,255,0.07)] h-[50px] relative rounded-[14px] shrink-0 w-full" data-name="Container">
-      <div aria-hidden className="absolute border border-[rgba(255,255,255,0.1)] border-solid inset-0 pointer-events-none rounded-[14px]" />
+    <div className="bg-[var(--option-bg-hover)] h-[50px] relative rounded-[14px] shrink-0 w-full" data-name="Container">
+      <div aria-hidden className="absolute border border-[var(--select-border)] border-solid inset-0 pointer-events-none rounded-[14px]" />
       <TextInput />
     </div>
   );
@@ -166,7 +166,7 @@ function Label1() {
   return (
     <div className="relative shrink-0 w-full" data-name="Label">
       <div className="bg-clip-padding border-0 border-[transparent] border-solid content-stretch flex flex-col items-start relative size-full">
-        <p className="[word-break:break-word] font-['Inter:Semi_Bold',sans-serif] font-semibold leading-[19.5px] not-italic relative shrink-0 text-[13px] text-[rgba(255,255,255,0.85)] tracking-[0.065px] whitespace-nowrap">Password</p>
+        <p className="[word-break:break-word] font-['Inter:Semi_Bold',sans-serif] font-semibold leading-[19.5px] not-italic relative shrink-0 text-[13px] text-[var(--map-marker-border)] tracking-[0.065px] whitespace-nowrap">Password</p>
       </div>
     </div>
   );
@@ -175,7 +175,7 @@ function Label1() {
 function PasswordInput() {
   return (
     <div className="absolute content-stretch flex flex-col h-[48px] items-start justify-center left-px overflow-clip pl-[17px] pr-[50px] top-px w-[382px]" data-name="Password Input">
-      <p className="[word-break:break-word] font-['Inter:Regular',sans-serif] font-normal leading-[normal] not-italic relative shrink-0 text-[15px] text-[rgba(255,255,255,0.28)] tracking-[-0.15px] w-full">Enter your password</p>
+      <p className="[word-break:break-word] font-['Inter:Regular',sans-serif] font-normal leading-[normal] not-italic relative shrink-0 text-[15px] text-[var(--grey-muted)] tracking-[-0.15px] w-full">Enter your password</p>
     </div>
   );
 }
@@ -203,8 +203,8 @@ function Button() {
 
 function Container10() {
   return (
-    <div className="bg-[rgba(255,255,255,0.07)] h-[50px] relative rounded-[14px] shrink-0 w-full" data-name="Container">
-      <div aria-hidden className="absolute border border-[rgba(255,255,255,0.1)] border-solid inset-0 pointer-events-none rounded-[14px]" />
+    <div className="bg-[var(--option-bg-hover)] h-[50px] relative rounded-[14px] shrink-0 w-full" data-name="Container">
+      <div aria-hidden className="absolute border border-[var(--select-border)] border-solid inset-0 pointer-events-none rounded-[14px]" />
       <PasswordInput />
       <Button />
     </div>
@@ -235,7 +235,7 @@ function Container9() {
 function Button1() {
   return (
     <div className="absolute h-[21px] left-0 top-[2px] w-[127px]" data-name="Button">
-      <p className="-translate-x-1/2 [word-break:break-word] absolute font-['Inter:Semi_Bold',sans-serif] font-semibold leading-[21px] left-[63px] not-italic text-[#0a84ff] text-[14px] text-center top-0 whitespace-nowrap">Forgot Password?</p>
+      <p className="-translate-x-1/2 [word-break:break-word] absolute font-['Inter:Semi_Bold',sans-serif] font-semibold leading-[21px] left-[63px] not-italic text-[var(--back-text-color)] text-[14px] text-center top-0 whitespace-nowrap">Forgot Password?</p>
     </div>
   );
 }
@@ -273,7 +273,7 @@ function ArrowRightIcon() {
 
 function Button2() {
   return (
-    <div className="content-stretch drop-shadow-[0px_6px_7px_rgba(160,24,64,0.5)] flex gap-[8px] h-[52px] items-center justify-center relative rounded-[16px] shrink-0 w-[384px]" style={{ backgroundImage: "linear-gradient(179.019deg, rgb(176, 24, 72) 8.2137%, rgb(122, 15, 46) 91.786%)" }} data-name="Button">
+    <div className="content-stretch drop-shadow-[0px_6px_7px_var(--primary-shadow)] flex gap-[8px] h-[52px] items-center justify-center relative rounded-[16px] shrink-0 w-[384px]" style={{ backgroundImage: "linear-gradient(179.019deg, rgb(176, 24, 72) 8.2137%, rgb(122, 15, 46) 91.786%)" }} data-name="Button">
       <p className="[word-break:break-word] font-['Inter:Semi_Bold',sans-serif] font-semibold leading-[24px] not-italic relative shrink-0 text-[16px] text-center text-white tracking-[-0.16px] whitespace-nowrap">Sign In</p>
       <ArrowRightIcon />
     </div>
@@ -293,7 +293,7 @@ function ButtonMargin() {
 function Button3() {
   return (
     <div className="absolute h-[24px] left-[237px] top-0 w-[60px]" data-name="Button">
-      <p className="-translate-x-1/2 [word-break:break-word] absolute font-['Inter:Semi_Bold',sans-serif] font-semibold leading-[24px] left-[30.5px] not-italic text-[16px] text-[rgba(255,255,255,0.58)] text-center top-[-1px] whitespace-nowrap">Sign Up</p>
+      <p className="-translate-x-1/2 [word-break:break-word] absolute font-['Inter:Semi_Bold',sans-serif] font-semibold leading-[24px] left-[30.5px] not-italic text-[16px] text-[var(--text-body)] text-center top-[-1px] whitespace-nowrap">Sign Up</p>
     </div>
   );
 }
@@ -301,7 +301,7 @@ function Button3() {
 function Container12() {
   return (
     <div className="h-[24px] relative shrink-0 w-full" data-name="Container">
-      <p className="-translate-x-1/2 [word-break:break-word] absolute font-['Inter:Regular',sans-serif] font-normal leading-[19.5px] left-[162px] not-italic text-[13px] text-[rgba(255,255,255,0.32)] text-center top-[2px] whitespace-nowrap">{`Don't have an account? `}</p>
+      <p className="-translate-x-1/2 [word-break:break-word] absolute font-['Inter:Regular',sans-serif] font-normal leading-[19.5px] left-[162px] not-italic text-[13px] text-[var(--grey-muted)] text-center top-[2px] whitespace-nowrap">{`Don't have an account? `}</p>
       <Button3 />
     </div>
   );

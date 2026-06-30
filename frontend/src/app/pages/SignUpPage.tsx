@@ -14,7 +14,7 @@ export default function SignUpPage() {
 
   const strength = password.length >= 12 ? 4 : password.length >= 8 ? 3 : password.length >= 5 ? 2 : password.length > 0 ? 1 : 0;
   const strengthLabel = ["", "Weak", "Fair", "Good", "Strong"][strength];
-  const strengthColor = ["", "#ef4444", "#f59e0b", "#f59e0b", "#22c55e"][strength];
+  const strengthColor = ["", "#ef4444", "var(--orange)", "var(--orange)", "var(--green)"][strength];
 
   const createAccount = async () => {
     setError("");
@@ -52,7 +52,7 @@ export default function SignUpPage() {
   return (
     <div className="flex flex-col">
       <p className="font-['Inter',sans-serif] font-bold text-[28px] text-white tracking-[-0.7px] mb-[4px]">Create Account</p>
-      <p className="font-['Inter',sans-serif] font-normal text-[14px] text-[rgba(255,255,255,0.4)] mb-[22px]">Join SafeWalkers and walk smarter.</p>
+      <p className="font-['Inter',sans-serif] font-normal text-[14px] text-[var(--text-note-subtitle)] mb-[22px]">Join SafeWalkers and walk smarter.</p>
 
       <div className="flex flex-col gap-[14px]">
         <FormInput label="Username"          placeholder="Choose a username"            value={username} onChange={setUser} />
@@ -67,7 +67,7 @@ export default function SignUpPage() {
           <div className="flex gap-[4px]">
             {[1, 2, 3, 4].map((lvl) => (
               <div key={lvl} className="flex-1 h-[3px] rounded-full transition-colors duration-300"
-                style={{ background: lvl <= strength ? strengthColor : "rgba(255,255,255,0.1)" }} />
+                style={{ background: lvl <= strength ? strengthColor : "var(--select-border)" }} />
             ))}
           </div>
           <p className="font-['Inter',sans-serif] font-normal text-[11px] mt-[4px]" style={{ color: strengthColor }}>{strengthLabel} password</p>
@@ -76,7 +76,7 @@ export default function SignUpPage() {
 
       {/* Error */}
       {error &&
-        <span className="font-['Inter',sans-serif] font-normal text-[12px] text-[#c42050] leading-[18px] mt-3">
+        <span className="font-['Inter',sans-serif] font-normal text-[12px] text-[var(--primary)] leading-[18px] mt-3">
           {error}
         </span>
       }
@@ -86,8 +86,8 @@ export default function SignUpPage() {
       </div>
 
       <div className="mt-[16px] flex items-center gap-[6px]">
-        <span className="font-['Inter',sans-serif] font-normal text-[13px] text-[rgba(255,255,255,0.32)]">Already have an account?</span>
-        <Link to="/" className="font-['Inter',sans-serif] font-semibold text-[14px] text-[rgba(255,255,255,0.7)]">Sign In</Link>
+        <span className="font-['Inter',sans-serif] font-normal text-[13px] text-[var(--grey-muted)]">Already have an account?</span>
+        <Link to="/" className="font-['Inter',sans-serif] font-semibold text-[14px] text-[var(--text-body)]">Sign In</Link>
       </div>
     </div>
   );

@@ -7,12 +7,12 @@
   --text: #fff9fc;
   --muted: #9c8f96;
   --muted-strong: #c2b7bd;
-  --primary: #c42050;
+  --primary: var(--primary);
   --primary-strong: #e02b64;
   --primary-dark: #7f1233;
-  --blue: #0a84ff;
-  --green: #22c55e;
-  --amber: #f59e0b;
+  --blue: var(--back-text-color);
+  --green: var(--green);
+  --amber: var(--orange);
   --red: #ef4444;
   --border: rgba(255, 255, 255, 0.09);
   --border-strong: rgba(255, 255, 255, 0.16);
@@ -154,7 +154,7 @@ p {
 }
 
 .button {
-  background: linear-gradient(180deg, #c42050, #97153d);
+  background: linear-gradient(180deg, var(--primary), #97153d);
   border: 1px solid rgba(255, 98, 145, 0.24);
   border-radius: 14px;
   box-shadow: 0 11px 28px rgba(196, 32, 80, 0.24);
@@ -966,7 +966,7 @@ select:focus {
   z-index: 2;
 }
 
-.safety-badge.warning { background: rgba(76, 44, 3, 0.9); border-color: rgba(245, 158, 11, 0.42); color: #fbbf24; }
+.safety-badge.warning { background: rgba(76, 44, 3, 0.9); border-color: rgba(245, 158, 11, 0.42); color: var(--yellow); }
 
 .route-card-body {
   padding: 1rem;
@@ -986,7 +986,7 @@ select:focus {
 
 .route-card-heading h2 a:hover { color: var(--primary-strong); }
 .route-card-heading .eyebrow { font-size: 0.58rem; margin-bottom: 0.25rem; }
-.rating { color: #fbbf24; font-size: 0.72rem; white-space: nowrap; }
+.rating { color: var(--yellow); font-size: 0.72rem; white-space: nowrap; }
 .route-summary { display: -webkit-box; font-size: 0.8rem; -webkit-box-orient: vertical; -webkit-line-clamp: 2; margin-bottom: 0.65rem; overflow: hidden; }
 
 .route-meta,

@@ -95,18 +95,18 @@ export default function SocialPage() {
 
   return (
     <>
-      <header className="relative shrink-0 border-b border-[rgba(255,255,255,0.05)] px-[32px] pb-[17px] pt-[28px]">
+      <header className="relative shrink-0 border-b border-[var(--section-divide-border)] px-[32px] pb-[17px] pt-[28px]">
         <h1 className="font-['Inter',sans-serif] font-bold text-[38px] text-white tracking-[-0.8px]">Walking Community</h1>
-        <p className="text-[14px] text-[rgba(255,255,255,0.4)]">Follow local walkers and trade useful route knowledge.</p>
+        <p className="text-[14px] text-[var(--text-note-subtitle)]">Follow local walkers and trade useful route knowledge.</p>
       </header>
 
       <main className="px-[32px] py-[24px] flex flex-col gap-[20px] max-w-[960px]">
         <div className="flex flex-wrap items-center justify-between gap-[12px]">
           <Tabs tabs={["Activity", "Following", "Discover"]} active={tab} onChange={(value) => setTab(value as CommunityTab)} />
           {tab === "Activity" ? (
-            <div className="flex rounded-[12px] border border-[rgba(255,255,255,0.09)] p-[3px]">
+            <div className="flex rounded-[12px] border border-[var(--select-border)] p-[3px]">
               {(["following", "everyone"] as const).map((value) => (
-                <button key={value} onClick={() => setScope(value)} className={`rounded-[9px] px-[12px] py-[6px] text-[12px] font-semibold capitalize ${scope === value ? "bg-[rgba(196,32,80,0.2)] text-[#ef7098]" : "text-[rgba(255,255,255,0.4)]"}`}>{value}</button>
+                <button key={value} onClick={() => setScope(value)} className={`rounded-[9px] px-[12px] py-[6px] text-[12px] font-semibold capitalize ${scope === value ? "bg-[var(--primary-bg-dark)] text-[var(--initials-circle-text)]" : "text-[var(--text-note-subtitle)]"}`}>{value}</button>
               ))}
             </div>
           ) : (
@@ -115,28 +115,28 @@ export default function SocialPage() {
               value={search}
               onChange={(event) => setSearch(event.target.value)}
               placeholder="Search walkers…"
-              className="h-[38px] w-[220px] rounded-[12px] border border-[rgba(255,255,255,0.1)] bg-[rgba(255,255,255,0.06)] px-[14px] text-[13px] text-white outline-none"
+              className="h-[38px] w-[220px] rounded-[12px] border border-[var(--select-border)] bg-[var(--card-background-secondary)] px-[14px] text-[13px] text-white outline-none"
             />
           )}
         </div>
 
-        {error && <p role="alert" className="rounded-[12px] bg-[rgba(239,68,68,0.1)] px-[14px] py-[10px] text-[13px] text-[#fca5a5]">{error}</p>}
-        {loading && <p className="py-[32px] text-center text-[13px] text-[rgba(255,255,255,0.4)]">Loading the walking community…</p>}
+        {error && <p role="alert" className="rounded-[12px] bg-[var(--error-bg-color)] px-[14px] py-[10px] text-[13px] text-[var(--error-text-color)]">{error}</p>}
+        {loading && <p className="py-[32px] text-center text-[13px] text-[var(--text-note-subtitle)]">Loading the walking community…</p>}
 
         {!loading && tab === "Activity" && routes.length === 0 && (
           <div className={`${cardBase} p-[32px] text-center`}>
             <p className="font-semibold text-white">No shared routes here yet.</p>
-            <p className="mt-[5px] text-[13px] text-[rgba(255,255,255,0.42)]">{scope === "following" ? "Follow walkers in Discover or switch to Everyone." : "Be the first to share a saved route."}</p>
+            <p className="mt-[5px] text-[13px] text-[var(--text-note-subtitle)]">{scope === "following" ? "Follow walkers in Discover or switch to Everyone." : "Be the first to share a saved route."}</p>
           </div>
         )}
 
         {!loading && tab === "Activity" && routes.map((route) => (
           <article key={route.id} className={`${cardBase} overflow-hidden`}>
             <div className="flex items-center gap-[12px] px-[18px] pt-[16px]">
-              <button onClick={() => navigate(`/social/${route.owner.id}`)} className="size-[40px] rounded-full bg-[rgba(196,32,80,0.18)] text-[#ef7098] font-bold">{route.owner.username.slice(0, 1).toUpperCase()}</button>
+              <button onClick={() => navigate(`/social/${route.owner.id}`)} className="size-[40px] rounded-full bg-[var(--primary-bg-dark)] text-[var(--initials-circle-text)] font-bold">{route.owner.username.slice(0, 1).toUpperCase()}</button>
               <button onClick={() => navigate(`/social/${route.owner.id}`)} className="flex-1 text-left">
                 <p className="text-[13px] font-semibold text-white">@{route.owner.username}</p>
-                <p className="text-[11px] text-[rgba(255,255,255,0.35)]">Shared {route.created_at ? new Date(route.created_at).toLocaleDateString() : "recently"}</p>
+                <p className="text-[11px] text-[var(--grey-muted)]">Shared {route.created_at ? new Date(route.created_at).toLocaleDateString() : "recently"}</p>
               </button>
               <SafetyBadge score={route.safety_score} />
             </div>
@@ -146,37 +146,37 @@ export default function SocialPage() {
               </div>
               <div className="px-[18px] pt-[14px]">
                 <h2 className="font-bold text-[18px] text-white">{route.name}</h2>
-                <p className="mt-[3px] text-[12px] text-[rgba(255,255,255,0.43)]">{route.distance_miles} mi · {route.estimated_minutes} min</p>
-                {route.summary && <p className="mt-[8px] text-[13px] leading-[19px] text-[rgba(255,255,255,0.58)]">{route.summary}</p>}
+                <p className="mt-[3px] text-[12px] text-[var(--text-note-subtitle)]">{route.distance_miles} mi · {route.estimated_minutes} min</p>
+                {route.summary && <p className="mt-[8px] text-[13px] leading-[19px] text-[var(--text-body)]">{route.summary}</p>}
               </div>
             </button>
             <div className="flex items-center gap-[18px] px-[18px] py-[14px]">
               {!route.is_owner && (
-                <button aria-label={`${route.is_liked ? "Unlike" : "Like"} ${route.name}`} onClick={() => void toggleLike(route)} className={`text-[12px] font-semibold ${route.is_liked ? "text-[#ef7098]" : "text-[rgba(255,255,255,0.45)]"}`}>♥ {route.like_count}</button>
+                <button aria-label={`${route.is_liked ? "Unlike" : "Like"} ${route.name}`} onClick={() => void toggleLike(route)} className={`text-[12px] font-semibold ${route.is_liked ? "text-[var(--initials-circle-text)]" : "text-[var(--text-body)]"}`}>♥ {route.like_count}</button>
               )}
-              {route.is_owner && <span className="text-[12px] text-[rgba(255,255,255,0.35)]">{route.like_count} likes</span>}
-              <button aria-label={`Open discussion for ${route.name}`} aria-expanded={expandedRoute === route.id} onClick={() => setExpandedRoute(expandedRoute === route.id ? null : route.id)} className="text-[12px] font-semibold text-[rgba(255,255,255,0.45)]">Discussion · {route.comment_count}</button>
+              {route.is_owner && <span className="text-[12px] text-[var(--grey-muted)]">{route.like_count} likes</span>}
+              <button aria-label={`Open discussion for ${route.name}`} aria-expanded={expandedRoute === route.id} onClick={() => setExpandedRoute(expandedRoute === route.id ? null : route.id)} className="text-[12px] font-semibold text-[var(--text-body)]">Discussion · {route.comment_count}</button>
             </div>
-            {expandedRoute === route.id && <div className="border-t border-[rgba(255,255,255,0.06)] p-[18px]"><RouteDiscussion routeId={route.id} /></div>}
+            {expandedRoute === route.id && <div className="border-t border-[var(--card-background-secondary)] p-[18px]"><RouteDiscussion routeId={route.id} /></div>}
           </article>
         ))}
 
         {!loading && tab !== "Activity" && users.length === 0 && (
           <div className={`${cardBase} p-[32px] text-center`}>
             <p className="font-semibold text-white">{tab === "Following" ? "You are not following anyone yet." : "No walkers match that search."}</p>
-            <p className="mt-[5px] text-[13px] text-[rgba(255,255,255,0.42)]">{tab === "Following" ? "Visit Discover to meet the community." : "Try another username or bio keyword."}</p>
+            <p className="mt-[5px] text-[13px] text-[var(--text-note-subtitle)]">{tab === "Following" ? "Visit Discover to meet the community." : "Try another username or bio keyword."}</p>
           </div>
         )}
 
         {!loading && tab !== "Activity" && users.map((user) => (
           <article key={user.id} className={`${cardBase} flex items-center gap-[14px] p-[16px]`}>
-            <button onClick={() => navigate(`/social/${user.id}`)} className="size-[50px] rounded-full bg-[rgba(196,32,80,0.18)] text-[#ef7098] font-bold text-[18px]">{user.username.slice(0, 1).toUpperCase()}</button>
+            <button onClick={() => navigate(`/social/${user.id}`)} className="size-[50px] rounded-full bg-[var(--primary-bg-dark)] text-[var(--initials-circle-text)] font-bold text-[18px]">{user.username.slice(0, 1).toUpperCase()}</button>
             <button onClick={() => navigate(`/social/${user.id}`)} className="min-w-0 flex-1 text-left">
               <p className="truncate text-[14px] font-semibold text-white">@{user.username}</p>
-              <p className="truncate text-[12px] text-[rgba(255,255,255,0.4)]">{user.bio || "SafeWalkers community member"}</p>
-              <p className="mt-[4px] text-[11px] text-[rgba(255,255,255,0.3)]">{user.shared_route_count} shared routes · {user.follower_count} followers</p>
+              <p className="truncate text-[12px] text-[var(--text-note-subtitle)]">{user.bio || "SafeWalkers community member"}</p>
+              <p className="mt-[4px] text-[11px] text-[var(--grey-muted)]">{user.shared_route_count} shared routes · {user.follower_count} followers</p>
             </button>
-            <button aria-label={`${user.is_following ? "Unfollow" : "Follow"} @${user.username}`} onClick={() => void toggleFollow(user)} className={`rounded-[11px] border px-[14px] py-[7px] text-[12px] font-semibold ${user.is_following ? "border-[rgba(196,32,80,0.35)] bg-[rgba(196,32,80,0.15)] text-[#ef7098]" : "border-[rgba(255,255,255,0.12)] bg-[rgba(255,255,255,0.05)] text-white"}`}>{user.is_following ? "Following" : "Follow"}</button>
+            <button aria-label={`${user.is_following ? "Unfollow" : "Follow"} @${user.username}`} onClick={() => void toggleFollow(user)} className={`rounded-[11px] border px-[14px] py-[7px] text-[12px] font-semibold ${user.is_following ? "border-[var(--primary-selected-border)] bg-[var(--primary-selected-bg)] text-[var(--initials-circle-text)]" : "border-[var(--grey-light-border-hover)] bg-[var(--section-divide-border)] text-white"}`}>{user.is_following ? "Following" : "Follow"}</button>
           </article>
         ))}
       </main>

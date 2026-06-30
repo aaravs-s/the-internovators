@@ -15,10 +15,10 @@ export default function AboutPage() {
   return (
     <>
       <div className="relative shrink-0 w-full">
-        <div aria-hidden className="absolute border-[rgba(255,255,255,0.05)] border-b border-solid inset-0 pointer-events-none" />
+        <div aria-hidden className="absolute border-[var(--section-divide-border)] border-b border-solid inset-0 pointer-events-none" />
         <div className="pb-[17px] pt-[28px] px-[32px]">
           <p className="font-['Inter',sans-serif] font-bold text-[38px] text-white tracking-[-0.8px]">About</p>
-          <p className="font-['Inter',sans-serif] font-normal text-[14px] text-[rgba(255,255,255,0.4)]">SafeWalkers v1.0.0</p>
+          <p className="font-['Inter',sans-serif] font-normal text-[14px] text-[var(--text-note-subtitle)]">SafeWalkers v1.0.0</p>
         </div>
       </div>
 
@@ -30,11 +30,11 @@ export default function AboutPage() {
           </div>
           <div className="flex-1">
             <p className="font-['Inter',sans-serif] font-bold text-[22px] text-white tracking-[-0.5px] mb-[4px]">SafeWalkers</p>
-            <p className="font-['Inter',sans-serif] font-normal text-[14px] text-[rgba(255,255,255,0.4)]">Version 1.0.0 · © 2026 The Internovators</p>
+            <p className="font-['Inter',sans-serif] font-normal text-[14px] text-[var(--text-note-subtitle)]">Version 1.0.0 · © 2026 The Internovators</p>
           </div>
           <div className="flex gap-[8px]">
-            <div key="Instagram" className="h-[36px] px-[14px] bg-[rgba(255,255,255,0.05)] border border-[rgba(255,255,255,0.1)] rounded-[10px] flex items-center cursor-pointer hover:bg-[rgba(255,255,255,0.08)] transition-colors">
-              <a href="https://www.instagram.com/safe_walkers/" target="_blank"><span className="font-['Inter',sans-serif] font-medium text-[12px] text-[rgba(255,255,255,0.4)]">Instagram</span></a>
+            <div key="Instagram" className="h-[36px] px-[14px] bg-[var(--section-divide-border)] border border-[var(--select-border)] rounded-[10px] flex items-center cursor-pointer hover:bg-[var(--card-bg-secondary-hover)] transition-colors">
+              <a href="https://www.instagram.com/safe_walkers/" target="_blank"><span className="font-['Inter',sans-serif] font-medium text-[12px] text-[var(--text-note-subtitle)]">Instagram</span></a>
             </div>
           </div>
         </div>
@@ -44,7 +44,7 @@ export default function AboutPage() {
           {[{ label: "Active Users", value: "128K" }, { label: "Routes Mapped", value: "42K" }, { label: "Safety Reports", value: "1.2M" }].map((s) => (
             <div key={s.label} className={`${cardBase} px-[24px] py-[20px] text-center`}>
               <p className="font-['Inter',sans-serif] font-bold text-[30px] text-white tracking-[-0.8px]">{s.value}</p>
-              <p className="font-['Inter',sans-serif] font-normal text-[13px] text-[rgba(255,255,255,0.4)] mt-[4px]">{s.label}</p>
+              <p className="font-['Inter',sans-serif] font-normal text-[13px] text-[var(--text-note-subtitle)] mt-[4px]">{s.label}</p>
             </div>
           ))}
         </div> */}
@@ -52,8 +52,8 @@ export default function AboutPage() {
         {/* Mission */}
         <div className={`${cardBase} p-[24px]`}>
           <p className="font-['Inter',sans-serif] font-semibold text-[15px] text-white mb-[12px]">Our Mission</p>
-          <p className="font-['Inter',sans-serif] font-normal text-[14px] text-[rgba(255,255,255,0.55)] leading-[22px]">
-            SafeWalkers is dedicated to helping pedestrians navigate Austin safely. We analyse crime reports and traffic patterns to suggest the safest routes — so every walk is a confident one.
+          <p className="font-['Inter',sans-serif] font-normal text-[14px] text-[var(--text-body)] leading-[22px]">
+            SafeWalkers is dedicated to helping pedestrians navigate Austin safely. We analyze crime reports and traffic patterns to suggest the safest routes — so every walk is a confident one.
           </p>
         </div>
 
@@ -62,17 +62,17 @@ export default function AboutPage() {
           <p className="font-['Inter',sans-serif] font-semibold text-[15px] text-white mb-[12px]">Frequently Asked Questions</p>
           <div className={`${cardBase} overflow-hidden`}>
             {faqs.map((f, i) => (
-              <div key={i} className={i < faqs.length - 1 ? "border-b border-[rgba(255,255,255,0.06)]" : ""}>
+              <div key={i} className={i < faqs.length - 1 ? "border-b border-[var(--card-background-secondary)]" : ""}>
                 <button onClick={() => setOpenFaq(openFaq === i ? null : i)}
-                  className="flex items-center justify-between w-full px-[20px] py-[16px] cursor-pointer text-left hover:bg-[rgba(255,255,255,0.02)] transition-colors">
+                  className="flex items-center justify-between w-full px-[20px] py-[16px] cursor-pointer text-left hover:bg-[var(--expand-card-hover-bg)] transition-colors">
                   <span className="font-['Inter',sans-serif] font-medium text-[14px] text-white">{f.q}</span>
                   <svg width="16" height="16" viewBox="0 0 16 16" fill="none" className={`shrink-0 ml-[12px] transition-transform duration-200 ${openFaq === i ? "rotate-180" : ""}`}>
-                    <path d="M4 6l4 4 4-4" stroke="rgba(255,255,255,0.3)" strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" />
+                    <path d="M4 6l4 4 4-4" stroke="var(--grey-muted)" strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" />
                   </svg>
                 </button>
                 {openFaq === i && (
                   <div className="px-[20px] pb-[16px]">
-                    <p className="font-['Inter',sans-serif] font-normal text-[13px] text-[rgba(255,255,255,0.45)] leading-[20px]">{f.a}</p>
+                    <p className="font-['Inter',sans-serif] font-normal text-[13px] text-[var(--text-body)] leading-[20px]">{f.a}</p>
                   </div>
                 )}
               </div>
@@ -83,10 +83,10 @@ export default function AboutPage() {
         {/* Links */}
         <div className="grid grid-cols-2 gap-[10px]">
           {["Privacy Policy", "Terms of Service", "Contact Support", "Rate the App"].map((link) => (
-            <div key={link} className={`${cardBase} px-[18px] py-[14px] flex items-center justify-between cursor-pointer hover:border-[rgba(255,255,255,0.15)] transition-colors`}>
-              <span className="font-['Inter',sans-serif] font-medium text-[13px] text-[#0a84ff]">{link}</span>
+            <div key={link} className={`${cardBase} px-[18px] py-[14px] flex items-center justify-between cursor-pointer hover:border-[var(--grey-light-border-hover)] transition-colors`}>
+              <span className="font-['Inter',sans-serif] font-medium text-[13px] text-[var(--back-text-color)]">{link}</span>
               <svg width="14" height="14" viewBox="0 0 16 16" fill="none">
-                <path d="M6 12L10 8L6 4" stroke="rgba(10,132,255,0.5)" strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" />
+                <path d="M6 12L10 8L6 4" stroke="var(--blue)" strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" />
               </svg>
             </div>
           ))}

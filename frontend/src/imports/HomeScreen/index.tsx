@@ -55,7 +55,7 @@ function Text() {
   return (
     <div className="h-[22.5px] relative shrink-0 w-[42.266px]" data-name="Text">
       <div className="bg-clip-padding border-0 border-[transparent] border-solid relative size-full">
-        <p className="[word-break:break-word] absolute font-['Inter:Medium',sans-serif] font-medium leading-[22.5px] left-0 not-italic text-[15px] text-[rgba(255,255,255,0.55)] top-[-2px] tracking-[-0.15px] whitespace-nowrap">About</p>
+        <p className="[word-break:break-word] absolute font-['Inter:Medium',sans-serif] font-medium leading-[22.5px] left-0 not-italic text-[15px] text-[var(--text-body)] top-[-2px] tracking-[-0.15px] whitespace-nowrap">About</p>
       </div>
     </div>
   );
@@ -80,7 +80,7 @@ function SavedIcon() {
     <div className="relative shrink-0 size-[22px]" data-name="SavedIcon">
       <svg className="absolute block inset-0 size-full" fill="none" preserveAspectRatio="none" viewBox="0 0 22 22">
         <g id="SavedIcon">
-          <path d={svgPaths.p2f4e1d80} id="Vector" stroke="var(--stroke-0, #C42050)" strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.83333" />
+          <path d={svgPaths.p2f4e1d80} id="Vector" stroke="var(--stroke-0, var(--primary))" strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.83333" />
         </g>
       </svg>
     </div>
@@ -91,7 +91,7 @@ function Text1() {
   return (
     <div className="h-[22.5px] relative shrink-0 w-[45.266px]" data-name="Text">
       <div className="bg-clip-padding border-0 border-[transparent] border-solid relative size-full">
-        <p className="[word-break:break-word] absolute font-['Inter:Medium',sans-serif] font-medium leading-[22.5px] left-0 not-italic text-[#c42050] text-[15px] top-[-2px] tracking-[-0.15px] whitespace-nowrap">Saved</p>
+        <p className="[word-break:break-word] absolute font-['Inter:Medium',sans-serif] font-medium leading-[22.5px] left-0 not-italic text-[var(--primary)] text-[15px] top-[-2px] tracking-[-0.15px] whitespace-nowrap">Saved</p>
       </div>
     </div>
   );
@@ -99,8 +99,8 @@ function Text1() {
 
 function Button1() {
   return (
-    <div className="bg-[rgba(196,32,80,0.15)] relative rounded-[14px] shrink-0 w-full" data-name="Button">
-      <div aria-hidden className="absolute border border-[rgba(196,32,80,0.25)] border-solid inset-0 pointer-events-none rounded-[14px]" />
+    <div className="bg-[var(--primary-selected-bg)] relative rounded-[14px] shrink-0 w-full" data-name="Button">
+      <div aria-hidden className="absolute border border-[var(--primary-selected-border)] border-solid inset-0 pointer-events-none rounded-[14px]" />
       <div className="flex flex-row items-center size-full">
         <div className="bg-clip-padding border-0 border-[transparent] border-solid content-stretch flex gap-[12px] items-center px-[17px] py-[13px] relative size-full">
           <SavedIcon />
@@ -130,7 +130,7 @@ function Text2() {
   return (
     <div className="h-[22.5px] relative shrink-0 w-[44.109px]" data-name="Text">
       <div className="bg-clip-padding border-0 border-[transparent] border-solid relative size-full">
-        <p className="[word-break:break-word] absolute font-['Inter:Medium',sans-serif] font-medium leading-[22.5px] left-0 not-italic text-[15px] text-[rgba(255,255,255,0.55)] top-[-2px] tracking-[-0.15px] whitespace-nowrap">Social</p>
+        <p className="[word-break:break-word] absolute font-['Inter:Medium',sans-serif] font-medium leading-[22.5px] left-0 not-italic text-[15px] text-[var(--text-body)] top-[-2px] tracking-[-0.15px] whitespace-nowrap">Social</p>
       </div>
     </div>
   );
@@ -165,7 +165,7 @@ function Navigation() {
 function Button3() {
   return (
     <div className="absolute h-[43.5px] left-[12px] top-0 w-[231px]" data-name="Button">
-      <p className="[word-break:break-word] absolute font-['Inter:Medium',sans-serif] font-medium leading-[19.5px] left-[16px] not-italic text-[13px] text-[rgba(255,255,255,0.35)] top-[12px] whitespace-nowrap">Sign out</p>
+      <p className="[word-break:break-word] absolute font-['Inter:Medium',sans-serif] font-medium leading-[19.5px] left-[16px] not-italic text-[13px] text-[var(--grey-muted)] top-[12px] whitespace-nowrap">Sign out</p>
     </div>
   );
 }
@@ -182,8 +182,8 @@ function Container1() {
 
 function Sidebar() {
   return (
-    <div className="absolute bg-[rgba(10,6,8,0.6)] content-stretch flex flex-col items-start left-0 pr-px top-0 w-[256px]" data-name="Sidebar">
-      <div aria-hidden className="absolute border-[rgba(255,255,255,0.07)] border-r border-solid inset-0 pointer-events-none" />
+    <div className="absolute bg-[var(--save-btn-bg)] content-stretch flex flex-col items-start left-0 pr-px top-0 w-[256px]" data-name="Sidebar">
+      <div aria-hidden className="absolute border-[var(--option-bg-hover)] border-r border-solid inset-0 pointer-events-none" />
       <Container />
       <Navigation />
       <Container1 />
@@ -205,7 +205,7 @@ function Paragraph() {
   return (
     <div className="h-[23px] relative shrink-0 w-[179.609px]" data-name="Paragraph">
       <div className="bg-clip-padding border-0 border-[transparent] border-solid content-stretch flex flex-col items-start pt-[2px] relative size-full">
-        <p className="[word-break:break-word] font-['Inter:Regular',sans-serif] font-normal leading-[21px] not-italic relative shrink-0 text-[14px] text-[rgba(255,255,255,0.4)] tracking-[-0.14px] whitespace-nowrap">Stay safe on every route.</p>
+        <p className="[word-break:break-word] font-['Inter:Regular',sans-serif] font-normal leading-[21px] not-italic relative shrink-0 text-[14px] text-[var(--text-note-subtitle)] tracking-[-0.14px] whitespace-nowrap">Stay safe on every route.</p>
       </div>
     </div>
   );
@@ -225,7 +225,7 @@ function Container3() {
 function Header() {
   return (
     <div className="relative shrink-0 w-full" data-name="Header">
-      <div aria-hidden className="absolute border-[rgba(255,255,255,0.05)] border-b border-solid inset-0 pointer-events-none" />
+      <div aria-hidden className="absolute border-[var(--section-divide-border)] border-b border-solid inset-0 pointer-events-none" />
       <div className="flex flex-row items-center size-full">
         <div className="bg-clip-padding border-0 border-[transparent] border-solid content-stretch flex items-center justify-between pb-[17px] pt-[32px] px-[32px] relative size-full">
           <Container3 />
@@ -249,7 +249,7 @@ function Button4() {
   return (
     <div className="relative shrink-0" data-name="Button">
       <div className="bg-clip-padding border-0 border-[transparent] border-solid content-stretch flex flex-col items-center justify-center relative size-full">
-        <p className="[word-break:break-word] font-['Inter:Medium',sans-serif] font-medium leading-[19.5px] not-italic relative shrink-0 text-[#0a84ff] text-[13px] text-center whitespace-nowrap">See all</p>
+        <p className="[word-break:break-word] font-['Inter:Medium',sans-serif] font-medium leading-[19.5px] not-italic relative shrink-0 text-[var(--back-text-color)] text-[13px] text-center whitespace-nowrap">See all</p>
       </div>
     </div>
   );
@@ -283,7 +283,7 @@ function Text3() {
   return (
     <div className="h-[18px] relative shrink-0 w-[33.281px]" data-name="Text">
       <div className="bg-clip-padding border-0 border-[transparent] border-solid relative size-full">
-        <p className="[word-break:break-word] absolute font-['Inter:Regular',sans-serif] font-normal leading-[18px] left-0 not-italic text-[12px] text-[rgba(255,255,255,0.6)] top-0 tracking-[-0.12px] whitespace-nowrap">8.7 mi</p>
+        <p className="[word-break:break-word] absolute font-['Inter:Regular',sans-serif] font-normal leading-[18px] left-0 not-italic text-[12px] text-[var(--text-body)] top-0 tracking-[-0.12px] whitespace-nowrap">8.7 mi</p>
       </div>
     </div>
   );
@@ -301,14 +301,14 @@ function Container8() {
 }
 
 function Container9() {
-  return <div className="bg-[rgba(255,255,255,0.1)] h-[12px] relative shrink-0 w-px" data-name="Container" />;
+  return <div className="bg-[var(--select-border)] h-[12px] relative shrink-0 w-px" data-name="Container" />;
 }
 
 function Text4() {
   return (
     <div className="h-[18px] relative shrink-0 w-[37.281px]" data-name="Text">
       <div className="bg-clip-padding border-0 border-[transparent] border-solid relative size-full">
-        <p className="[word-break:break-word] absolute font-['Inter:Regular',sans-serif] font-normal leading-[18px] left-0 not-italic text-[12px] text-[rgba(255,255,255,0.6)] top-0 tracking-[-0.12px] whitespace-nowrap">25 min</p>
+        <p className="[word-break:break-word] absolute font-['Inter:Regular',sans-serif] font-normal leading-[18px] left-0 not-italic text-[12px] text-[var(--text-body)] top-0 tracking-[-0.12px] whitespace-nowrap">25 min</p>
       </div>
     </div>
   );
@@ -330,7 +330,7 @@ function Button5() {
   return (
     <div className="relative shrink-0" data-name="Button">
       <div className="bg-clip-padding border-0 border-[transparent] border-solid content-stretch flex flex-col items-center justify-center relative size-full">
-        <p className="[word-break:break-word] font-['Inter:Semi_Bold',sans-serif] font-semibold leading-[18px] not-italic relative shrink-0 text-[#0a84ff] text-[12px] text-center whitespace-nowrap">View →</p>
+        <p className="[word-break:break-word] font-['Inter:Semi_Bold',sans-serif] font-semibold leading-[18px] not-italic relative shrink-0 text-[var(--back-text-color)] text-[12px] text-center whitespace-nowrap">View →</p>
       </div>
     </div>
   );
@@ -369,12 +369,12 @@ function Container10() {
 
 function RouteCard() {
   return (
-    <div className="absolute bg-[rgba(255,255,255,0.05)] h-[128px] left-0 rounded-[20px] top-0 w-[344px]" data-name="RouteCard">
+    <div className="absolute bg-[var(--section-divide-border)] h-[128px] left-0 rounded-[20px] top-0 w-[344px]" data-name="RouteCard">
       <div className="content-stretch flex flex-col items-start overflow-clip p-px relative rounded-[inherit] size-full">
         <Container6 />
         <Container10 />
       </div>
-      <div aria-hidden className="absolute border border-[rgba(255,255,255,0.08)] border-solid inset-0 pointer-events-none rounded-[20px]" />
+      <div aria-hidden className="absolute border border-[var(--card-bg-secondary-hover)] border-solid inset-0 pointer-events-none rounded-[20px]" />
     </div>
   );
 }
@@ -396,7 +396,7 @@ function Text5() {
   return (
     <div className="h-[18px] relative shrink-0 w-[33.281px]" data-name="Text">
       <div className="bg-clip-padding border-0 border-[transparent] border-solid relative size-full">
-        <p className="[word-break:break-word] absolute font-['Inter:Regular',sans-serif] font-normal leading-[18px] left-0 not-italic text-[12px] text-[rgba(255,255,255,0.6)] top-0 tracking-[-0.12px] whitespace-nowrap">3.2 mi</p>
+        <p className="[word-break:break-word] absolute font-['Inter:Regular',sans-serif] font-normal leading-[18px] left-0 not-italic text-[12px] text-[var(--text-body)] top-0 tracking-[-0.12px] whitespace-nowrap">3.2 mi</p>
       </div>
     </div>
   );
@@ -414,14 +414,14 @@ function Container13() {
 }
 
 function Container14() {
-  return <div className="bg-[rgba(255,255,255,0.1)] h-[12px] relative shrink-0 w-px" data-name="Container" />;
+  return <div className="bg-[var(--select-border)] h-[12px] relative shrink-0 w-px" data-name="Container" />;
 }
 
 function Text6() {
   return (
     <div className="h-[18px] relative shrink-0 w-[38.281px]" data-name="Text">
       <div className="bg-clip-padding border-0 border-[transparent] border-solid relative size-full">
-        <p className="[word-break:break-word] absolute font-['Inter:Regular',sans-serif] font-normal leading-[18px] left-0 not-italic text-[12px] text-[rgba(255,255,255,0.6)] top-0 tracking-[-0.12px] whitespace-nowrap">42 min</p>
+        <p className="[word-break:break-word] absolute font-['Inter:Regular',sans-serif] font-normal leading-[18px] left-0 not-italic text-[12px] text-[var(--text-body)] top-0 tracking-[-0.12px] whitespace-nowrap">42 min</p>
       </div>
     </div>
   );
@@ -443,7 +443,7 @@ function Button6() {
   return (
     <div className="relative shrink-0" data-name="Button">
       <div className="bg-clip-padding border-0 border-[transparent] border-solid content-stretch flex flex-col items-center justify-center relative size-full">
-        <p className="[word-break:break-word] font-['Inter:Semi_Bold',sans-serif] font-semibold leading-[18px] not-italic relative shrink-0 text-[#0a84ff] text-[12px] text-center whitespace-nowrap">View →</p>
+        <p className="[word-break:break-word] font-['Inter:Semi_Bold',sans-serif] font-semibold leading-[18px] not-italic relative shrink-0 text-[var(--back-text-color)] text-[12px] text-center whitespace-nowrap">View →</p>
       </div>
     </div>
   );
@@ -482,12 +482,12 @@ function Container15() {
 
 function RouteCard1() {
   return (
-    <div className="absolute bg-[rgba(255,255,255,0.05)] h-[128px] left-[360px] rounded-[20px] top-0 w-[344px]" data-name="RouteCard">
+    <div className="absolute bg-[var(--section-divide-border)] h-[128px] left-[360px] rounded-[20px] top-0 w-[344px]" data-name="RouteCard">
       <div className="content-stretch flex flex-col items-start overflow-clip p-px relative rounded-[inherit] size-full">
         <Container11 />
         <Container15 />
       </div>
-      <div aria-hidden className="absolute border border-[rgba(255,255,255,0.08)] border-solid inset-0 pointer-events-none rounded-[20px]" />
+      <div aria-hidden className="absolute border border-[var(--card-bg-secondary-hover)] border-solid inset-0 pointer-events-none rounded-[20px]" />
     </div>
   );
 }
@@ -554,7 +554,7 @@ function Paragraph2() {
   return (
     <div className="h-[22px] relative shrink-0 w-[568px]" data-name="Paragraph">
       <div className="bg-clip-padding border-0 border-[transparent] border-solid content-stretch flex flex-col items-start pt-[2px] relative size-full">
-        <p className="[word-break:break-word] font-['Inter:Regular',sans-serif] font-normal leading-[19.5px] not-italic relative shrink-0 text-[13px] text-[rgba(255,255,255,0.4)] whitespace-nowrap">{`View & edit profile`}</p>
+        <p className="[word-break:break-word] font-['Inter:Regular',sans-serif] font-normal leading-[19.5px] not-italic relative shrink-0 text-[13px] text-[var(--text-note-subtitle)] whitespace-nowrap">{`View & edit profile`}</p>
       </div>
     </div>
   );
@@ -585,8 +585,8 @@ function ChevronRight() {
 
 function Container16() {
   return (
-    <div className="bg-[rgba(255,255,255,0.05)] relative rounded-[20px] shrink-0 w-full" data-name="Container">
-      <div aria-hidden className="absolute border border-[rgba(255,255,255,0.08)] border-solid inset-0 pointer-events-none rounded-[20px]" />
+    <div className="bg-[var(--section-divide-border)] relative rounded-[20px] shrink-0 w-full" data-name="Container">
+      <div aria-hidden className="absolute border border-[var(--card-bg-secondary-hover)] border-solid inset-0 pointer-events-none rounded-[20px]" />
       <div className="flex flex-row items-center size-full">
         <div className="content-stretch flex gap-[16px] items-center p-[17px] relative size-full">
           <ImageProfile />
