@@ -32,11 +32,11 @@ function Sidebar() {
     >
       <div aria-hidden className="absolute border-[var(--option-bg-hover)] border-r border-solid inset-0 pointer-events-none" />
 
-      {/* Logo + bell */}
+      {/* Logo */}
       <div className="relative shrink-0 w-full flex items-center justify-between pb-[20px] pt-[32px] px-[24px]">
-        <div className="h-[54px] w-[81px]">
+        {/* <div className="h-[100px] w-[81px]"> */}
           <img alt="SafeWalkers" className="w-full h-full object-contain" src={imgSWLogo} />
-        </div>
+        {/* </div> */}
       </div>
 
       {/* Section label */}
