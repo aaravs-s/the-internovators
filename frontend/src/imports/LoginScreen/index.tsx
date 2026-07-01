@@ -56,7 +56,7 @@ function Paragraph() {
   return (
     <div className="relative shrink-0 w-[281.813px]" data-name="Paragraph">
       <div className="bg-clip-padding border-0 border-[transparent] border-solid content-stretch flex flex-col items-center pt-[16px] relative size-full">
-        <div className="[word-break:break-word] font-['Inter:Regular',sans-serif] font-normal leading-[0] not-italic relative shrink-0 text-[16px] text-[var(--text-note-subtitle)] text-center w-[282px]">
+        <div className="[word-break:break-word] font-['Inter:Regular',sans-serif] font-normal leading-[0] not-italic relative shrink-0 text-[16px] text-[var(--grey-muted)] text-center w-[282px]">
           <p className="leading-[26px] mb-0">Your trusted companion for safe</p>
           <p className="leading-[26px]">pedestrian routes.</p>
         </div>
@@ -134,8 +134,8 @@ function TextInput() {
 
 function Container8() {
   return (
-    <div className="bg-[var(--option-bg-hover)] h-[50px] relative rounded-[14px] shrink-0 w-full" data-name="Container">
-      <div aria-hidden className="absolute border border-[var(--select-border)] border-solid inset-0 pointer-events-none rounded-[14px]" />
+    <div className="bg-[var(--white-transparent)] h-[50px] relative rounded-[14px] shrink-0 w-full" data-name="Container">
+      <div aria-hidden className="absolute border border-[var(--border-grey)] border-solid inset-0 pointer-events-none rounded-[14px]" />
       <TextInput />
     </div>
   );
@@ -203,8 +203,8 @@ function Button() {
 
 function Container10() {
   return (
-    <div className="bg-[var(--option-bg-hover)] h-[50px] relative rounded-[14px] shrink-0 w-full" data-name="Container">
-      <div aria-hidden className="absolute border border-[var(--select-border)] border-solid inset-0 pointer-events-none rounded-[14px]" />
+    <div className="bg-[var(--white-transparent)] h-[50px] relative rounded-[14px] shrink-0 w-full" data-name="Container">
+      <div aria-hidden className="absolute border border-[var(--border-grey)] border-solid inset-0 pointer-events-none rounded-[14px]" />
       <PasswordInput />
       <Button />
     </div>

@@ -125,14 +125,14 @@ export default function GeneratePage() {
         if (!suggestions.length) return null;
 
         return (
-            <div className="absolute z-20 mt-[6px] w-full overflow-hidden rounded-[12px] border border-[var(--select-border)] bg-[#151014] shadow-[0_18px_45px_var(--shadow-color)]">
+            <div className="absolute z-20 mt-[6px] w-full overflow-hidden rounded-[12px] border border-[var(--border-grey)] bg-[#151014] shadow-[0_18px_45px_var(--shadow-color)]">
                 {suggestions.map((suggestion) => (
                     <button
                         key={`${suggestion.label}-${suggestion.lat}-${suggestion.lon}`}
                         type="button"
                         onMouseDown={(event) => event.preventDefault()}
                         onClick={() => onSelect(suggestion)}
-                        className="block w-full cursor-pointer border-b border-[var(--card-background-secondary)] px-[14px] py-[11px] text-left last:border-b-0 hover:bg-[var(--card-background-secondary)]"
+                        className="block w-full cursor-pointer border-b border-[var(--white-transparent)] px-[14px] py-[11px] text-left last:border-b-0 hover:bg-[var(--white-transparent)]"
                     >
                         <span className="block text-[13px] font-semibold text-white">
                             {suggestion.label}
@@ -151,10 +151,10 @@ export default function GeneratePage() {
     return (
         <>
         <div className="relative shrink-0 w-full">
-            <div aria-hidden className="absolute border-[var(--section-divide-border)] border-b border-solid inset-0 pointer-events-none" />
+            <div aria-hidden className="absolute border-[var(--white-transparent)] border-b border-solid inset-0 pointer-events-none" />
             <div className="pb-[17px] pt-[28px] px-[32px]">
             <p className="font-['Inter',sans-serif] font-bold text-[38px] text-white tracking-[-0.8px]">Generate</p>
-            <p className="font-['Inter',sans-serif] font-normal text-[14px] text-[var(--text-note-subtitle)]">Find new safe routes to your destination.</p>
+            <p className="font-['Inter',sans-serif] font-normal text-[14px] text-[var(--grey-muted)]">Find new safe routes to your destination.</p>
             </div>
         </div>
 
@@ -170,7 +170,7 @@ export default function GeneratePage() {
                         <input
                             type="text"
                             placeholder="UT Austin"
-                            className="w-full h-[50px] px-[16px] rounded-[14px] bg-[var(--section-divide-border)] border border-[var(--select-border)] text-white outline-none focus:border-[var(--primary-border-dark-hover)]"
+                            className="w-full h-[50px] px-[16px] rounded-[14px] bg-[var(--white-transparent)] border border-[var(--border-grey)] text-white outline-none focus:border-[var(--primary-dark)]"
                             value={start}
                             autoComplete="off"
                             onFocus={() => setActiveField("start")}
@@ -193,7 +193,7 @@ export default function GeneratePage() {
                         <input
                             type="text"
                             placeholder="Austin Central Library"
-                            className="w-full h-[50px] px-[16px] rounded-[14px] bg-[var(--section-divide-border)] border border-[var(--select-border)] text-white outline-none focus:border-[var(--primary-border-dark-hover)]"
+                            className="w-full h-[50px] px-[16px] rounded-[14px] bg-[var(--white-transparent)] border border-[var(--border-grey)] text-white outline-none focus:border-[var(--primary-dark)]"
                             value={destination}
                             autoComplete="off"
                             onFocus={() => setActiveField("destination")}
@@ -217,7 +217,7 @@ export default function GeneratePage() {
                         <select
                             value={type}
                             onChange={(e) => setType(e.target.value)}
-                            className="w-full h-[50px] px-[16px] rounded-[14px] bg-[var(--section-divide-border)] border border-[var(--select-border)] text-white outline-none focus:border-[var(--primary-border-dark-hover)]"
+                            className="w-full h-[50px] px-[16px] rounded-[14px] bg-[var(--white-transparent)] border border-[var(--border-grey)] text-white outline-none focus:border-[var(--primary-dark)]"
                         >
                             <option value="walking">Walking</option>
                             <option value="biking">Biking</option>
@@ -233,12 +233,12 @@ export default function GeneratePage() {
                             onChange={(event) => setPreferencesDescription(event.target.value)}
                             maxLength={600}
                             placeholder="Example: I like quiet scenic walks near water and parks. I want to avoid crowded streets and feel safe walking at night."
-                            className="w-full min-h-[112px] resize-none px-[16px] py-[13px] rounded-[14px] bg-[var(--section-divide-border)] border border-[var(--select-border)] text-white outline-none focus:border-[var(--primary-border-dark-hover)] placeholder:text-[var(--placeholder-text)]"
+                            className="w-full min-h-[112px] resize-none px-[16px] py-[13px] rounded-[14px] bg-[var(--white-transparent)] border border-[var(--border-grey)] text-white outline-none focus:border-[var(--primary-dark)] placeholder:text-[var(--grey-muted)]"
                         />
                     </div>
 
                     <button
-                        className={`h-[52px] rounded-[16px] ${searching ? "bg-var(--section-divide-border) disabled cursor-default text-[var(--primary)]" : "bg-[var(--primary)] cursor-pointer text-white"} font-semibold hover:opacity-90 transition-opacity flex items-center justify-center gap-2`}
+                        className={`h-[52px] rounded-[16px] ${searching ? "bg-var(--white-transparent) disabled cursor-default text-[var(--primary)]" : "bg-[var(--primary)] cursor-pointer text-white"} font-semibold hover:opacity-90 transition-opacity flex items-center justify-center gap-2`}
                     >
                         {searching ? (
                             <>
@@ -274,7 +274,7 @@ export default function GeneratePage() {
                     <div className="absolute inset-0 bg-gradient-to-t from-[var(--route-card-gradient-black)] via-transparent to-transparent" />
 
                     <div className="absolute bottom-[20px] left-[20px] right-[20px]">
-                    <div className="bg-[var(--card-black)] border border-[var(--select-border)] rounded-[16px] p-[16px]">
+                    <div className="bg-[var(--card-black)] border border-[var(--border-grey)] rounded-[16px] p-[16px]">
                         <p className="text-[11px] uppercase tracking-[1px] text-[var(--primary)] mb-[4px]">
                         Did you know?
                         </p>

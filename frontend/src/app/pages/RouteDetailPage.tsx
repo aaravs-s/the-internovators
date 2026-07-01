@@ -35,14 +35,14 @@ function fallbackBreakdown(score: number) {
 function ScoreRow({ label, score, inverted=false }: { label: string; score: number, inverted?: boolean }) {
   var color;
   if (inverted) {
-    color = score <= 50 ? "var(--green)" : score >= 75 ? "var(--orange)" : "var(--text-note-subtitle)";
+    color = score <= 50 ? "var(--green)" : score >= 75 ? "var(--orange)" : "var(--grey-muted)";
   } else {
-    color = score >= 85 ? "var(--green)" : score >= 70 ? "var(--orange)" : "var(--text-note-subtitle)";
+    color = score >= 85 ? "var(--green)" : score >= 70 ? "var(--orange)" : "var(--grey-muted)";
   }
   return (
     <div className="flex items-center gap-[12px]">
-      <span className="font-['Inter',sans-serif] font-normal text-[12px] text-[var(--text-note-subtitle)] w-[130px] shrink-0">{label}</span>
-      <div className="flex-1 h-[6px] rounded-full bg-[var(--option-bg-hover)] overflow-hidden">
+      <span className="font-['Inter',sans-serif] font-normal text-[12px] text-[var(--grey-muted)] w-[130px] shrink-0">{label}</span>
+      <div className="flex-1 h-[6px] rounded-full bg-[var(--white-transparent)] overflow-hidden">
         <div className="h-full rounded-full transition-all" style={{ width: `${score}%`, background: color }} />
       </div>
       <span className="font-['Inter',sans-serif] font-semibold text-[12px] w-[32px] text-right" style={{ color }}>{score}</span>
@@ -181,10 +181,10 @@ export default function RouteDetailPage() {
     <>
       {/* Header */}
       <div className="relative shrink-0 w-full">
-        <div aria-hidden className="absolute border-[var(--section-divide-border)] border-b border-solid inset-0 pointer-events-none" />
+        <div aria-hidden className="absolute border-[var(--white-transparent)] border-b border-solid inset-0 pointer-events-none" />
         <div className="flex items-center gap-[12px] pb-[17px] pt-[28px] px-[32px]">
           <button onClick={() => navigate(-1)}
-            className="flex items-center gap-[6px] h-[40px] px-[14px] bg-[var(--card-background-secondary)] border border-[var(--select-border)] rounded-[12px] cursor-pointer hover:bg-[var(--select-border)] transition-colors">
+            className="flex items-center gap-[6px] h-[40px] px-[14px] bg-[var(--white-transparent)] border border-[var(--border-grey)] rounded-[12px] cursor-pointer hover:bg-[var(--grey-muted)] transition-colors">
             <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
               <path d="M10 4L6 8L10 12" stroke="var(--small-text-grey)" strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" />
             </svg>
@@ -192,14 +192,14 @@ export default function RouteDetailPage() {
           </button>
           <div>
             <p className="font-['Inter',sans-serif] font-bold text-[32px] text-white tracking-[-0.7px] leading-[40px]">{route.name}</p>
-            <p className="font-['Inter',sans-serif] font-normal text-[14px] text-[var(--text-note-subtitle)]">{route.distance_miles} mi · Safety score {route.safety_score}</p>
+            <p className="font-['Inter',sans-serif] font-normal text-[14px] text-[var(--grey-muted)]">{route.distance_miles} mi · Safety score {route.safety_score}</p>
           </div>
         </div>
       </div>
 
       <div className="px-[32px] py-[24px] flex flex-col gap-[20px] max-w-[900px]">
         {/* Map */}
-        <div className="rounded-[20px] overflow-hidden h-[220px] relative border border-[var(--card-bg-secondary-hover)]">
+        <div className="rounded-[20px] overflow-hidden h-[220px] relative border border-[var(--white-transparent)]">
           <RouteMap
             coordinates={routeCoordinates}
             fallbackImage={fallbackMapImage}
@@ -208,7 +208,7 @@ export default function RouteDetailPage() {
           />
           <div className="absolute bottom-[16px] left-[16px] flex gap-[8px]">
             <SafetyBadge score={route.safety_score} />
-            <span className="font-['Inter',sans-serif] font-medium text-[12px] px-[10px] py-[4px] rounded-[20px] bg-[var(--save-btn-bg)] border border-[var(--grey-light-border-hover)] text-white">Scenic Route</span>
+            <span className="font-['Inter',sans-serif] font-medium text-[12px] px-[10px] py-[4px] rounded-[20px] bg-[var(--save-btn-bg)] border border-[var(--light-grey)] text-white">Scenic Route</span>
             {route.is_demo && (
               <span className="font-['Inter',sans-serif] font-semibold text-[10px] uppercase tracking-[0.5px] px-[9px] py-[4px] rounded-[20px] bg-[var(--demo-color)] border border-[var(--demo-color-light)] text-[var(--yellow)]">Demo route</span>
             )}
@@ -219,20 +219,20 @@ export default function RouteDetailPage() {
         <div className="flex gap-[12px]">
           <button onClick={() => saveRoute(id!)}
             disabled={saved}
-            className={`flex items-center gap-[8px] h-[52px] px-[24px] rounded-[16px] border transition-colors ${saved ? "bg-[var(--primary-selected-bg)] border-[var(--primary-selected-border)] cursor-default" : "bg-[var(--section-divide-border)] border-[var(--select-border)] hover:border-[var(--card-border-focus)] cursor-pointer"}`}>
-            <IconBookmark color={saved ? "var(--primary)" : "var(--text-note-subtitle)"} />
+            className={`flex items-center gap-[8px] h-[52px] px-[24px] rounded-[16px] border transition-colors ${saved ? "bg-[var(--primary-selected-bg)] border-[var(--primary-dark)] cursor-default" : "bg-[var(--white-transparent)] border-[var(--border-grey)] hover:border-[var(--border-grey)] cursor-pointer"}`}>
+            <IconBookmark color={saved ? "var(--primary)" : "var(--grey-muted)"} />
             <span className={`font-['Inter',sans-serif] font-semibold text-[15px] ${saved ? "text-[var(--primary)]" : "text-[var(--text-body)]"}`}>{saved ? "Saved" : "Save"}</span>
           </button>
           {(source === "saved") ? (
             <button 
-              className="flex items-center gap-[8px] h-[52px] px-[20px] rounded-[16px] border border-[var(--select-border)] bg-[var(--section-divide-border)] cursor-pointer hover:border-[var(--card-border-focus)] transition-colors"
+              className="flex items-center gap-[8px] h-[52px] px-[20px] rounded-[16px] border border-[var(--border-grey)] bg-[var(--white-transparent)] cursor-pointer hover:border-[var(--border-grey)] transition-colors"
               onClick={copyLink}
             >
               <svg width="18" height="18" viewBox="0 0 20 20" fill="none">
-                <circle cx="14" cy="5" r="2.5" stroke="var(--text-note-subtitle)" strokeWidth="1.5"/>
-                <circle cx="14" cy="15" r="2.5" stroke="var(--text-note-subtitle)" strokeWidth="1.5"/>
-                <circle cx="5" cy="10" r="2.5" stroke="var(--text-note-subtitle)" strokeWidth="1.5"/>
-                <path d="M11.5 6.5l-5 2M11.5 13.5l-5-2" stroke="var(--text-note-subtitle)" strokeWidth="1.5" strokeLinecap="round"/>
+                <circle cx="14" cy="5" r="2.5" stroke="var(--grey-muted)" strokeWidth="1.5"/>
+                <circle cx="14" cy="15" r="2.5" stroke="var(--grey-muted)" strokeWidth="1.5"/>
+                <circle cx="5" cy="10" r="2.5" stroke="var(--grey-muted)" strokeWidth="1.5"/>
+                <path d="M11.5 6.5l-5 2M11.5 13.5l-5-2" stroke="var(--grey-muted)" strokeWidth="1.5" strokeLinecap="round"/>
               </svg>
               <span className="font-['Inter',sans-serif] font-semibold text-[15px] text-[var(--text-body)]">{linkCopied ? "Link copied!" : "Share"}</span>
             </button>
@@ -251,7 +251,7 @@ export default function RouteDetailPage() {
               { label: "Difficulty", value: route.distance_miles < 3 ? "Easy" : (route.distance_miles > 8 ? "Hard" : "Medium") },
             ].map((s) => (
               <div key={s.label} className={`${cardBase} px-[20px] py-[16px] flex-1`}>
-                <p className="font-['Inter',sans-serif] font-normal text-[11px] text-[var(--text-note-subtitle)] uppercase tracking-[0.6px] mb-[4px]">{s.label}</p>
+                <p className="font-['Inter',sans-serif] font-normal text-[11px] text-[var(--grey-muted)] uppercase tracking-[0.6px] mb-[4px]">{s.label}</p>
                 <p className="font-['Inter',sans-serif] font-bold text-[20px] text-white tracking-[-0.4px]">{s.value}</p>
               </div>
             ))}
@@ -265,7 +265,7 @@ export default function RouteDetailPage() {
             {route.highlights.length > 0 && (
               <div className="flex flex-wrap gap-[6px] mt-[12px]">
                 {route.highlights.map((highlight) => (
-                  <span key={highlight} className="text-[11px] px-[8px] py-[3px] rounded-full bg-[var(--option-bg-hover)] text-[var(--small-text-grey)]">{highlight}</span>
+                  <span key={highlight} className="text-[11px] px-[8px] py-[3px] rounded-full bg-[var(--white-transparent)] text-[var(--small-text-grey)]">{highlight}</span>
                 ))}
               </div>
             )}
@@ -278,8 +278,8 @@ export default function RouteDetailPage() {
               <p className="font-['Inter',sans-serif] font-semibold text-[14px] text-white mb-[12px]">Safety Breakdown</p>
               <ResponsiveContainer width="100%" height={200}>
                 <RadarChart data={safetyRadarData}>
-                  <PolarGrid stroke="var(--card-bg-secondary-hover)" />
-                  <PolarAngleAxis dataKey="subject" tick={{ fill: "var(--text-note-subtitle)", fontSize: 11, fontFamily: "Inter" }} />
+                  <PolarGrid stroke="var(--white-transparent)" />
+                  <PolarAngleAxis dataKey="subject" tick={{ fill: "var(--grey-muted)", fontSize: 11, fontFamily: "Inter" }} />
                   <Radar dataKey="score" stroke="var(--primary)" fill="var(--primary)" fillOpacity={0.15} strokeWidth={2} />
                 </RadarChart>
               </ResponsiveContainer>
@@ -310,12 +310,12 @@ export default function RouteDetailPage() {
               <p className="px-[20px] py-[24px] text-[13px] text-[var(--text-body)]">Turn-by-turn directions are not available for this saved route.</p>
             )}
             {route.directions.map((step, index) => (
-              <div key={`${step.kind}-${index}`} className={`flex items-center gap-[16px] px-[20px] py-[14px] ${index < route.directions.length - 1 ? "border-b border-[var(--card-background-secondary)]" : ""}`}>
-                <div className={`size-[10px] rounded-full shrink-0 ${step.kind === "start" ? "bg-[var(--green)]" : step.kind === "end" ? "bg-[var(--primary)]" : "bg-[var(--placeholder-text)]"}`} />
+              <div key={`${step.kind}-${index}`} className={`flex items-center gap-[16px] px-[20px] py-[14px] ${index < route.directions.length - 1 ? "border-b border-[var(--white-transparent)]" : ""}`}>
+                <div className={`size-[10px] rounded-full shrink-0 ${step.kind === "start" ? "bg-[var(--green)]" : step.kind === "end" ? "bg-[var(--primary)]" : "bg-[var(--grey-muted)]"}`} />
                 <div className="flex-1">
                   <p className="font-['Inter',sans-serif] font-medium text-[13px] text-white">{step.instruction}</p>
                 </div>
-                <span className="font-['Inter',sans-serif] font-normal text-[11px] text-[var(--placeholder-text)]">{step.distance_miles} mi</span>
+                <span className="font-['Inter',sans-serif] font-normal text-[11px] text-[var(--grey-muted)]">{step.distance_miles} mi</span>
               </div>
             ))}
           </div>

@@ -57,14 +57,14 @@ export default function NotificationsPage() {
   return (
     <>
       <div className="relative shrink-0 w-full">
-        <div aria-hidden className="absolute border-[var(--section-divide-border)] border-b border-solid inset-0 pointer-events-none" />
+        <div aria-hidden className="absolute border-[var(--white-transparent)] border-b border-solid inset-0 pointer-events-none" />
         <div className="flex items-center justify-between pb-[17px] pt-[28px] px-[32px]">
           <div>
             <p className="font-['Inter',sans-serif] font-bold text-[38px] text-white tracking-[-0.8px]">Notifications</p>
-            <p className="font-['Inter',sans-serif] font-normal text-[14px] text-[var(--text-note-subtitle)]">{unread} unread</p>
+            <p className="font-['Inter',sans-serif] font-normal text-[14px] text-[var(--grey-muted)]">{unread} unread</p>
           </div>
           {unread > 0 && (
-            <button onClick={markAll} className="px-[14px] py-[8px] bg-[var(--card-background-secondary)] border border-[var(--select-border)] rounded-[12px] cursor-pointer hover:bg-[var(--select-border)] transition-colors">
+            <button onClick={markAll} className="px-[14px] py-[8px] bg-[var(--white-transparent)] border border-[var(--border-grey)] rounded-[12px] cursor-pointer hover:bg-[var(--grey-muted)] transition-colors">
               <span className="font-['Inter',sans-serif] font-medium text-[13px] text-[var(--small-text-grey)]">Mark all read</span>
             </button>
           )}
@@ -76,7 +76,7 @@ export default function NotificationsPage() {
           const color = typeColor[n.type];
           return (
             <button key={n.id} onClick={() => markRead(n.id)}
-              className={`${cardBase} text-left w-full cursor-pointer flex items-start gap-[14px] p-[16px] relative hover:border-[var(--grey-light-border-hover)] transition-colors ${!n.read ? "bg-[var(--option-bg-hover)]" : ""}`}>
+              className={`${cardBase} text-left w-full cursor-pointer flex items-start gap-[14px] p-[16px] relative hover:border-[var(--light-grey)] transition-colors ${!n.read ? "bg-[var(--white-transparent)]" : ""}`}>
               <div className="size-[40px] rounded-[12px] flex items-center justify-center shrink-0"
                 style={{ background: `${color}18`, border: `1px solid ${color}30` }}>
                 <NotifIcon type={n.type} color={color} />

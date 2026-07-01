@@ -3,31 +3,21 @@
 @import './theme.css';
 
 :root {
-    --section-divide-border: rgba(255,255,255,0.05);
     --grey-muted: rgba(255,255,255,0.3);
-    --text-note-subtitle: rgba(255,255,255,0.4);
-    --card-background-secondary: rgba(255,255,255,0.06);
-    --select-border: rgba(255,255,255,0.1);
-    --placeholder-text: rgba(255,255,255,0.25);
-    --card-border-focus: rgba(255,255,255,0.2);
+    --border-grey: rgba(255,255,255,0.15);
     --primary-selected-bg: rgba(196,32,80,0.15);
-    --primary-selected-border: rgba(196,32,80,0.3);
+    --primary-dark: rgba(196,32,80,0.3);
     --small-text-grey: rgba(255,255,255,0.5);
-    --option-bg-dark-grey: rgba(255,255,255,0.04);
-    --option-bg-hover: rgba(255,255,255,0.07);
     --route-card-gradient-black: rgba(10,6,8,0.7);
     --save-btn-bg: rgba(10,6,8,0.6);
-    --primary-border-dark-hover: rgba(196,32,80,0.4);
     --primary: #c42050;
-    --card-bg-secondary-hover: rgba(255,255,255,0.08);
     --text-body: rgba(255,255,255,0.6);
-    --expand-card-hover-bg: rgba(255,255,255,0.02);
-    --grey-light-border-hover: rgba(255,255,255,0.15);
+    --white-transparent: rgba(255,255,255,0.05);
+    --light-grey: rgba(255,255,255,0.15);
     --blue: rgba(10,132,255,0.5);
     --card-black: rgba(10,6,8,0.8);
     --shadow-color: rgba(0,0,0,0.35);
     --error-bg-color: rgba(239,68,68,0.1);
-    --primary-bg-dark: rgba(196,32,80,0.2);
     --initials-circle-text: #ef7098;
     --error-text-color: #fca5a5;
     --blue-light: #5ea8ff;

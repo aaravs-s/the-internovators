@@ -17,7 +17,7 @@ export default function ForgotPasswordPage() {
       </Link>
 
       <p className="font-['Inter',sans-serif] font-bold text-[32px] text-white tracking-[-0.8px] leading-[40px] mb-[8px]">Reset Password</p>
-      <p className="font-['Inter',sans-serif] font-normal text-[14px] text-[var(--text-note-subtitle)] leading-[21px] mb-[28px]">
+      <p className="font-['Inter',sans-serif] font-normal text-[14px] text-[var(--grey-muted)] leading-[21px] mb-[28px]">
         Enter your email and we'll send you a reset link within minutes.
       </p>
 

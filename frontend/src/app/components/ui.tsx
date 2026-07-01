@@ -1,11 +1,11 @@
 import { useState } from "react";
-import { loginSvg, homeSvg, imgBg, imgLogoBg, imgSwBadge, imgStores, imgRouteMap } from "@/app/assets";
+import { loginSvg, homeSvg, imgBg, imgLogoBg, imgSwBadge, imgStores, imgRouteMap, aboutSvg } from "@/app/assets";
 
 // ── Design tokens ─────────────────────────────────────────────────────────────
 export const primaryGradient = {
   backgroundImage: "linear-gradient(179.019deg, rgb(176,24,72) 8.2137%, rgb(122,15,46) 91.786%)",
 };
-export const cardBase = "bg-[var(--section-divide-border)] border border-[var(--card-bg-secondary-hover)] rounded-[20px]";
+export const cardBase = "bg-[var(--white-transparent)] border border-[var(--white-transparent)] rounded-[20px]";
 
 // ── Dark atmospheric background ───────────────────────────────────────────────
 export function DarkBackground() {
@@ -36,7 +36,7 @@ export function AuthLeftPanel() {
             <p className="leading-[60px] mb-0">Welcome to</p>
             <p className="leading-[60px]">SafeWalkers</p>
           </div>
-          <p className="font-['Inter',sans-serif] font-normal text-[16px] text-[var(--text-note-subtitle)] text-center leading-[26px] pt-[16px]">
+          <p className="font-['Inter',sans-serif] font-normal text-[16px] text-[var(--grey-muted)] text-center leading-[26px] pt-[16px]">
             Your trusted companion for safe<br />pedestrian routes.
           </p>
         </div>
@@ -75,8 +75,8 @@ export function FormInput({ label, placeholder, type = "text", value, onChange }
   return (
     <div className="relative w-full">
       <p className="font-['Inter',sans-serif] font-semibold text-[13px] text-[var(--map-marker-border)] tracking-[0.065px] mb-[8px]">{label}</p>
-      <div className="bg-[var(--option-bg-hover)] h-[50px] relative rounded-[14px] w-full">
-        <div aria-hidden className="absolute border border-[var(--select-border)] border-solid inset-0 pointer-events-none rounded-[14px]" />
+      <div className="bg-[var(--white-transparent)] h-[50px] relative rounded-[14px] w-full">
+        <div aria-hidden className="absolute border border-[var(--border-grey)] border-solid inset-0 pointer-events-none rounded-[14px]" />
         <input
           type={isPassword && !show ? "password" : "text"}
           value={value}
@@ -115,10 +115,10 @@ export function SafetyBadge({ score }: { score: number }) {
 // ── Tabs ──────────────────────────────────────────────────────────────────────
 export function Tabs({ tabs, active, onChange }: { tabs: string[]; active: string; onChange: (t: string) => void }) {
   return (
-    <div className="flex gap-[2px] bg-[var(--section-divide-border)] rounded-[14px] p-[3px]">
+    <div className="flex gap-[2px] bg-[var(--white-transparent)] rounded-[14px] p-[3px]">
       {tabs.map((t) => (
         <button key={t} onClick={() => onChange(t)}
-          className={`px-[16px] py-[7px] rounded-[11px] cursor-pointer font-['Inter',sans-serif] font-medium text-[13px] tracking-[-0.1px] transition-colors ${active === t ? "bg-[var(--primary-bg-dark)] text-[var(--primary)] border border-[var(--primary-selected-border)]" : "text-[var(--text-note-subtitle)]"}`}>
+          className={`px-[16px] py-[7px] rounded-[11px] cursor-pointer font-['Inter',sans-serif] font-medium text-[13px] tracking-[-0.1px] transition-colors ${active === t ? "bg-[var(--primary-dark)] text-[var(--primary)] border border-[var(--primary-dark)]" : "text-[var(--grey-muted)]"}`}>
           {t}
         </button>
       ))}
@@ -131,7 +131,7 @@ export function Toggle({ on, onToggle }: { on: boolean; onToggle: () => void }) 
   return (
     <button onClick={onToggle}
       className="relative w-[44px] h-[26px] rounded-full cursor-pointer transition-all"
-      style={on ? primaryGradient : { background: "var(--grey-light-border-hover)" }}
+      style={on ? primaryGradient : { background: "var(--light-grey)" }}
     >
       <div className={`absolute top-[3px] size-[20px] rounded-full bg-white shadow transition-transform duration-200 ${on ? "translate-x-[21px]" : "translate-x-[3px]"}`} />
     </button>
@@ -145,7 +145,7 @@ export function StarRating({ value }: { value: number }) {
       {[1,2,3,4,5].map((s) => (
         <svg key={s} width="12" height="12" viewBox="0 0 12 12" fill="none">
           <path d="M6 1L7.545 4.13L11 4.635L8.5 7.07L9.09 10.51L6 8.885L2.91 10.51L3.5 7.07L1 4.635L4.455 4.13L6 1Z"
-            fill={s <= value ? "var(--primary)" : "var(--grey-light-border-hover)"} />
+            fill={s <= value ? "var(--primary)" : "var(--light-grey)"} />
         </svg>
       ))}
     </div>
@@ -157,7 +157,7 @@ export function RouteCard({ distance, duration, label, safety, onClick }: {
   distance: string; duration: string; label: string; safety?: number; onClick: () => void;
 }) {
   return (
-    <div onClick={onClick} className="bg-[var(--section-divide-border)] rounded-[20px] w-[340px] flex-shrink-0 overflow-hidden relative border border-[var(--card-bg-secondary-hover)] cursor-pointer hover:border-[rgba(255,255,255,0.16)] transition-colors">
+    <div onClick={onClick} className="bg-[var(--white-transparent)] rounded-[20px] w-[340px] flex-shrink-0 overflow-hidden relative border border-[var(--white-transparent)] cursor-pointer hover:border-[rgba(255,255,255,0.16)] transition-colors">
       <div className="flex items-center justify-between px-[16px] pt-[12px] pb-[8px]">
         <div>
           <p className="font-['Inter',sans-serif] font-semibold text-[13px] text-white mb-[4px]">{label}</p>
@@ -169,7 +169,7 @@ export function RouteCard({ distance, duration, label, safety, onClick }: {
               </svg>
               <span className="font-['Inter',sans-serif] font-normal text-[12px] text-[var(--text-body)]">{distance}</span>
             </div>
-            <div className="bg-[var(--select-border)] h-[10px] w-px" />
+            <div className="bg-[var(--grey-muted)] h-[10px] w-px" />
             <span className="font-['Inter',sans-serif] font-normal text-[12px] text-[var(--text-body)]">{duration}</span>
           </div>
         </div>
@@ -218,6 +218,21 @@ export function IconHome({ color }: { color: string }) {
       <path d={homeSvg.p30314bf0} stroke={color} strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.375" />
     </svg>
   );
+}
+export function IconAbout({ color }: { color: string }) {
+  // return <svg
+  //     viewBox="0 0 22 22"
+  //     fill="none"
+  //     stroke="currentColor"
+  //     strokeWidth="1.833"
+  //     strokeLinecap="round"
+  //     strokeLinejoin="round"
+  //   >
+  return <svg width="22" height="22" viewBox="0 0 22 22" fill="none">
+      <path d={aboutSvg.pInfoCircle} stroke={color} strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.375" />
+      <path d={aboutSvg.pInfoDot} stroke={color} strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.375" />
+      <path d={aboutSvg.pInfoStem} stroke={color} strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.375" />
+    </svg>
 }
 export function IconGear({ color }: { color: string }) {
   return (

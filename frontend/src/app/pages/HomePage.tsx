@@ -27,19 +27,19 @@ export default function HomePage() {
     <>
       {/* Header */}
       <div className="relative shrink-0 w-full">
-        <div aria-hidden className="absolute border-[var(--section-divide-border)] border-b border-solid inset-0 pointer-events-none" />
+        <div aria-hidden className="absolute border-[var(--white-transparent)] border-b border-solid inset-0 pointer-events-none" />
         <div className="flex items-center justify-between pb-[17px] pt-[28px] px-[32px]">
           <div>
             <p className="font-['Inter',sans-serif] font-bold text-[38px] text-white tracking-[-0.8px]">Welcome!</p>
-            <p className="font-['Inter',sans-serif] font-normal text-[14px] text-[var(--text-note-subtitle)]">Stay safe on every route.</p>
+            <p className="font-['Inter',sans-serif] font-normal text-[14px] text-[var(--grey-muted)]">Stay safe on every route.</p>
           </div>
           <div className="flex items-center gap-[12px]">
             <button onClick={() => navigate("/explore")}
-              className="flex items-center gap-[8px] h-[40px] px-[16px] bg-[var(--card-background-secondary)] border border-[var(--select-border)] rounded-[12px] cursor-pointer hover:bg-[var(--select-border)] transition-colors">
+              className="flex items-center gap-[8px] h-[40px] px-[16px] bg-[var(--white-transparent)] border border-[var(--border-grey)] rounded-[12px] cursor-pointer hover:bg-[var(--grey-muted)] transition-colors">
               <IconCompass color="var(--text-body)" />
               <span className="font-['Inter',sans-serif] font-medium text-[13px] text-[var(--text-body)]">Find Route</span>
             </button>
-            <button onClick={() => navigate("/profile")} className="size-[40px] rounded-full overflow-hidden border border-[var(--grey-light-border-hover)] cursor-pointer shrink-0">
+            <button onClick={() => navigate("/profile")} className="size-[40px] rounded-full overflow-hidden border border-[var(--light-grey)] cursor-pointer shrink-0">
               <img alt="" className="w-full h-full object-cover" src={imgProfile} />
             </button>
           </div>
@@ -53,7 +53,7 @@ export default function HomePage() {
           <div className="flex-1 rounded-[20px] p-[24px] relative overflow-hidden" style={{ background: "rgba(34,197,94,0.08)", border: "1px solid rgba(34,197,94,0.2)" }}>
             <div className="flex items-start justify-between mb-[16px]">
               <div>
-                <p className="font-['Inter',sans-serif] font-medium text-[11px] text-[var(--text-note-subtitle)] uppercase tracking-[0.8px] mb-[4px]">Area Safety Index</p>
+                <p className="font-['Inter',sans-serif] font-medium text-[11px] text-[var(--grey-muted)] uppercase tracking-[0.8px] mb-[4px]">Area Safety Index</p>
                 <p className="font-['Inter',sans-serif] font-bold text-[42px] text-white tracking-[-1px] leading-none">9.1</p>
                 <p className="font-['Inter',sans-serif] font-normal text-[13px] text-[rgba(34,197,94,0.8)] mt-[4px]">↑ +0.3 from yesterday</p>
               </div>
@@ -90,17 +90,17 @@ export default function HomePage() {
             <p className="font-['Inter',sans-serif] font-semibold text-[15px] text-white tracking-[-0.3px]">This Week's Activity</p>
             <div className="flex gap-[8px]">
               {["km", "routes"].map((t, i) => (
-                <button key={t} className={`px-[12px] py-[5px] rounded-[10px] font-['Inter',sans-serif] font-medium text-[12px] cursor-pointer ${i === 0 ? "bg-[var(--primary-bg-dark)] text-[var(--primary)] border border-[var(--primary-selected-border)]" : "text-[var(--text-note-subtitle)]"}`}>{t}</button>
+                <button key={t} className={`px-[12px] py-[5px] rounded-[10px] font-['Inter',sans-serif] font-medium text-[12px] cursor-pointer ${i === 0 ? "bg-[var(--primary-dark)] text-[var(--primary)] border border-[var(--primary-dark)]" : "text-[var(--grey-muted)]"}`}>{t}</button>
               ))}
             </div>
           </div>
           <ResponsiveContainer width="100%" height={100}>
             <BarChart data={weekActivity} barCategoryGap="30%">
               <XAxis dataKey="day" tick={{ fill: "var(--grey-muted)", fontSize: 11, fontFamily: "Inter" }} axisLine={false} tickLine={false} />
-              <Tooltip contentStyle={{ background: "rgba(20,10,15,0.95)", border: "1px solid var(--select-border)", borderRadius: "10px", color: "white", fontSize: "12px" }} cursor={{ fill: "var(--option-bg-dark-grey)" }} />
+              <Tooltip contentStyle={{ background: "rgba(20,10,15,0.95)", border: "1px solid var(--grey-muted)", borderRadius: "10px", color: "white", fontSize: "12px" }} cursor={{ fill: "var(--white-transparent)" }} />
               <Bar dataKey="km" radius={[5, 5, 0, 0]}>
                 {weekActivity.map((_, i) => (
-                  <Cell key={i} fill={i === 5 ? "url(#barGrad)" : "var(--select-border)"} />
+                  <Cell key={i} fill={i === 5 ? "url(#barGrad)" : "var(--grey-muted)"} />
                 ))}
               </Bar>
               <defs>
@@ -133,14 +133,14 @@ export default function HomePage() {
         {/* Profile card */}
         <div>
           <p className="font-['Inter',sans-serif] font-semibold text-[17px] text-white tracking-[-0.34px] mb-[12px]">Your Profile</p>
-          <button onClick={() => navigate("/profile")} className={`${cardBase} w-full text-left cursor-pointer hover:border-[var(--grey-light-border-hover)] transition-colors`}>
+          <button onClick={() => navigate("/profile")} className={`${cardBase} w-full text-left cursor-pointer hover:border-[var(--light-grey)] transition-colors`}>
             <div className="flex gap-[16px] items-center p-[17px]">
               <div className="rounded-full shrink-0 size-[54px] overflow-hidden">
                 <img alt="" className="w-full h-full object-cover" src={imgProfile} />
               </div>
               <div className="flex-1">
                 <p className="font-['Inter',sans-serif] font-semibold text-[15px] text-white tracking-[-0.3px]">@{communityProfile?.username ?? user?.username ?? "walker"}</p>
-                <p className="font-['Inter',sans-serif] font-normal text-[13px] text-[var(--text-note-subtitle)]">View your community profile</p>
+                <p className="font-['Inter',sans-serif] font-normal text-[13px] text-[var(--grey-muted)]">View your community profile</p>
               </div>
               <div className="flex items-center gap-[20px]">
                 {[{ label: "Shared", val: communityProfile?.shared_route_count ?? "–" }, { label: "Followers", val: communityProfile?.follower_count ?? "–" }, { label: "Following", val: communityProfile?.following_count ?? "–" }].map((s) => (

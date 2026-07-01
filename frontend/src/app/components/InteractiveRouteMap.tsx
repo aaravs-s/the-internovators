@@ -118,7 +118,7 @@ export default function RouteMap({
             src={src}
           />
         ) : (
-          <div className="flex h-full w-full items-center justify-center text-[12px] text-[var(--text-note-subtitle)]">
+          <div className="flex h-full w-full items-center justify-center text-[12px] text-[var(--grey-muted)]">
             Map preview unavailable
           </div>
         )}

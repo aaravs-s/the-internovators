@@ -13,7 +13,7 @@ function scoreLabel(score?: number) {
 
 function ScoreChip({ label, score }: { label: string; score?: number }) {
     return (
-        <span className="text-[10px] px-[7px] py-[3px] rounded-full bg-[var(--option-bg-hover)] border border-[var(--select-border)] text-[var(--text-body)]">
+        <span className="text-[10px] px-[7px] py-[3px] rounded-full bg-[var(--white-transparent)] border border-[var(--border-grey)] text-[var(--text-body)]">
             {label} {scoreLabel(score)}
         </span>
     );
@@ -88,11 +88,11 @@ export default function RouteResultsPage() {
     return (
         <>
         <div className="relative shrink-0 w-full">
-            <div aria-hidden className="absolute border-[var(--section-divide-border)] border-b border-solid inset-0 pointer-events-none" />
+            <div aria-hidden className="absolute border-[var(--white-transparent)] border-b border-solid inset-0 pointer-events-none" />
             <div className="pb-[17px] pt-[28px] px-[32px]">
             <p className="font-['Inter',sans-serif] font-bold text-[38px] text-white tracking-[-0.8px]">Results</p>
             {(routes.length > 0) && (
-                <p className="font-['Inter',sans-serif] font-normal text-[14px] text-[var(--text-note-subtitle)]">The best routes from {routes[0].start} to {routes[0].destination}. </p>
+                <p className="font-['Inter',sans-serif] font-normal text-[14px] text-[var(--grey-muted)]">The best routes from {routes[0].start} to {routes[0].destination}. </p>
             )}
             </div>
         </div>
@@ -123,11 +123,11 @@ export default function RouteResultsPage() {
                                 )}
                                 <button onClick={() => toggle(route.id)} aria-label={saved.has(route.id) ? "Unsave route" : "Save route"}
                                 disabled={saved.has(route.id)}
-                                className={`absolute top-[10px] right-[10px] size-[30px] rounded-full bg-[var(--save-btn-bg)] border border-[var(--select-border)] flex items-center justify-center cursor-${saved.has(route.id) ? "default" : "pointer"} hover:border-[var(--primary-border-dark-hover)] transition-colors`}>
+                                className={`absolute top-[10px] right-[10px] size-[30px] rounded-full bg-[var(--save-btn-bg)] border border-[var(--border-grey)] flex items-center justify-center cursor-${saved.has(route.id) ? "default" : "pointer"} hover:border-[var(--primary-dark)] transition-colors`}>
                                 <svg width="14" height="14" viewBox="0 0 22 22" fill="none">
                                     <path d={homeSvg.p2f4e1d80} stroke={saved.has(route.id) ? "var(--primary)" : "var(--small-text-grey)"}
                                     strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.83333"
-                                    fill={saved.has(route.id) ? "var(--primary-selected-border)" : "none"} />
+                                    fill={saved.has(route.id) ? "var(--primary-dark)" : "none"} />
                                 </svg>
                                 </button>
                             </div>
@@ -136,7 +136,7 @@ export default function RouteResultsPage() {
                                 <div>
                                 <p className="font-['Inter',sans-serif] font-semibold text-[14px] text-white">{profileLabel(route.route_profile)}</p>
                                 {route.tradeoff_summary && (
-                                    <p className="text-[11px] text-[var(--text-note-subtitle)] mt-[2px]">{route.tradeoff_summary}</p>
+                                    <p className="text-[11px] text-[var(--grey-muted)] mt-[2px]">{route.tradeoff_summary}</p>
                                 )}
                                 {route.preference_summary && (
                                     <p className="text-[11px] text-[var(--primary)] mt-[2px]">{route.preference_summary}</p>
@@ -145,7 +145,7 @@ export default function RouteResultsPage() {
                                 </div>
                                 <div className="flex items-center gap-[8px] mb-[10px]">
                                 <span className="text-[12px] text-[var(--small-text-grey)]">{route.distance_miles} mi</span>
-                                <div className="size-[3px] rounded-full bg-[var(--card-border-focus)]" />
+                                <div className="size-[3px] rounded-full bg-[var(--grey-muted)]" />
                                 <span className="text-[12px] text-[var(--small-text-grey)]">{route.estimated_minutes} min</span>
                                 </div>
                                 <div className="flex items-center justify-between gap-[12px]">
@@ -163,7 +163,7 @@ export default function RouteResultsPage() {
                             </div>
                     ))
                 ) : (
-                    <p className="font-['Inter',sans-serif] font-normal text-[14px] text-[var(--text-note-subtitle)]">Error: No routes generated</p>
+                    <p className="font-['Inter',sans-serif] font-normal text-[14px] text-[var(--grey-muted)]">Error: No routes generated</p>
                 )}
 
             </div>

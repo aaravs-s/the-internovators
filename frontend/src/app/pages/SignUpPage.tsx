@@ -52,7 +52,7 @@ export default function SignUpPage() {
   return (
     <div className="flex flex-col">
       <p className="font-['Inter',sans-serif] font-bold text-[28px] text-white tracking-[-0.7px] mb-[4px]">Create Account</p>
-      <p className="font-['Inter',sans-serif] font-normal text-[14px] text-[var(--text-note-subtitle)] mb-[22px]">Join SafeWalkers and walk smarter.</p>
+      <p className="font-['Inter',sans-serif] font-normal text-[14px] text-[var(--grey-muted)] mb-[22px]">Join SafeWalkers and walk smarter.</p>
 
       <div className="flex flex-col gap-[14px]">
         <FormInput label="Username"          placeholder="Choose a username"            value={username} onChange={setUser} />
@@ -67,7 +67,7 @@ export default function SignUpPage() {
           <div className="flex gap-[4px]">
             {[1, 2, 3, 4].map((lvl) => (
               <div key={lvl} className="flex-1 h-[3px] rounded-full transition-colors duration-300"
-                style={{ background: lvl <= strength ? strengthColor : "var(--select-border)" }} />
+                style={{ background: lvl <= strength ? strengthColor : "var(--grey-muted)" }} />
             ))}
           </div>
           <p className="font-['Inter',sans-serif] font-normal text-[11px] mt-[4px]" style={{ color: strengthColor }}>{strengthLabel} password</p>

@@ -79,10 +79,10 @@ export default function RouteDiscussion({ routeId }: { routeId: string }) {
     return (
       <article
         key={comment.id}
-        className={`${isReply ? "ml-[36px] mt-[8px]" : "mt-[12px]"} rounded-[14px] border border-[var(--option-bg-hover)] bg-[var(--section-divide-border)] p-[14px]`}
+        className={`${isReply ? "ml-[36px] mt-[8px]" : "mt-[12px]"} rounded-[14px] border border-[var(--white-transparent)] bg-[var(--white-transparent)] p-[14px]`}
       >
         <div className="flex items-start gap-[10px]">
-          <div className="size-[32px] shrink-0 rounded-full bg-[var(--primary-bg-dark)] flex items-center justify-center text-[var(--initials-circle-text)] font-bold text-[12px]">
+          <div className="size-[32px] shrink-0 rounded-full bg-[var(--primary-dark)] flex items-center justify-center text-[var(--initials-circle-text)] font-bold text-[12px]">
             {comment.author.username.slice(0, 1).toUpperCase()}
           </div>
           <div className="min-w-0 flex-1">
@@ -117,7 +117,7 @@ export default function RouteDiscussion({ routeId }: { routeId: string }) {
               onChange={(event) => setReplyBody(event.target.value)}
               maxLength={500}
               placeholder="Write a reply…"
-              className="min-w-0 flex-1 rounded-[10px] border border-[var(--select-border)] bg-[var(--shadow-color)] px-[12px] py-[8px] text-[12px] text-white outline-none focus:border-[var(--primary-border-dark-hover)]"
+              className="min-w-0 flex-1 rounded-[10px] border border-[var(--border-grey)] bg-[var(--shadow-color)] px-[12px] py-[8px] text-[12px] text-white outline-none focus:border-[var(--primary-dark)]"
             />
             <button disabled={!replyBody.trim() || submitting} className="rounded-[10px] bg-[var(--primary)] px-[12px] text-[11px] font-semibold text-white disabled:opacity-40">
               Reply
@@ -134,7 +134,7 @@ export default function RouteDiscussion({ routeId }: { routeId: string }) {
       <div className="flex items-center justify-between">
         <div>
           <p className="font-semibold text-[15px] text-white">Walking community discussion</p>
-          <p className="text-[12px] text-[var(--text-note-subtitle)]">Share useful, respectful local context.</p>
+          <p className="text-[12px] text-[var(--grey-muted)]">Share useful, respectful local context.</p>
         </div>
         {!loading && <span className="text-[11px] text-[var(--grey-muted)]">{comments.reduce((count, item) => count + 1 + item.replies.length, 0)} messages</span>}
       </div>
@@ -147,7 +147,7 @@ export default function RouteDiscussion({ routeId }: { routeId: string }) {
           maxLength={500}
           rows={2}
           placeholder="What should other walkers know?"
-          className="min-w-0 flex-1 resize-none rounded-[12px] border border-[var(--select-border)] bg-[var(--shadow-color)] px-[13px] py-[10px] text-[13px] text-white outline-none focus:border-[var(--primary-border-dark-hover)]"
+          className="min-w-0 flex-1 resize-none rounded-[12px] border border-[var(--border-grey)] bg-[var(--shadow-color)] px-[13px] py-[10px] text-[13px] text-white outline-none focus:border-[var(--primary-dark)]"
         />
         <button disabled={!body.trim() || submitting} className="self-end rounded-[11px] bg-[var(--primary)] px-[16px] py-[10px] text-[12px] font-semibold text-white disabled:opacity-40">
           Post
@@ -160,9 +160,9 @@ export default function RouteDiscussion({ routeId }: { routeId: string }) {
           <button type="button" onClick={() => void loadComments()} className="font-semibold underline">Retry</button>
         </div>
       )}
-      {loading && <p className="mt-[14px] text-[12px] text-[var(--text-note-subtitle)]">Loading discussion…</p>}
+      {loading && <p className="mt-[14px] text-[12px] text-[var(--grey-muted)]">Loading discussion…</p>}
       {!loading && !error && comments.length === 0 && (
-        <p className="mt-[14px] rounded-[12px] border border-dashed border-[var(--select-border)] px-[14px] py-[18px] text-center text-[12px] text-[var(--text-note-subtitle)]">Start the conversation about this route.</p>
+        <p className="mt-[14px] rounded-[12px] border border-dashed border-[var(--border-grey)] px-[14px] py-[18px] text-center text-[12px] text-[var(--grey-muted)]">Start the conversation about this route.</p>
       )}
       {!loading && comments.map((comment) => commentCard(comment))}
     </section>

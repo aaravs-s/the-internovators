@@ -10,6 +10,7 @@ export { default as imgProfile }  from "@/imports/HomeScreen/d6ecba213f373ae693b
 // ── SVG paths ─────────────────────────────────────────────────────────────────
 export { default as loginSvg } from "@/imports/LoginScreen/svg-xehnkl0roc";
 export { default as homeSvg }  from "@/imports/HomeScreen/svg-l1xt1xsv75";
+export { default as aboutSvg } from "@/imports/HomeScreen/svg-about";
 
 // ── GIFs ──────────────────────────────────────────────────────────────────────
 export { default as loadingGif } from "@/imports/GenerateScreen/loading.gif";

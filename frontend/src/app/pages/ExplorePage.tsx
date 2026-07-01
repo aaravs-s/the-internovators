@@ -106,10 +106,10 @@ export default function ExplorePage() {
   return (
     <>
       <div className="relative shrink-0 w-full">
-        <div aria-hidden className="absolute border-[var(--section-divide-border)] border-b border-solid inset-0 pointer-events-none" />
+        <div aria-hidden className="absolute border-[var(--white-transparent)] border-b border-solid inset-0 pointer-events-none" />
         <div className="pb-[17px] pt-[28px] px-[32px]">
           <p className="font-['Inter',sans-serif] font-bold text-[38px] text-white tracking-[-0.8px]">Explore</p>
-          <p className="font-['Inter',sans-serif] font-normal text-[14px] text-[var(--text-note-subtitle)]">Discover new safe routes near you.</p>
+          <p className="font-['Inter',sans-serif] font-normal text-[14px] text-[var(--grey-muted)]">Discover new safe routes near you.</p>
         </div>
       </div>
 
@@ -123,14 +123,14 @@ export default function ExplorePage() {
           </div>
           <input value={search} onChange={(event) => setSearch(event.target.value)}
             placeholder="Search routes, areas, or tags…"
-            className="w-full h-[48px] bg-[var(--card-background-secondary)] border border-[var(--select-border)] rounded-[14px] pl-[44px] pr-[16px] font-['Inter',sans-serif] text-[15px] text-white placeholder-[var(--placeholder-text)] outline-none focus:border-[var(--card-border-focus)] transition-colors"
+            className="w-full h-[48px] bg-[var(--white-transparent)] border border-[var(--border-grey)] rounded-[14px] pl-[44px] pr-[16px] font-['Inter',sans-serif] text-[15px] text-white placeholder-[var(--grey-muted)] outline-none focus:border-[var(--border-grey)] transition-colors"
           />
         </div>
 
         <div className="flex gap-[8px] overflow-x-auto">
           {chips.map((chip) => (
             <button key={chip} onClick={() => setFilter(chip)}
-              className={`px-[16px] py-[8px] rounded-[12px] cursor-pointer whitespace-nowrap font-['Inter',sans-serif] font-medium text-[13px] border shrink-0 transition-colors ${filter === chip ? "bg-[var(--primary-selected-bg)] border-[var(--primary-selected-border)] text-[var(--primary)]" : "border-[var(--select-border)] text-[var(--small-text-grey)] bg-[var(--option-bg-dark-grey)] hover:bg-[var(--option-bg-hover)]"}`}>
+              className={`px-[16px] py-[8px] rounded-[12px] cursor-pointer whitespace-nowrap font-['Inter',sans-serif] font-medium text-[13px] border shrink-0 transition-colors ${filter === chip ? "bg-[var(--primary-selected-bg)] border-[var(--primary-dark)] text-[var(--primary)]" : "border-[var(--border-grey)] text-[var(--small-text-grey)] bg-[var(--white-transparent)] hover:bg-[var(--light-grey)]"}`}>
               {chip}
             </button>
           ))}
@@ -139,7 +139,7 @@ export default function ExplorePage() {
         {loading && <p className="text-[var(--small-text-grey)]">Loading routes…</p>}
         {!loading && error && <p role="alert" className="text-[var(--error-text-color)]">{error}</p>}
         {!loading && !error && visible.length === 0 && (
-          <p className="text-[var(--text-note-subtitle)]">No routes match your search.</p>
+          <p className="text-[var(--grey-muted)]">No routes match your search.</p>
         )}
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-[14px]">
@@ -156,11 +156,11 @@ export default function ExplorePage() {
                 <div className="absolute bottom-[10px] left-[14px]"><SafetyBadge score={route.safety_score} /></div>
                 <button onClick={() => toggle(route.id)} aria-label={saved.has(route.id) ? "Unsave route" : "Save route"}
                   disabled={saved.has(route.id)}
-                  className={`absolute top-[10px] right-[10px] size-[30px] rounded-full bg-[var(--save-btn-bg)] border border-[var(--select-border)] flex items-center justify-center cursor-${saved.has(route.id) ? "default" : "pointer"} hover:border-[var(--primary-border-dark-hover)] transition-colors`}>
+                  className={`absolute top-[10px] right-[10px] size-[30px] rounded-full bg-[var(--save-btn-bg)] border border-[var(--border-grey)] flex items-center justify-center cursor-${saved.has(route.id) ? "default" : "pointer"} hover:border-[var(--primary-dark)] transition-colors`}>
                   <svg width="14" height="14" viewBox="0 0 22 22" fill="none">
                     <path d={homeSvg.p2f4e1d80} stroke={saved.has(route.id) ? "var(--primary)" : "var(--small-text-grey)"}
                       strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.83333"
-                      fill={saved.has(route.id) ? "var(--primary-selected-border)" : "none"} />
+                      fill={saved.has(route.id) ? "var(--primary-dark)" : "none"} />
                   </svg>
                 </button>
               </div>
@@ -168,13 +168,13 @@ export default function ExplorePage() {
                 <p className="font-['Inter',sans-serif] font-semibold text-[14px] text-white mb-[6px]">{route.name}</p>
                 <div className="flex items-center gap-[8px] mb-[10px]">
                   <span className="text-[12px] text-[var(--small-text-grey)]">{route.distance_miles} mi</span>
-                  <div className="size-[3px] rounded-full bg-[var(--card-border-focus)]" />
+                  <div className="size-[3px] rounded-full bg-[var(--grey-muted)]" />
                   <span className="text-[12px] text-[var(--small-text-grey)]">{route.estimated_minutes} min</span>
                 </div>
                 <div className="flex items-center justify-between gap-[12px]">
                   <div className="flex gap-[4px] flex-wrap">
                     {route.tags.map((tag) => (
-                      <span key={tag} className="text-[10px] px-[7px] py-[2px] rounded-full bg-[var(--option-bg-hover)] border border-[var(--select-border)] text-[var(--text-note-subtitle)]">{tag}</span>
+                      <span key={tag} className="text-[10px] px-[7px] py-[2px] rounded-full bg-[var(--white-transparent)] border border-[var(--border-grey)] text-[var(--grey-muted)]">{tag}</span>
                     ))}
                   </div>
                   <button onClick={() => navigate(`/route/${route.id}`, {state: { source: "saved" }})} className="cursor-pointer shrink-0">

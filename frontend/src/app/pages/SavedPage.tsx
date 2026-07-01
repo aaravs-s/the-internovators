@@ -80,10 +80,10 @@ export default function SavedPage() {
   return (
     <>
       <div className="relative shrink-0 w-full">
-        <div aria-hidden className="absolute border-[var(--section-divide-border)] border-b border-solid inset-0 pointer-events-none" />
+        <div aria-hidden className="absolute border-[var(--white-transparent)] border-b border-solid inset-0 pointer-events-none" />
         <div className="pb-[17px] pt-[28px] px-[32px]">
           <p className="font-['Inter',sans-serif] font-bold text-[38px] text-white tracking-[-0.8px]">Saved Routes</p>
-          <p className="font-['Inter',sans-serif] font-normal text-[14px] text-[var(--text-note-subtitle)]">{saved.length} routes saved</p>
+          <p className="font-['Inter',sans-serif] font-normal text-[14px] text-[var(--grey-muted)]">{saved.length} routes saved</p>
         </div>
       </div>
 
@@ -92,7 +92,7 @@ export default function SavedPage() {
         <div className="flex items-center gap-[10px]">
           {filters.map((f) => (
             <button key={f} onClick={() => setFilter(f)}
-              className={`px-[16px] py-[8px] rounded-[12px] cursor-pointer font-['Inter',sans-serif] font-medium text-[13px] border transition-colors ${filter === f ? "bg-[var(--primary-selected-bg)] border-[var(--primary-selected-border)] text-[var(--primary)]" : "border-[var(--select-border)] text-[var(--small-text-grey)] bg-[var(--option-bg-dark-grey)] hover:bg-[var(--option-bg-hover)]"}`}>
+              className={`px-[16px] py-[8px] rounded-[12px] cursor-pointer font-['Inter',sans-serif] font-medium text-[13px] border transition-colors ${filter === f ? "bg-[var(--primary-selected-bg)] border-[var(--primary-dark)] text-[var(--primary)]" : "border-[var(--border-grey)] text-[var(--small-text-grey)] bg-[var(--white-transparent)] hover:bg-[var(--light-grey)]"}`}>
               {f}
             </button>
           ))}
@@ -102,7 +102,7 @@ export default function SavedPage() {
         <div className="flex flex-col gap-[12px]">
           {visible.map((route) => (
             <button key={route.id} onClick={() => navigate(`/route/${route.route_id}`, {state: { source: "saved" }})}
-              className={`${cardBase} text-left w-full cursor-pointer hover:border-[var(--grey-light-border-hover)] transition-colors relative`}>
+              className={`${cardBase} text-left w-full cursor-pointer hover:border-[var(--light-grey)] transition-colors relative`}>
               <div className="flex items-center gap-[16px] p-[16px]">
                 <div className="size-[64px] rounded-[12px] overflow-hidden shrink-0">
                   <RouteMap
@@ -120,11 +120,11 @@ export default function SavedPage() {
                   </div>
                   <div className="flex items-center gap-[10px]">
                     <span className="font-['Inter',sans-serif] font-normal text-[12px] text-[var(--small-text-grey)]">{route.distance_miles} mi</span>
-                    <div className="size-[3px] rounded-full bg-[var(--card-border-focus)]" />
+                    <div className="size-[3px] rounded-full bg-[var(--grey-muted)]" />
                     <span className="font-['Inter',sans-serif] font-normal text-[12px] text-[var(--small-text-grey)]">{route.estimated_minutes} min</span>
                     <div className="flex gap-[4px]">
                       {route.tags.map((t) => (
-                        <span key={t} className="font-['Inter',sans-serif] font-normal text-[11px] px-[7px] py-[2px] rounded-full bg-[var(--option-bg-hover)] border border-[var(--select-border)] text-[var(--text-note-subtitle)]">{t}</span>
+                        <span key={t} className="font-['Inter',sans-serif] font-normal text-[11px] px-[7px] py-[2px] rounded-full bg-[var(--white-transparent)] border border-[var(--border-grey)] text-[var(--grey-muted)]">{t}</span>
                       ))}
                     </div>
                   </div>

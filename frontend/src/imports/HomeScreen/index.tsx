@@ -100,7 +100,7 @@ function Text1() {
 function Button1() {
   return (
     <div className="bg-[var(--primary-selected-bg)] relative rounded-[14px] shrink-0 w-full" data-name="Button">
-      <div aria-hidden className="absolute border border-[var(--primary-selected-border)] border-solid inset-0 pointer-events-none rounded-[14px]" />
+      <div aria-hidden className="absolute border border-[var(--primary-dark)] border-solid inset-0 pointer-events-none rounded-[14px]" />
       <div className="flex flex-row items-center size-full">
         <div className="bg-clip-padding border-0 border-[transparent] border-solid content-stretch flex gap-[12px] items-center px-[17px] py-[13px] relative size-full">
           <SavedIcon />
@@ -183,7 +183,7 @@ function Container1() {
 function Sidebar() {
   return (
     <div className="absolute bg-[var(--save-btn-bg)] content-stretch flex flex-col items-start left-0 pr-px top-0 w-[256px]" data-name="Sidebar">
-      <div aria-hidden className="absolute border-[var(--option-bg-hover)] border-r border-solid inset-0 pointer-events-none" />
+      <div aria-hidden className="absolute border-[var(--white-transparent)] border-r border-solid inset-0 pointer-events-none" />
       <Container />
       <Navigation />
       <Container1 />
@@ -205,7 +205,7 @@ function Paragraph() {
   return (
     <div className="h-[23px] relative shrink-0 w-[179.609px]" data-name="Paragraph">
       <div className="bg-clip-padding border-0 border-[transparent] border-solid content-stretch flex flex-col items-start pt-[2px] relative size-full">
-        <p className="[word-break:break-word] font-['Inter:Regular',sans-serif] font-normal leading-[21px] not-italic relative shrink-0 text-[14px] text-[var(--text-note-subtitle)] tracking-[-0.14px] whitespace-nowrap">Stay safe on every route.</p>
+        <p className="[word-break:break-word] font-['Inter:Regular',sans-serif] font-normal leading-[21px] not-italic relative shrink-0 text-[14px] text-[var(--grey-muted)] tracking-[-0.14px] whitespace-nowrap">Stay safe on every route.</p>
       </div>
     </div>
   );
@@ -225,7 +225,7 @@ function Container3() {
 function Header() {
   return (
     <div className="relative shrink-0 w-full" data-name="Header">
-      <div aria-hidden className="absolute border-[var(--section-divide-border)] border-b border-solid inset-0 pointer-events-none" />
+      <div aria-hidden className="absolute border-[var(--white-transparent)] border-b border-solid inset-0 pointer-events-none" />
       <div className="flex flex-row items-center size-full">
         <div className="bg-clip-padding border-0 border-[transparent] border-solid content-stretch flex items-center justify-between pb-[17px] pt-[32px] px-[32px] relative size-full">
           <Container3 />
@@ -301,7 +301,7 @@ function Container8() {
 }
 
 function Container9() {
-  return <div className="bg-[var(--select-border)] h-[12px] relative shrink-0 w-px" data-name="Container" />;
+  return <div className="bg-[var(--grey-muted)] h-[12px] relative shrink-0 w-px" data-name="Container" />;
 }
 
 function Text4() {
@@ -369,12 +369,12 @@ function Container10() {
 
 function RouteCard() {
   return (
-    <div className="absolute bg-[var(--section-divide-border)] h-[128px] left-0 rounded-[20px] top-0 w-[344px]" data-name="RouteCard">
+    <div className="absolute bg-[var(--white-transparent)] h-[128px] left-0 rounded-[20px] top-0 w-[344px]" data-name="RouteCard">
       <div className="content-stretch flex flex-col items-start overflow-clip p-px relative rounded-[inherit] size-full">
         <Container6 />
         <Container10 />
       </div>
-      <div aria-hidden className="absolute border border-[var(--card-bg-secondary-hover)] border-solid inset-0 pointer-events-none rounded-[20px]" />
+      <div aria-hidden className="absolute border border-[var(--white-transparent)] border-solid inset-0 pointer-events-none rounded-[20px]" />
     </div>
   );
 }
@@ -414,7 +414,7 @@ function Container13() {
 }
 
 function Container14() {
-  return <div className="bg-[var(--select-border)] h-[12px] relative shrink-0 w-px" data-name="Container" />;
+  return <div className="bg-[var(--grey-muted)] h-[12px] relative shrink-0 w-px" data-name="Container" />;
 }
 
 function Text6() {
@@ -482,12 +482,12 @@ function Container15() {
 
 function RouteCard1() {
   return (
-    <div className="absolute bg-[var(--section-divide-border)] h-[128px] left-[360px] rounded-[20px] top-0 w-[344px]" data-name="RouteCard">
+    <div className="absolute bg-[var(--white-transparent)] h-[128px] left-[360px] rounded-[20px] top-0 w-[344px]" data-name="RouteCard">
       <div className="content-stretch flex flex-col items-start overflow-clip p-px relative rounded-[inherit] size-full">
         <Container11 />
         <Container15 />
       </div>
-      <div aria-hidden className="absolute border border-[var(--card-bg-secondary-hover)] border-solid inset-0 pointer-events-none rounded-[20px]" />
+      <div aria-hidden className="absolute border border-[var(--white-transparent)] border-solid inset-0 pointer-events-none rounded-[20px]" />
     </div>
   );
 }
@@ -554,7 +554,7 @@ function Paragraph2() {
   return (
     <div className="h-[22px] relative shrink-0 w-[568px]" data-name="Paragraph">
       <div className="bg-clip-padding border-0 border-[transparent] border-solid content-stretch flex flex-col items-start pt-[2px] relative size-full">
-        <p className="[word-break:break-word] font-['Inter:Regular',sans-serif] font-normal leading-[19.5px] not-italic relative shrink-0 text-[13px] text-[var(--text-note-subtitle)] whitespace-nowrap">{`View & edit profile`}</p>
+        <p className="[word-break:break-word] font-['Inter:Regular',sans-serif] font-normal leading-[19.5px] not-italic relative shrink-0 text-[13px] text-[var(--grey-muted)] whitespace-nowrap">{`View & edit profile`}</p>
       </div>
     </div>
   );
@@ -585,8 +585,8 @@ function ChevronRight() {
 
 function Container16() {
   return (
-    <div className="bg-[var(--section-divide-border)] relative rounded-[20px] shrink-0 w-full" data-name="Container">
-      <div aria-hidden className="absolute border border-[var(--card-bg-secondary-hover)] border-solid inset-0 pointer-events-none rounded-[20px]" />
+    <div className="bg-[var(--white-transparent)] relative rounded-[20px] shrink-0 w-full" data-name="Container">
+      <div aria-hidden className="absolute border border-[var(--white-transparent)] border-solid inset-0 pointer-events-none rounded-[20px]" />
       <div className="flex flex-row items-center size-full">
         <div className="content-stretch flex gap-[16px] items-center p-[17px] relative size-full">
           <ImageProfile />

@@ -1,6 +1,6 @@
 import { Outlet, NavLink, useNavigate } from "react-router";
 
-import { IconHome, IconBookmark, IconCompass, IconSocial, IconGear } from "@/app/components/ui";
+import { IconHome, IconBookmark, IconCompass, IconSocial, IconGear, IconAbout } from "@/app/components/ui";
 import { imgSWLogo } from "@/app/assets";
 import { useAuth } from "../../auth/AuthContext";
 
@@ -12,7 +12,7 @@ const navItems: NavDef[] = [
   { to: "/saved",    label: "Saved",    icon: (c) => <IconBookmark color={c} /> },
   { to: "/generate", label: "Generate", icon: (c) => <IconCompass color={c} /> },
   { to: "/social",  label: "Community",  icon: (c) => <IconSocial color={c} /> },
-  { to: "/about",   label: "About",   icon: (c) => <IconHome     color={c} /> },
+  { to: "/about",   label: "About",   icon: (c) => <IconAbout     color={c} /> },
 ];
 
 function Sidebar() {
@@ -30,7 +30,7 @@ function Sidebar() {
       className="fixed flex flex-col items-start left-0 top-0 w-[256px] h-full z-10"
       style={{ background: "var(--card-gradient-black)", backdropFilter: "blur(20px)" }}
     >
-      <div aria-hidden className="absolute border-[var(--option-bg-hover)] border-r border-solid inset-0 pointer-events-none" />
+      <div aria-hidden className="absolute border-[var(--white-transparent)] border-r border-solid inset-0 pointer-events-none" />
 
       {/* Logo */}
       <div className="relative shrink-0 w-full flex items-center justify-between pb-[20px] pt-[32px] px-[24px]">
@@ -41,7 +41,7 @@ function Sidebar() {
 
       {/* Section label */}
       <div className="px-[24px] mb-[6px]">
-        <p className="font-['Inter',sans-serif] font-medium text-[10px] text-[var(--card-border-focus)] tracking-[1px] uppercase">Navigation</p>
+        <p className="font-['Inter',sans-serif] font-medium text-[10px] text-[var(--grey-muted)] tracking-[1px] uppercase">Navigation</p>
       </div>
 
       {/* Nav items */}
@@ -52,8 +52,8 @@ function Sidebar() {
               className={({ isActive }) =>
                 `relative rounded-[14px] w-full text-left flex items-center gap-[12px] px-[17px] py-[12px] cursor-pointer transition-colors ${
                   isActive
-                    ? "bg-[var(--primary-selected-bg)] border border-[var(--primary-selected-border)]"
-                    : "hover:bg-[var(--option-bg-dark-grey)]"
+                    ? "bg-[var(--primary-selected-bg)] border border-[var(--primary-dark)]"
+                    : "hover:bg-[var(--white-transparent)]"
                 }`
               }
             >
@@ -64,7 +64,7 @@ function Sidebar() {
                     {label}
                   </span>
                   {badge && (
-                    <div className={`rounded-full px-[7px] py-[1px] border ${label === "Saved" ? "bg-[var(--primary-bg-dark)] border-[var(--primary-selected-border)]" : "bg-[var(--dark-blue-bg)] border-[var(--dark-blue-border)]"}`}>
+                    <div className={`rounded-full px-[7px] py-[1px] border ${label === "Saved" ? "bg-[var(--primary-dark)] border-[var(--primary-dark)]" : "bg-[var(--dark-blue-bg)] border-[var(--dark-blue-border)]"}`}>
                       <span className={`font-['Inter',sans-serif] font-semibold text-[10px] ${label === "Saved" ? "text-[var(--primary)]" : "text-[var(--back-text-color)]"}`}>{badge}</span>
                     </div>
                   )}
@@ -77,14 +77,14 @@ function Sidebar() {
 
       {/* Divider */}
       <div className="w-full px-[24px] my-[8px]">
-        <div className="h-px bg-[var(--card-background-secondary)]" />
+        <div className="h-px bg-[var(--white-transparent)]" />
       </div>
 
       {/* Settings + sign out */}
       <div className="w-full px-[12px] pb-[16px] flex flex-col gap-[2px]">
         <NavLink to="/settings"
           className={({ isActive }) =>
-            `relative rounded-[14px] w-full flex items-center gap-[12px] px-[17px] py-[12px] cursor-pointer transition-colors ${isActive ? "bg-[var(--primary-selected-bg)] border border-[var(--primary-selected-border)]" : "hover:bg-[var(--option-bg-dark-grey)]"}`
+            `relative rounded-[14px] w-full flex items-center gap-[12px] px-[17px] py-[12px] cursor-pointer transition-colors ${isActive ? "bg-[var(--primary-selected-bg)] border border-[var(--primary-dark)]" : "hover:bg-[var(--white-transparent)]"}`
           }
         >
           {({ isActive }) => (
@@ -97,7 +97,7 @@ function Sidebar() {
 
         <NavLink to="/profile"
           className={({ isActive }) =>
-            `relative rounded-[14px] w-full flex items-center gap-[12px] px-[17px] py-[12px] cursor-pointer transition-colors ${isActive ? "bg-[var(--primary-selected-bg)] border border-[var(--primary-selected-border)]" : "hover:bg-[var(--option-bg-dark-grey)]"}`
+            `relative rounded-[14px] w-full flex items-center gap-[12px] px-[17px] py-[12px] cursor-pointer transition-colors ${isActive ? "bg-[var(--primary-selected-bg)] border border-[var(--primary-dark)]" : "hover:bg-[var(--white-transparent)]"}`
           }
         >
           {({ isActive }) => (
@@ -111,7 +111,7 @@ function Sidebar() {
         </NavLink>
 
         <button onClick={() => { logout(); navigate("/"); }}
-          className="flex gap-[12px] items-center px-[17px] py-[11px] cursor-pointer w-full rounded-[14px] hover:bg-[var(--option-bg-dark-grey)] transition-colors"
+          className="flex gap-[12px] items-center px-[17px] py-[11px] cursor-pointer w-full rounded-[14px] hover:bg-[var(--white-transparent)] transition-colors"
   
         >
           <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
