@@ -102,9 +102,11 @@ function Sidebar() {
         >
           {({ isActive }) => (
             <>
-              <span className={`text-[15px] font-semibold text-[${isActive ? "var(--primary)" : "var(--grey-muted)"}]`}>
-                {user?.username?.charAt(0).toUpperCase()}
-              </span>
+              <div className={"w-[22px] text-center"}>
+                <span className={`text-[18px] font-semibold text-[${isActive ? "var(--primary)" : "var(--grey-muted)"}]`}>
+                  {user?.username?.charAt(0).toUpperCase()}
+                </span>
+              </div>
               <span className={`font-['Inter',sans-serif] font-medium text-[15px] ${isActive ? "text-[var(--primary)]" : "text-[var(--text-body)]"}`}>{ user?.username }</span>
             </>
           )}
